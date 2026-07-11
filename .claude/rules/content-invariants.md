@@ -12,15 +12,15 @@ These are non-negotiable. Every agent checks against them. Violations are deduct
 
 **INV-3.** No `\hline` — use `\toprule`, `\midrule`, `\bottomrule` (booktabs). No vertical rules.
 
-**INV-4.** Significance stars follow the journal profile. AEA journals: no stars, report standard errors and use confidence intervals. Default: stars with note defining thresholds.
+**INV-4.** Significance reporting follows the venue profile. Empirical-standards venues (EMSE, ESEM, MSR): effect sizes with confidence intervals alongside p-values. Default: stars with note defining thresholds.
 
 **INV-5.** Abstract is 150 words or fewer.
 
-**INV-6.** JEL codes and keywords present after the abstract.
+**INV-6.** Keywords (and ACM CCS concepts when targeting ACM venues) present after the abstract.
 
 **INV-7.** Notation is consistent across all sections — the same symbol means the same thing everywhere. Different concepts get different symbols.
 
-**INV-8.** Every causal claim has a corresponding identification section. No causal language in descriptive papers.
+**INV-8.** Every causal claim has a corresponding study-design justification (causal design + threats-to-validity discussion). No causal language in descriptive or purely observational papers.
 
 **INV-9.** `biblatex` + `biber`, not `natbib` + `bibtex`.
 
@@ -30,7 +30,7 @@ These are non-negotiable. Every agent checks against them. Violations are deduct
 
 **INV-12.** No titles inside ggplot/matplotlib figures. Titles go in LaTeX `\caption{}`. Panel labels ("Panel A: ...") inside multi-panel figures are fine.
 
-**INV-13.** R/Python/Julia scripts export bare `tabular` environments — no `\begin{table}`, `\caption{}`, or notes. The paper's `main.tex` wraps them.
+**INV-13.** Python/R scripts export bare `tabular` environments — no `\begin{table}`, `\caption{}`, or notes. The paper's `main.tex` wraps them.
 
 ## Code
 
@@ -38,7 +38,7 @@ These are non-negotiable. Every agent checks against them. Violations are deduct
 
 **INV-15.** All packages/libraries loaded at the top of the script, before any data loading or computation.
 
-**INV-16.** No absolute paths. All paths relative to project root via `here()` (R), `pathlib.Path` (Python), or `joinpath(@__DIR__, ...)` (Julia).
+**INV-16.** No absolute paths. All paths relative to project root via `pathlib.Path` (Python) or `here()` (R).
 
 **INV-17.** No growing vectors/lists in loops. Pre-allocate result containers or use vectorized operations.
 

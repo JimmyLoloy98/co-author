@@ -13,7 +13,7 @@ The dashboard is a **single long scrollable page** with two levels of sticky nav
 ```
 ┌─────────────────────────────────────────────────────┐
 │  .main-nav (sticky, top: 0)                         │
-│  Overview  Data  Identification  Literature  ...    │
+│  Overview  Data  Study Design  Literature  ...      │
 │  ─────────────────────────────────────────────────  │
 └─────────────────────────────────────────────────────┘
 
@@ -21,7 +21,7 @@ The dashboard is a **single long scrollable page** with two levels of sticky nav
 
 ┌─────────────────────────────────────────────────────┐
 │  .section-nav (sticky, top: 46px)                   │
-│  [Inventory] [Treatment & IV] [Outcomes] [Wind] ... │
+│  [Inventory] [Treatment] [Outcomes] [Mechanism] ... │
 │  ─────────────────────────────────────────────────  │
 └─────────────────────────────────────────────────────┘
 
@@ -99,29 +99,29 @@ h3[id] { scroll-margin-top: 100px; }     /* clears main nav + section nav */
 ### Structure
 
 ```
-Header (title, stats row: target journal, word limit, counties, panel years)
+Header (title, stats row: target venue, word limit, projects/participants, panel window)
 Main nav (sticky, anchor links to each section)
 
 Section: Overview
   Section sub-nav: [Question] [Causal Chain] [Contributions] [Risks]
-  - Abstract / research question
-  - Causal chain diagram
+  - Abstract / research questions (RQ1, RQ2, ...)
+  - Causal chain / conceptual model diagram
   - Contributions (grid of cards)
   - Risk matrix (table with status pills)
 
 Section: Data
-  Section sub-nav: [Inventory] [Treatment & IV] [Outcomes] [Mechanism] [Wind] [Downloads]
-  - Master inventory table
-  - Treatment & IV details (cards)
-  - Outcomes (cards per variable)
+  Section sub-nav: [Inventory] [Treatment] [Outcomes] [Mechanism] [Instruments] [Downloads]
+  - Master inventory table (repositories, surveys, telemetry)
+  - Treatment / exposure details (cards)
+  - Outcomes (cards per metric)
   - Mechanism variables
-  - Wind/instrument deep-dive
-  - Download queue
+  - Instrument / quasi-experiment deep-dive (if causal design)
+  - Download queue (API pulls, data dumps)
 
-Section: Identification
+Section: Study Design
   Section sub-nav: [Design] [Threats] [Fallback] [Prediction]
-  - First/second stage equations
-  - Exclusion restriction threats
+  - Estimating equations / study protocol
+  - Threats to validity (construct, internal, external, conclusion)
   - Fallback design
   - Key prediction
 
@@ -174,7 +174,7 @@ The dashboard is updated after any interaction that changes pipeline state:
 |---------|-------------|
 | `/discover data` completes | Data section: new sources, status pills |
 | `/discover lit` completes | Literature section: papers, positioning, gaps |
-| `/strategize` completes | Identification section: equations, threats, prediction |
+| `/strategize` completes | Study Design section: equations/protocol, threats, prediction |
 | `/analyze` produces results | Results section: tables, figures |
 | `/write` drafts sections | Paper section: word counts, completion status |
 | `/review` scores paper | Critic scores throughout |

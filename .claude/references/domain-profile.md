@@ -3,27 +3,27 @@
 <!--
 HOW TO USE: Fill this in manually OR let /discover (interactive interview) generate it.
 All agents read this file to calibrate their field-specific behavior.
-Delete sections that don't apply. Add sections specific to your field.
-If no field is specified, agents default to applied economics.
+Delete sections that don't apply. Add sections specific to your subfield.
+If no field is specified, agents default to empirical software engineering.
 -->
 
 ## Field
 
-**Primary:** [e.g., Health Economics, Labor Economics, Development, IO, Public Finance]
-**Adjacent subfields:** [e.g., Labor, Public, IO — fields whose methods and journals overlap]
+**Primary:** [e.g., Empirical Software Engineering, Software Team Management, Developer Productivity, DevOps, Human Aspects of SE]
+**Adjacent subfields:** [e.g., CSCW, HCI, Information Systems — fields whose methods and venues overlap]
 
 ---
 
-## Target Journals (ranked by tier)
+## Target Venues (ranked by tier)
 
-<!-- The Orchestrator uses this for journal selection. The Librarian prioritizes these in searches. -->
+<!-- The Orchestrator uses this for venue selection. The Librarian prioritizes these in searches. -->
 
-| Tier | Journals |
-|------|----------|
-| Top-5 | AER, Econometrica, JPE, QJE, REStud |
-| Top field | [e.g., JHE, RAND JE, AEJ:EP, AEJ:Applied] |
-| Strong field | [e.g., Health Affairs, AJHE, JPubE, JHR] |
-| Specialty | [e.g., Medical Care, Health Services Research] |
+| Tier | Venues |
+|------|--------|
+| Top journals | IEEE TSE, ACM TOSEM, Empirical Software Engineering (EMSE) |
+| Top conferences | [e.g., ICSE, FSE, ASE, ESEM, MSR] |
+| Strong journals | [e.g., JSS, IST] |
+| Specialty | [e.g., CHASE, ICSME, IEEE Software (practitioner)] |
 
 ---
 
@@ -33,17 +33,27 @@ If no field is specified, agents default to applied economics.
 
 | Dataset | Type | Access | Notes |
 |---------|------|--------|-------|
-| [e.g., CPS] | [survey/admin/panel] | [public/restricted] | [key strengths and limitations] |
+| [e.g., GitHub via REST/GraphQL API] | [repository mining] | [public, rate-limited] | [key strengths and limitations — bots, forks, stars ≠ quality] |
+| [e.g., GH Archive / SEART GHS] | [repository metadata] | [public] | [curated sampling of engineered projects] |
+| [e.g., Stack Overflow Developer Survey] | [survey] | [public] | [large-N developer demographics and practices; self-selection] |
+| [e.g., TravisTorrent / CI logs] | [build telemetry] | [public] | [CI outcomes linked to commits] |
+| [e.g., Jira issue-tracker datasets] | [process data] | [public/restricted] | [issue lifecycles, effort estimates] |
+| [e.g., DORA / State of DevOps] | [survey] | [aggregate public] | [delivery performance constructs] |
+| [e.g., Company telemetry] | [admin] | [restricted, NDA] | [requires ethics approval and anonymization] |
 
 ---
 
-## Common Identification Strategies
+## Common Study Designs
 
-<!-- The Strategist considers these first. The strategist-critic knows field-specific threats. -->
+<!-- The Strategist considers these first. The strategist-critic knows design-specific threats. -->
 
-| Strategy | Typical Application | Key Assumption to Defend |
-|----------|-------------------|------------------------|
-| [e.g., State-level DiD] | [Policy variation across states] | [Parallel trends in outcomes across treated/control states] |
+| Design | Typical Application | Key Threat to Defend |
+|--------|-------------------|----------------------|
+| [e.g., Repository mining + regression] | [Practice adoption vs. outcome metrics across projects] | [Confounding by project maturity, size, domain] |
+| [e.g., DiD around a platform/policy change] | [Feature or policy rollout on GitHub/CI] | [Parallel trends across adopter and non-adopter projects] |
+| [e.g., Controlled experiment (human subjects)] | [Tool or practice effect on task performance] | [Construct validity of tasks; participant representativeness] |
+| [e.g., Survey] | [Developer perceptions and practices] | [Sampling frame, non-response bias, instrument validity] |
+| [e.g., Case study] | [Practice in its industrial context] | [Generalizability; triangulation across data sources] |
 
 ---
 
@@ -51,11 +61,12 @@ If no field is specified, agents default to applied economics.
 
 <!-- The Coder and Writer follow these. The writer-critic checks for them. -->
 
-- [e.g., Binary outcomes → report LPM alongside logit/probit marginal effects]
-- [e.g., Cost outcomes → log transform or GLM (Gamma, log link)]
-- [e.g., Clustering at state level for state-level policy variation]
-- [e.g., Always discuss moral hazard / adverse selection implications]
-- [e.g., Welfare analysis expected in top-5 submissions]
+- [e.g., Report effect sizes (Cliff's delta, Vargha-Delaney Â12) with CIs, not just p-values]
+- [e.g., Non-parametric tests (Mann-Whitney, Wilcoxon) when normality fails — common with SE metrics]
+- [e.g., Explicit Threats to Validity section: construct, internal, external, conclusion]
+- [e.g., Skewed metrics (LOC, churn, resolution time) → log transform or rank-based methods]
+- [e.g., Cluster analysis at the project level when observations are commits/PRs within projects]
+- [e.g., Mixed methods triangulation valued at TOSEM/CHASE]
 
 ---
 
@@ -65,7 +76,8 @@ If no field is specified, agents default to applied economics.
 
 | Symbol | Meaning | Anti-pattern |
 |--------|---------|-------------|
-| [e.g., $Y_{it}$] | [Outcome for individual i at time t] | [Don't use $y$ without subscripts] |
+| [e.g., $Y_{pt}$] | [Outcome for project p in period t] | [Don't use $y$ without subscripts] |
+| [e.g., RQ1, RQ2…] | [Numbered research questions mapped to analyses] | [Analyses that answer no stated RQ] |
 
 ---
 
@@ -75,21 +87,27 @@ If no field is specified, agents default to applied economics.
 
 | Paper | Why It Matters |
 |-------|---------------|
-| [e.g., Finkelstein et al. (2012)] | [Oregon HIE — gold standard for insurance effects] |
+| Wohlin et al. (2012), *Experimentation in Software Engineering* | Canonical guide for controlled experiments in SE |
+| Runeson & Höst (2009) | Case study research guidelines for SE |
+| Kitchenham & Charters (2007) | Systematic literature review guidelines |
+| Ralph et al. (2021), ACM SIGSOFT Empirical Standards | Per-method reporting and review standards |
+| Forsgren, Humble & Kim, *Accelerate* / DORA reports | Delivery-performance constructs for DevOps research |
+| Stol & Fitzgerald (2018) | ABC framework for choosing research strategies in SE |
 
 ---
 
-## Theoretical Foundational References
+## Methodological Foundational References
 
-<!-- The Theorist and theorist-critic default to these anchors when building or reviewing a theory section.
-     Only needed if the paper has a formal theory section (econometric methods, theory+empirics,
-     structural identification, or methodological reduced-form).
-     Leave empty to fall back to the generic econometric theory defaults baked into the theorist agent. -->
+<!-- The Theorist and theorist-critic default to these anchors when building or reviewing a formal
+     methods section. Only needed if the paper has formal statistical content (new metrics with
+     validity arguments, causal designs, measurement models).
+     Leave empty to fall back to the generic statistical-methods defaults baked into the theorist agent. -->
 
 | Topic | Anchor references |
 |-------|------------------|
-| [e.g., DiD with staggered adoption] | [e.g., Callaway & Sant'Anna (2021); Sant'Anna & Zhao (2020)] |
-| [e.g., Semiparametric efficiency] | [e.g., Newey (1990, 1994); Bickel-Klaassen-Ritov-Wellner (1993)] |
+| [e.g., DiD with staggered adoption (MSR causal studies)] | [e.g., Callaway & Sant'Anna (2021)] |
+| [e.g., Effect sizes for tool comparisons] | [e.g., Vargha & Delaney (2000); Arcuri & Briand (2014)] |
+| [e.g., Survey instrument validation] | [e.g., Kitchenham & Pfleeger (2008)] |
 
 ---
 
@@ -101,7 +119,7 @@ If no field is specified, agents default to applied economics.
 
 | Author | Foundational on |
 |--------|----------------|
-| [e.g., Callaway] | [DiD with staggered adoption, $ATT(g,t)$] |
+| [e.g., surname] | [topic] |
 
 ---
 
@@ -109,10 +127,12 @@ If no field is specified, agents default to applied economics.
 
 <!-- The domain-referee and methods-referee watch for these. -->
 
-- [e.g., "Why not use the Oregon HIE?" — must address if studying insurance effects]
-- [e.g., "Selection into treatment" — always a concern in health care utilization studies]
-- [e.g., "Moral hazard vs adverse selection" — referees expect you to distinguish]
-- [e.g., "External validity" — Medicaid population ≠ general population]
+- [e.g., "Does commit count / LOC actually measure productivity?" — construct validity of mined metrics is the #1 objection]
+- [e.g., "Does this generalize beyond open source?" — OSS convenience samples vs. industrial settings]
+- [e.g., "Correlation dressed as causation" — observational mining studies making causal claims without a causal design]
+- [e.g., "Bots and identity merging" — unfiltered bot activity and unmerged aliases corrupt repository data]
+- [e.g., "Ethics and consent" — human-subjects studies (surveys, interviews, telemetry) need IRB/ethics approval]
+- [e.g., "Survivorship bias" — sampling only active, popular projects]
 
 ---
 
@@ -123,5 +143,5 @@ If no field is specified, agents default to applied economics.
 | Quantity | Tolerance | Rationale |
 |----------|-----------|-----------|
 | Point estimates | [e.g., 1e-6] | [Numerical precision] |
-| Standard errors | [e.g., 1e-4] | [MC variability] |
-| Coverage rates | [e.g., ± 0.01] | [Simulation with B reps] |
+| Standard errors | [e.g., 1e-4] | [Bootstrap/MC variability] |
+| Inter-rater reliability | [e.g., Cohen's kappa >= 0.7] | [Qualitative coding quality] |

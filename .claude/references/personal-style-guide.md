@@ -64,14 +64,14 @@ drafting against a stale voice profile.
 <!-- Structural patterns specific to this author's papers. -->
 
 ### Introduction
-- [e.g., opens with a specific puzzle or policy moment, not a literature overview]
+- [e.g., opens with a specific puzzle or engineering-practice moment, not a literature overview]
 - [e.g., headline number appears by paragraph 2]
 - [e.g., contribution paragraph names 3–4 specific prior papers]
 - [e.g., roadmap sentence is deliberately short — one line]
 
-### Empirical Strategy
-- [e.g., states the identifying variation before the equation]
-- [e.g., assumption-and-threat paragraph per assumption]
+### Study Design / Methodology
+- [e.g., states the design rationale before the equations or protocol]
+- [e.g., assumption-and-threat paragraph per validity threat]
 
 ### Results
 - [e.g., leads with magnitude and standard error in prose, then references table]
@@ -88,7 +88,7 @@ drafting against a stale voice profile.
 
 <!-- The writer should feel free to use these — they're part of the author's voice. -->
 
-[e.g., "tighten", "anchor", "bite", "shock", "bite", "slack"]
+[e.g., "tighten", "anchor", "friction", "signal", "churn", "drift"]
 
 ### Words the author avoids
 

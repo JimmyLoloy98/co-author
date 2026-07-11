@@ -11,9 +11,9 @@
 | Worker (Creator) | Critic (Reviewer) | What's Reviewed |
 |-----------------|-------------------|-----------------|
 | librarian | librarian-critic | Literature coverage, gaps, recency |
-| explorer | explorer-critic | Data feasibility, quality, identification fit |
+| explorer | explorer-critic | Data feasibility, quality, study-design fit |
 | data-engineer | coder-critic | Data pipeline quality, reproducibility, transformation correctness |
-| strategist | strategist-critic | Identification validity, assumptions, robustness |
+| strategist | strategist-critic | Study design validity, assumptions, robustness |
 | theorist | theorist-critic | Proof validity, assumption minimality, notation, citations |
 | coder | coder-critic | Code quality, reproducibility, code-strategy alignment |
 | writer | writer-critic | Manuscript polish, LaTeX quality, hedging |
@@ -66,7 +66,7 @@ A creator cannot evaluate the quality of its own work. The score always comes fr
 | data-engineer | Data pipeline and cleaned datasets | coder-critic |
 | strategist | Strategy memo | strategist-critic |
 | theorist | Assumptions, theorems, proofs (theory section) | theorist-critic |
-| coder | R/Python/Julia scripts | coder-critic |
+| coder | Python/R scripts | coder-critic |
 | writer | Paper manuscript | writer-critic |
 | storyteller | Beamer talk | storyteller-critic |
 

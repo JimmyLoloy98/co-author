@@ -1,7 +1,7 @@
 ---
 name: write
 description: Draft academic paper sections using paragraph-level argument moves. Cleanup pass strips AI patterns after drafting. Replaces /draft-paper and /humanizer.
-argument-hint: "[section or mode: intro | strategy | results | conclusion | abstract | full | humanize | style-guide] [file path (optional)]"
+argument-hint: "[section or mode: intro | design | results | threats | conclusion | abstract | full | humanize | style-guide] [file path (optional)]"
 allowed-tools: Read,Grep,Glob,Write,Edit,Task
 ---
 
@@ -11,12 +11,14 @@ Draft paper sections, apply a cleanup pass, or extract a personal style guide fr
 
 **Input:** `$ARGUMENTS` — section name or mode, optionally followed by file path.
 
+> **Language policy:** System files, prompts, and templates stay in English, but the paper/thesis **prose is drafted in Spanish** (per the Language Policy in `CLAUDE.md`; `polyglossia` + XeLaTeX). LaTeX structure, `\label{}`s, file names, code identifiers, and bibliography keys stay in English.
+
 ---
 
 ## Modes
 
 ### `/write [section]` — Draft Paper Section
-Draft a specific section: `intro`, `strategy`, `results`, `conclusion`, `abstract`, or `full`.
+Draft a specific section: `intro`, `design`, `results`, `threats`, `conclusion`, `abstract`, or `full`.
 
 **Agent:** Writer
 **Output:** LaTeX section file in paper/sections/
@@ -37,10 +39,12 @@ Before drafting, read all available context:
 #### 2. Paper Type Detection
 
 Before routing, identify the paper type from the strategy memo or existing draft:
-- **Reduced-form** — DiD, IV, RDD, event study
-- **Structural** — Model estimation, counterfactual simulations
-- **Theory + empirics** — Propositions tested with data
-- **Descriptive / measurement** — New data, new measure, stylized facts
+- **Causal mining study** — DiD, IV, RDD, event study on repository/telemetry data
+- **Controlled experiment** — Human-subjects or tool experiment with tasks and treatments
+- **Survey** — Instrument, sampling frame, response analysis
+- **Case study** — Industrial or project context, protocol, qualitative themes
+- **Methods paper** — New metric, technique, or analysis method with validation
+- **Descriptive / exploratory** — New dataset, new measure, empirical characterization
 
 This determines which section templates the Writer uses.
 
@@ -49,17 +53,18 @@ This determines which section templates the Writer uses.
 Based on `$ARGUMENTS`:
 - **`full`**: Draft all sections in sequence, pausing between major sections for user feedback
 - **`intro`**: Draft introduction (most common request)
-- **`strategy`**: Draft empirical strategy (reduced-form), model + estimation (structural), or model + tests (theory+empirics)
-- **`results`**: Draft results — narration style depends on paper type and output type (regression tables, event study figures, counterfactual simulations, etc.)
-- **`conclusion`**: Draft conclusion with type-appropriate ending (policy implications, counterfactual implications, or research agenda)
+- **`design`**: Draft the Study Design / Methodology section — RQs, data, metrics, analysis procedure; causal design detail (DiD/IV/RDD/event study) for causal mining studies; participants/tasks/treatments for experiments; instrument/sampling for surveys; context/protocol for case studies
+- **`results`**: Draft results organized by RQ — narration style depends on paper type and output type (regression tables, event-study figures, experiment results by task/treatment, survey results by construct, qualitative themes)
+- **`discussion`**: Draft discussion — implications for practitioners and researchers
+- **`threats`**: Draft Threats to Validity (construct, internal, external, conclusion)
+- **`conclusion`**: Draft conclusion with type-appropriate ending (implications for practice, research agenda)
 - **`abstract`**: Draft abstract (must have other sections first)
-- **`data`**: Draft data section — expanded for descriptive/measurement papers
-- **`model`**: Draft model section (structural or theory+empirics papers only)
+- **`data`**: Draft data/data-collection section — expanded for descriptive/exploratory papers
 - **No argument**: Ask user which section to draft
 
 #### 4. Dispatch Writer
 
-Dispatch Writer with paper type and argument-move templates for the target section. The writer drafts using paragraph types (motivation, result statement, mechanism, etc.), applies design-specific moves, then runs the cleanup pass. Save to `paper/sections/[section].tex`.
+Dispatch Writer with paper type and argument-move templates for the target section. The writer drafts using paragraph types (motivation, result statement, mechanism, etc.), applies design-specific moves, then runs the cleanup pass. Prose is drafted in Spanish; LaTeX structure, labels, and citation keys stay English. Save to `paper/sections/[section].tex`.
 
 #### 5. Quality Self-Check
 
@@ -68,14 +73,17 @@ Before presenting the draft:
 - [ ] Every paragraph has an identifiable purpose (argument move type)
 - [ ] Findings lead sentences — not buried after setup
 - [ ] Design-specific elements present (see writer.md for checklists per design)
+- [ ] Every RQ stated in the introduction/design is answered in Results (and vice versa)
+- [ ] Threats to Validity covers construct, internal, external, and conclusion validity
 - [ ] Every displayed equation is numbered (`\label{eq:...}`)
 - [ ] All `\cite{}` keys exist in `Bibliography_base.bib`
 - [ ] Introduction contribution paragraph names specific papers
-- [ ] Effect sizes stated with units
+- [ ] Effect sizes stated with units (and Cliff's delta / Vargha-Delaney Â12 with CIs where group comparisons are reported)
 - [ ] No banned hedging phrases
 - [ ] Notation consistent throughout
 - [ ] All tables/figures referenced actually exist in `paper/tables/` or `paper/figures/`
-- [ ] Results narrated correctly for output type (tables, event study figures, counterfactuals)
+- [ ] Results narrated correctly for output type (regression tables, event-study figures, experiment tasks, survey constructs, qualitative themes)
+- [ ] Prose in Spanish; structure, labels, file names, and bib keys in English
 - [ ] Personal style guide loaded (not template) — or user prompted to run `/write style-guide`
 - [ ] Claim-source map produced for all numerical claims (`quality_reports/claim_source_map_{project}.md`)
 - [ ] Results/Conclusion only drafted after verifying actual output files exist
@@ -84,9 +92,9 @@ Before presenting the draft:
 
 Present sections through drafting gates, pausing for approval at each:
 
-**GATE 1:** Introduction + Literature positioning → present, wait for approval
-**GATE 2:** Data + Empirical Strategy (or Model) → present, wait for approval
-**GATE 3:** Results + Robustness + Conclusion → present, wait for approval
+**GATE 1:** Introduction + Related-work positioning → present, wait for approval
+**GATE 2:** Data + Study Design / Methodology → present, wait for approval
+**GATE 3:** Results + Discussion + Threats to Validity + Conclusion → present, wait for approval
 
 For single-section drafts, present the section directly. For `full`, use all three gates.
 
@@ -152,14 +160,18 @@ Strips 24 patterns across 4 categories:
 
 **All paper types share the same backbone. Moves diverge by type — see writer.md for full templates.**
 
-| Section | Length | Reduced-Form | Structural | Theory+Empirics | Descriptive |
-|---------|--------|-------------|-----------|----------------|-------------|
-| Introduction | 1000-1500 | ...preview → result → contribution | ...model preview → counterfactual → contribution | ...theory preview → test result → contribution | ...data innovation → key fact → contribution |
-| Data | 800-1200 | Treatment, outcome, controls | Moments that identify parameters | Standard | 1200-1800 (core contribution) |
-| Strategy/Model | 800-1500 | Design-specific (DiD/IV/RDD/ES) | Environment → decisions → equilibrium → estimation | Model → propositions → tests | N/A (merged into Data) |
-| Results | 800-1500 | Main spec → robustness → heterogeneity | Estimates → model fit → counterfactuals → welfare | Prediction-by-prediction evidence | Key facts → decompositions → implications |
-| Conclusion | 500-700 | Policy implications | Counterfactual implications + model limitations | What model gets right/wrong | Research agenda enabled by new data |
-| Abstract | 100-150 | Question, design, finding with magnitude | Question, model, counterfactual finding | Question, prediction, test result | Question, measurement, key fact |
+Standard section order: Introduction; Background/Related Work; Study Design/Methodology (RQs, data, metrics, analysis); Results (by RQ); Discussion (implications for research and practice); Threats to Validity; Conclusion.
+
+| Section | Length | Causal Mining | Experiment | Survey | Case Study | Descriptive |
+|---------|--------|---------------|-----------|--------|-----------|-------------|
+| Introduction | 1000-1500 | ...design preview → result → contribution | ...experiment preview → effect → contribution | ...instrument preview → key finding → contribution | ...context preview → themes → contribution | ...data innovation → key fact → contribution |
+| Data | 800-1200 | Treatment, outcome metrics, controls | Participants, tasks, materials | Sampling frame, respondents | Case context, data sources | 1200-1800 (core contribution) |
+| Study Design | 800-1500 | Design-specific (DiD/IV/RDD/ES) + RQs | Treatments → tasks → procedure → hypotheses | Instrument → sampling → analysis plan | Protocol → data collection → coding | Merged into Data + RQs |
+| Results | 800-1500 | By RQ: main spec → robustness → heterogeneity | By hypothesis/task/treatment | By construct/RQ | Themes with triangulated evidence | Key facts → decompositions → implications |
+| Discussion | 500-900 | Implications for teams and researchers | Implications for tool/practice adoption | What practitioners should do | Transferability to other contexts | What the facts change |
+| Threats to Validity | 400-800 | Construct, internal, external, conclusion | Same | Same | Same | Same |
+| Conclusion | 300-500 | Answer to RQs + takeaway | Same | Same | Same | Same |
+| Abstract | 100-150 | Question, design, finding with magnitude | Question, experiment, effect | Question, sample, key finding | Question, case, insight | Question, measurement, key fact |
 
 ---
 
@@ -168,7 +180,7 @@ Strips 24 patterns across 4 categories:
 - `\citet{}` for textual citations ("Smith (2024) shows...")
 - `\citep{}` for parenthetical citations ("...is well documented (Smith, 2024)")
 - `booktabs` rules (`\toprule`, `\midrule`, `\bottomrule`) — never `\hline`
-- Notation protocol: `Y_{it}`, `D_{it}`, `\gamma_i`, `\delta_t`, `\varepsilon_{it}`
+- Notation protocol (causal designs): `Y_{it}`, `D_{it}`, `\gamma_i`, `\delta_t`, `\varepsilon_{it}`; research questions numbered RQ1, RQ2, ...
 
 ---
 
@@ -184,7 +196,7 @@ Loaded on demand by the writer agent:
 | Style extraction | `templates/style-extraction-protocol.md` | `/write style-guide` mode |
 | Drafting gates | `templates/drafting-gates.md` | Full draft mode |
 | Claim-source map | `templates/claim-source-map.md` | After results section |
-| Notation protocol | `references/notation-protocol.md` | Strategy + results sections |
+| Notation protocol | `references/notation-protocol.md` | Design + results sections |
 
 See also: `gotchas.md` for known failure points and edge cases.
 
@@ -195,3 +207,4 @@ See also: `gotchas.md` for known failure points and edge cases.
 - **Never fabricate results.** Use TBD placeholders.
 - **Citations must be verifiable.** Only cite confirmed papers.
 - **Argument moves first, cleanup second.** Draft with structure, then strip AI patterns.
+- **Spanish prose, English scaffolding.** Draft deliverable text in Spanish; keep labels, file names, identifiers, and bib keys in English.

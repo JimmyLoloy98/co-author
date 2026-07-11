@@ -1,6 +1,10 @@
 # Working Paper Format Standard
 
-All LaTeX papers generated or reviewed by this system must conform to the standard economics working paper format. This rule applies to the writer, writer-critic, and verifier agents.
+All LaTeX papers generated or reviewed by this system must conform to the standard academic working-paper format below, used for the thesis manuscript and paper drafts. This rule applies to the writer, writer-critic, and verifier agents.
+
+**Venue formats:** Camera-ready versions for IEEE/ACM venues (`IEEEtran`, `acmart`) are produced at the `/submit` stage from this working-paper source — do not draft directly in venue classes.
+
+**Language:** Deliverables (thesis and paper text) are drafted in **Spanish** (see the Language Policy in `CLAUDE.md`). Under XeLaTeX, load `polyglossia` with `\setmainlanguage{spanish}` and `\setotherlanguage{english}`. System files, code, and identifiers stay in English.
 
 ## Document Class and Layout
 
@@ -31,6 +35,11 @@ The following preamble is the project standard. New papers should use this struc
 \usepackage{microtype}
 \usepackage[normalem]{ulem}
 \usepackage[T1]{fontenc}
+
+% ====== Language (deliverables drafted in Spanish; XeLaTeX) ======
+\usepackage{polyglossia}
+\setmainlanguage{spanish}
+\setotherlanguage{english}
 
 % ====== Section Styling ======
 \usepackage{titlesec}
@@ -183,29 +192,27 @@ Abstract text here.
 \end{abstract}
 
 \vspace{1em}
-\noindent \textbf{JEL Codes:} X00, Y00
+\noindent \textbf{Keywords:} keyword one, keyword two
 
 \vspace{0.5em}
-\noindent \textbf{Keywords:} keyword one, keyword two
+\noindent \textbf{CCS Concepts:} Software and its engineering~Software development process management
 ```
 
 - Abstract must have `\noindent` and `\singlespacing`
 - Abstract should be 150 words or fewer
-- JEL codes and keywords follow the abstract, outside `\begin{abstract}`
+- Keywords and ACM CCS concepts follow the abstract, outside `\begin{abstract}` (CCS concepts required for ACM venue targets; keywords always)
 - The entire title page must fit on one page
 
 ## Section Structure
 
-Standard economics paper order:
+Standard empirical software engineering paper order:
 1. Introduction
-2. Background / Institutional Setting (if needed)
-3. Literature Review (or combined with Introduction)
-4. Data
-5. Empirical Strategy / Methodology
-6. Results
-7. Discussion (if separate from Results)
-8. Robustness (if separate section)
-9. Conclusion
+2. Background / Related Work (or split into two sections)
+3. Study Design / Methodology (research questions, data, metrics, analysis procedure)
+4. Results (organized by research question)
+5. Discussion (implications for research and practice)
+6. Threats to Validity (construct, internal, external, conclusion)
+7. Conclusion
 
 Each section uses `\section{}` with `\label{sec:name}`. Subsections use `\subsection{}`.
 
@@ -213,7 +220,7 @@ Each section uses `\section{}` with `\label{sec:name}`. Subsections use `\subsec
 
 - Tables and figures placed inline (modern standard)
 - **Hand-written tables:** prefer `tblr` / `talltblr` (tabularray) with key-value interface for captions, notes, and rules
-- **R/Python/Julia-generated tables:** continue exporting bare `tabular` (booktabs rules). Wrap with `threeparttable` in `main.tex`
+- **Python/R-generated tables:** continue exporting bare `tabular` (booktabs rules). Wrap with `threeparttable` in `main.tex`
 - `\captionsetup` handles caption styling globally — no manual `\small` on captions
 - Use `booktabs` rules (`\toprule`, `\midrule`, `\bottomrule`) — never `\hline`
 - Generated `.tex` files contain bare `tabular` only — no `\begin{table}`, `\caption`, or notes
@@ -255,7 +262,7 @@ Note: `paper/latexmkrc` configures XeLaTeX mode, TEXINPUTS, and BIBINPUTS. On Ov
 - `\textbf{}` wrapping `\title{}` (-3)
 - `\and` between authors instead of `\quad` (-3)
 - Repeated affiliation text outside `\thanks{}` (-3)
-- Missing JEL codes or keywords (-5)
+- Missing keywords or CCS concepts (-5)
 - `\hline` instead of `booktabs` rules (-3)
 - Missing table notes on any table (-5)
 - Missing figure notes on any figure (-5)

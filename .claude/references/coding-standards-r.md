@@ -1,6 +1,6 @@
 # Coding Standards: R
 
-These standards apply to all R code produced by the Coder agent. Derived from C++ Core Guidelines engineering discipline, adapted for R in empirical economics. The coder-critic enforces these rules.
+These standards apply to all R code produced by the Coder agent. Derived from C++ Core Guidelines engineering discipline, adapted for R in empirical software engineering research. **R is the project's secondary analysis language** (Python is primary — see `coding-standards-python.md`); use it for cross-language replication or when a required estimator only exists in R. The coder-critic enforces these rules.
 
 ---
 

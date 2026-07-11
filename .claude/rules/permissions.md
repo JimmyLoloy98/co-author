@@ -35,7 +35,7 @@ Adding a new agent: create the agent file in `.claude/agents/`, add an entry her
   - Required sections: Estimand, Specification, Assumptions, Robustness Plan, Threats
 - **CRITIC:** strategist-critic
 - **ESCALATION_TARGET:** User — fundamental design question, needs human judgment
-- **QUALITY_WEIGHT:** 25% (identification validity)
+- **QUALITY_WEIGHT:** 25% (study design validity)
 
 ## theorist
 - **PHASE:** Strategy
@@ -46,7 +46,7 @@ Adding a new agent: create the agent file in `.claude/agents/`, add an entry her
 - **CRITIC:** theorist-critic
 - **ESCALATION_TARGET:** User — proof-level disagreement, user adjudicates whether the result holds
 - **QUALITY_WEIGHT:** 20% (theory, when present)
-- **CONDITIONAL:** Only for paper types with formal theory: econometric methods, theory+empirics, structural identification, methodological reduced-form. Excluded and weight renormalized for applied papers using off-the-shelf estimators.
+- **CONDITIONAL:** Only for paper types with formal methodological content: statistical/measurement methods, theory+empirics, metric-validation studies, methodological causal designs. Excluded and weight renormalized for applied papers using off-the-shelf estimators.
 
 ## data-engineer
 - **PHASE:** Execution

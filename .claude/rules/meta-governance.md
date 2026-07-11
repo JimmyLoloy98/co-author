@@ -1,15 +1,15 @@
 # Meta-Governance: This Repository's Dual Nature
 
-This repository is both a working project and a public template for empirical economics research. It can be adapted to adjacent fields (finance, accounting, marketing, management) by customizing the domain profile and journal profiles.
+This repository is both a working project and a public template for empirical software engineering research. It can be adapted to adjacent fields (HCI, CSCW, information systems) by customizing the domain profile and venue profiles.
 
 ## Working Project
 - We develop research papers, seminars, guides, and documentation
-- We accumulate project-specific learnings and institutional context (UAB)
+- We accumulate project-specific learnings and institutional context
 - We test and iterate on the architecture itself
 
 ## Public Template
 - Others fork this repo to run their own research workflows
-- They share the same pipeline (identify → estimate → write → submit) and tools (LaTeX, R/Python/Julia, Beamer)
+- They share the same pipeline (design → analyze → write → submit) and tools (LaTeX, Python/R, Beamer)
 - Field-specific differences (journals, methods, conventions) are handled by `.claude/references/domain-profile.md` and `.claude/references/journal-profiles.md`
 
 ## The One Rule

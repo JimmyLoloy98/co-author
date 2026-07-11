@@ -104,9 +104,9 @@ Agents in the same PARALLEL_GROUP run concurrently when their REQUIRES are met. 
 - **Verification retries:** max 2 attempts
 - Never loop indefinitely
 
-### Simplified Mode (R Scripts / Explorations)
+### Simplified Mode (Analysis Scripts / Explorations)
 
-For standalone R scripts, simulations, and explorations — use the simplified loop:
+For standalone Python/R scripts, simulations, and explorations — use the simplified loop:
 
 ```
 Plan approved → implement → run code → check outputs → score → done
@@ -118,7 +118,7 @@ No multi-agent reviews. Just: write, test, verify quality >= 80.
 - [ ] Script runs without errors
 - [ ] All packages loaded at top
 - [ ] No hardcoded absolute paths
-- [ ] `set.seed()` once at top if stochastic
+- [ ] Seed set once at top if stochastic (`np.random.default_rng(seed)` / `set.seed()`)
 - [ ] Output files created at expected paths
 - [ ] Quality score >= 80
 
@@ -168,7 +168,7 @@ Agents in the same PARALLEL_GROUP run concurrently when their REQUIRES are met. 
 
 The Orchestrator dispatches agents through the dependency graph. The user says:
 
-> "I want to study the effect of minimum wage on employment using CPS data."
+> "I want to study the effect of code review practices on defect rates using GitHub data."
 
 The Orchestrator activates Discovery → Strategy → Execution → Peer Review automatically.
 
@@ -193,7 +193,7 @@ All skills in the reference below work without pipeline context when invoked dir
 | Skill | What It Does |
 |-------|-------------|
 | `/discover` | Literature search + data discovery |
-| `/strategize` | Identification strategy design + review |
+| `/strategize` | Study design + review |
 | `/analyze` | End-to-end data analysis (code + debug) |
 | `/write` | Draft paper sections + humanizer pass |
 | `/review` | Simulated peer review (domain + methods referees) |
@@ -217,7 +217,7 @@ All skills in the reference below work without pipeline context when invoked dir
 
 ### Compaction Discipline
 
-Borrowed from Goldsmith-Pinkham's Claude Code for Economists workflow:
+Borrowed from Goldsmith-Pinkham's *Claude Code for Economists* workflow (the discipline transfers to any empirical field):
 
 - **Manual `/compact` before natural stopping points**, not at the threshold. You control what gets summarized.
 - **Aim for 5–10 turn focused sessions.** Long sessions drift; short, scoped sessions keep output sharp.
@@ -247,7 +247,7 @@ First message should be: "Resuming after compression. Last task: [read most rece
 Choose the right context management action:
 
 - **Rewind** when Claude took a wrong approach -- removes the failed attempt from context entirely. Re-prompt with constraints upfront. Strictly superior to correction when the entire approach was wrong.
-- **Correct** when the approach was right but a detail was wrong ("use state-level clustering") -- the context of the prior attempt is useful.
+- **Correct** when the approach was right but a detail was wrong ("use project-level clustering") -- the context of the prior attempt is useful.
 - **Compact** when context is bloated but the current trajectory is correct.
 - **Clear** when you need a fresh start on a new task.
 

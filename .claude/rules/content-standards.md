@@ -1,9 +1,7 @@
 ---
 paths:
-  - "**/*.R"
   - "**/*.py"
-  - "**/*.jl"
-  - "**/*.do"
+  - "**/*.R"
   - "**/*.tex"
   - "paper/tables/**"
   - "paper/figures/**"
@@ -17,12 +15,12 @@ paths:
 
 ## 1. Table Standards
 
-**Target:** Publication-quality tables using standard economics formatting (booktabs rules, no vertical rules). Two approaches are supported:
+**Target:** Publication-quality tables using standard academic formatting (booktabs rules, no vertical rules). Two approaches are supported:
 
 - **tabularray (`tblr` / `talltblr`)** — modern key-value interface. Preferred for hand-written tables in `main.tex`.
-- **`tabular` + `booktabs` + `threeparttable`** — traditional stack. Required for R/Python/Julia-generated output (scripts export bare `tabular`).
+- **`tabular` + `booktabs` + `threeparttable`** — traditional stack. Required for Python/R-generated output (scripts export bare `tabular`).
 
-Journal-specific conventions (significance stars, note format) adapt to the target journal — see journal-profiles.md.
+Venue-specific conventions (significance reporting, note format) adapt to the target venue — see journal-profiles.md.
 
 ### No In-Table Titles or Notes
 
@@ -35,7 +33,7 @@ Journal-specific conventions (significance stars, note format) adapt to the targ
 
 Every table uses exactly three horizontal rules and **zero vertical lines**:
 
-**Traditional (R/Python/Julia output):**
+**Traditional (Python/R output):**
 ```latex
 \begin{table}[htbp]
 \centering
@@ -74,22 +72,22 @@ Every table uses exactly three horizontal rules and **zero vertical lines**:
 - `\midrule` below column headers (and to separate panels)
 - `\bottomrule` at the very end
 - `\cmidrule(lr){2-4}` for partial rules spanning column groups
-- **R/Python/Julia output:** wrap with `threeparttable` for notes via `\begin{tablenotes}`
+- **Python/R output:** wrap with `threeparttable` for notes via `\begin{tablenotes}`
 - **Hand-written tables:** prefer `talltblr` with `note{}` keys — unifies caption, label, and notes
 - **Never** use `\hline`, `|`, or any vertical rules
 
 ### Coefficient Display
 
 - Point estimates on one row, standard errors in parentheses on the row below
-- Standard errors labeled in the table note (e.g., "Robust standard errors in parentheses" or "Clustered at municipality level")
+- Standard errors labeled in the table note (e.g., "Robust standard errors in parentheses" or "Clustered at project level")
 
-**Significance reporting depends on the target journal:**
+**Significance reporting depends on the target venue:**
 
 | Context | Convention |
 |---------|-----------|
 | **Working papers (default)** | Stars: `*` p < 0.10, `**` p < 0.05, `***` p < 0.01. Note at bottom: `\textit{Notes:} * p < 0.10, ** p < 0.05, *** p < 0.01` |
-| **AEA journals** (AER, AEJ:Applied, AEJ:Policy, AER:Insights) | No significance stars. Report standard errors in parentheses. Use exact p-values or confidence intervals for key results. See the [AEA Style Guide](https://www.aeaweb.org/journals/aeri/style-guide). |
-| **All other journals** | Stars acceptable. Follow journal-specific conventions in journal-profiles.md. |
+| **Empirical-standards venues** (EMSE, ESEM, MSR) | Effect sizes (Cliff's delta, Vargha-Delaney Â12) with confidence intervals reported alongside p-values, per the ACM SIGSOFT Empirical Standards. Stars alone are not sufficient. |
+| **All other venues** | Stars acceptable if defined in table notes. Follow venue-specific conventions in journal-profiles.md. |
 
 Working paper default example:
 ```
@@ -97,20 +95,21 @@ Treatment        & 0.045**  & 0.038*   & 0.052*** \\
                  & (0.021)  & (0.020)  & (0.019)  \\
 ```
 
-AEA journal example:
+Effect-size reporting example (empirical-standards venues):
 ```
 Treatment        & 0.045    & 0.038    & 0.052    \\
                  & (0.021)  & (0.020)  & (0.019)  \\
+Cliff's $\delta$ & 0.31     & 0.27     & 0.35     \\
 ```
 
 ### Column and Row Structure
 
 - **Column (1), (2), ...** headers in the first row after `\toprule`
 - **Dependent variable** stated in a spanning header or the first subheader row
-- **Variable names** left-aligned, human-readable (not raw R variable names)
-  - `Log wages` not `ln_wage_deflated`
-  - `Female` not `sex_2`
-  - `Years of education` not `educ_yrs`
+- **Variable names** left-aligned, human-readable (not raw dataframe column names)
+  - `Log review latency` not `ln_review_lat`
+  - `Uses CI` not `has_ci_2`
+  - `Team size` not `n_devs`
 - **Numeric columns** right-aligned or decimal-aligned
 - **N**, **R²**, **Fixed effects** (Yes/No), **Controls** (Yes/No) at the bottom before `\bottomrule`
 
@@ -132,9 +131,36 @@ For tables with multiple panels:
 - `\midrule` after each panel label
 - Small vertical space (`\\[0.5em]`) between panels
 
-### Preferred R Packages
+### Preferred Packages
 
-**Primary: `modelsummary`**
+**Primary (Python): `pyfixest.etable` for regression tables**
+
+```python
+import pyfixest as pf
+
+pf.etable(
+    models,
+    type="tex",                 # bare tabular output
+    signif_code={"***": 0.01, "**": 0.05, "*": 0.10},
+    coef_fmt="b \n (se)",
+    labels={
+        "treatment": "Treatment",
+        "log_team_size": "Log team size",
+    },
+)
+```
+
+**Primary (Python): `pandas` for summary / descriptive tables**
+
+```python
+tex_output = (
+    summary_df.style
+    .format(precision=2)
+    .to_latex(hrules=True, column_format="l" + "c" * (summary_df.shape[1]))
+)
+```
+
+**Secondary (R): `modelsummary` / `fixest::etable`**
 
 ```r
 library(modelsummary)
@@ -142,34 +168,14 @@ library(modelsummary)
 modelsummary(
   models,
   output   = "latex_tabular",  # bare tabular, no wrapper
-  stars    = c("*" = 0.10, "**" = 0.05, "***" = 0.01),  # set FALSE for AEA journals
-  coef_rename = c(
-    "treatment"  = "Treatment",
-    "log_income" = "Log income"
-  ),
+  stars    = c("*" = 0.10, "**" = 0.05, "***" = 0.01),
+  coef_rename = c("treatment" = "Treatment"),
   gof_map = c("nobs", "r.squared", "adj.r.squared"),
   escape  = FALSE
 )
 ```
 
-**Alternative: `fixest::etable`**
-
-```r
-fixest::etable(
-  models,
-  tex      = TRUE,
-  style.tex = style.tex(
-    main     = "aer",
-    depvar.title = "",
-    fixef.title  = "",
-    yesNo    = c("Yes", "No")
-  ),
-  se.below = TRUE,
-  signif.code = c("***" = 0.01, "**" = 0.05, "*" = 0.10)  # omit for AEA journals
-)
-```
-
-**For summary / descriptive tables: `kableExtra`**
+**Secondary (R): `kableExtra` for descriptive tables**
 
 ```r
 library(kableExtra)
@@ -188,9 +194,11 @@ kbl(df, format = "latex", booktabs = TRUE, escape = FALSE,
 
 ### Export
 
-```r
+```python
 # Write .tex fragment (no \begin{table} wrapper -- added in main.tex)
-writeLines(tex_output, file.path("paper/tables", "reg_main_specification.tex"))
+from pathlib import Path
+
+Path("paper/tables/reg_main_specification.tex").write_text(tex_output, encoding="utf-8")
 ```
 
 - Output **bare `tabular` environment** (no `\begin{table}` float)
@@ -219,6 +227,8 @@ Pattern: `{table_type}_{content_description}.tex`
 - `reg_` for regression output
 - `did_` for difference-in-differences specific tables
 - `first_stage_` for IV first stage
+- `survey_` for survey-response tables
+- `irr_` for inter-rater reliability tables
 
 ### Prohibited Patterns
 
@@ -227,11 +237,11 @@ Pattern: `{table_type}_{content_description}.tex`
 | Title row inside the table | Titles go in `\caption{}`, not the table body |
 | Notes embedded in table body | Notes go below via `\begin{tablenotes}` |
 | `\hline` | Use `\toprule` / `\midrule` / `\bottomrule` (booktabs) |
-| Vertical rules (`\|` in column spec) | Never used in economics journals |
-| `stargazer` package | Deprecated workflow; use `modelsummary` or `fixest::etable` |
+| Vertical rules (`\|` in column spec) | Never used in journal-quality tables |
+| `stargazer` package (R) | Deprecated workflow; use `modelsummary` or `fixest::etable` |
 | Raw variable names in labels | Human-readable labels required |
-| `xtable` without booktabs | Produces non-journal-quality output |
-| `\begin{table}` in R output | R exports bare `tabular`; float wrapper lives in `main.tex` |
+| `xtable` without booktabs (R) | Produces non-journal-quality output |
+| `\begin{table}` in script output | Scripts export bare `tabular`; float wrapper lives in `main.tex` |
 
 ### Table Type Templates
 
@@ -243,13 +253,13 @@ Use these as defaults. Adapt columns based on the paper's needs (e.g., add Min/M
                         &  Mean   &  SD     \\
 \midrule
 \multicolumn{3}{l}{\textit{Continuous variables}} \\
-\quad Wages (USD)       &  45,230 &  12,400 \\
-\quad Years of education&  13.2   &  2.8    \\
-\quad Age               &  38.5   &  11.2   \\
+\quad Commits per month &  84.3   &  61.2   \\
+\quad Team size         &  6.4    &  3.1    \\
+\quad Project age (years)& 4.8    &  2.9    \\
 \\[0.5em]
 \multicolumn{3}{l}{\textit{Categorical variables (\%)}} \\
-\quad Female            &  48.2   &         \\
-\quad College degree    &  32.5   &         \\
+\quad Uses CI           &  72.1   &         \\
+\quad Has code review   &  58.4   &         \\
 \bottomrule
 ```
 - Default: Mean and SD in separate columns (never stacked with parentheses — that's for regression SEs)
@@ -281,12 +291,12 @@ R$^2$                   &  0.05   &  0.12   &         &         \\
 \toprule
                         &  (1)    &  (2)    &  (3)    &  (4)    \\
 \midrule
-\multicolumn{5}{l}{\textit{Panel A: Wages}} \\
+\multicolumn{5}{l}{\textit{Panel A: Review latency}} \\
 \midrule
 Treatment               &  0.045**&  0.038* &  0.052**&  0.041* \\
                         & (0.021) & (0.020) & (0.025) & (0.022) \\
 \\[0.5em]
-\multicolumn{5}{l}{\textit{Panel B: Employment}} \\
+\multicolumn{5}{l}{\textit{Panel B: Defect density}} \\
 \midrule
 Treatment               &  0.021  &  0.033* &  0.015  &  0.028  \\
                         & (0.018) & (0.017) & (0.020) & (0.019) \\
@@ -305,9 +315,9 @@ Observations            &  10,000 &  10,000 &  10,000 &  10,000 \\
 \toprule
 Variable                &  Treatment &  Control &  Difference &  SE     &  p-value \\
 \midrule
-Wages (USD)             &  45,800    &  44,650  &  1,150      &  (890)  &  0.197   \\
-Years of education      &  13.4      &  13.1    &  0.3        &  (0.2)  &  0.134   \\
-Female (\%)             &  47.8      &  48.6    &  -0.8       &  (1.2)  &  0.505   \\
+Commits per month       &  86.2      &  82.5    &  3.7        &  (2.9)  &  0.197   \\
+Team size               &  6.5       &  6.3     &  0.2        &  (0.15) &  0.134   \\
+Uses CI (\%)            &  71.8      &  72.6    &  -0.8       &  (1.2)  &  0.505   \\
 \bottomrule
 ```
 
@@ -325,17 +335,17 @@ Female (\%)             &  47.8      &  48.6    &  -0.8       &  (1.2)  &  0.505
 
 ## 2. Figure Standards
 
-- **Never add titles or subtitles inside ggplot** — use `labs(title = NULL, subtitle = NULL)`
+- **Never add titles or subtitles inside matplotlib/ggplot figures** — no `ax.set_title()` / `plt.suptitle()` for the overall figure; in ggplot use `labs(title = NULL, subtitle = NULL)`
 - **Figure information goes in two places:**
-  1. **File name** — descriptive, e.g., `fig1_hispanic_enrollment_ascm.pdf`
-  2. **LaTeX `\caption{}`** — the authoritative title, numbered and editable without re-running R
-- **Panel labels are the exception** — "Panel A: Employment" inside multi-panel figures (via `patchwork`, `cowplot`, etc.) is fine since they identify sub-panels, not the whole figure
-- **Axis labels must be publication-quality** — "Employment Rate" not "emp_rate". Clean labels stay in the figure; titles and context go in the caption
-- **Use serif fonts** — figures should match the paper's body text. In ggplot, set `theme(text = element_text(family = "serif"))` or use `theme_minimal(base_family = "serif")`
-- **Show all years on the x-axis** when the panel spans ~20 years or fewer — use `scale_x_continuous(breaks = min_year:max_year)`. Only thin out labels when they overlap (roughly >20 ticks)
-- **Output PDF for figures** — vector graphics for LaTeX. Use `ggsave("fig.pdf")`. PNG only for raster content (maps, photos).
-- **Colorblind-friendly palettes** — use `scale_color_brewer(palette = "Set2")`, `viridis`, or similar. Never rely on red/green contrast alone.
-- **Color-independent design** — figures must be readable in grayscale. Combine color with shape (`shape` aesthetic) and linetype (`linetype` aesthetic) so series remain distinguishable without color.
+  1. **File name** — descriptive, e.g., `fig1_review_latency_event_study.pdf`
+  2. **LaTeX `\caption{}`** — the authoritative title, numbered and editable without re-running the script
+- **Panel labels are the exception** — "Panel A: Review latency" inside multi-panel figures (subplot titles via `ax.set_title()`, or `patchwork`/`cowplot` in R) is fine since they identify sub-panels, not the whole figure
+- **Axis labels must be publication-quality** — "Review Latency (hours)" not "review_lat". Clean labels stay in the figure; titles and context go in the caption
+- **Use serif fonts** — figures should match the paper's body text. In matplotlib, set `plt.rcParams["font.family"] = "serif"`; in ggplot, `theme_minimal(base_family = "serif")`
+- **Show all periods on the x-axis** when the panel spans ~20 periods or fewer — set explicit ticks (`ax.set_xticks(range(min_t, max_t + 1))`). Only thin out labels when they overlap (roughly >20 ticks)
+- **Output PDF for figures** — vector graphics for LaTeX. Use `fig.savefig("fig.pdf", bbox_inches="tight")` (or `ggsave("fig.pdf")` in R). PNG only for raster content (heatmaps of large matrices, screenshots).
+- **Colorblind-friendly palettes** — use `viridis`, matplotlib's `tab10`/`Set2`, or similar. Never rely on red/green contrast alone.
+- **Color-independent design** — figures must be readable in grayscale. Combine color with marker shape and linestyle so series remain distinguishable without color.
 - **Figure width** — single-panel: `width=0.8\textwidth`. Side-by-side panels: `width=0.48\textwidth` each.
 
 ---
@@ -408,7 +418,7 @@ explorations/
 ├── ACTIVE_PROJECTS.md
 ├── [project]/
 │   ├── README.md          # Goal, status, findings
-│   ├── R/                 # Code (use _v1, _v2 for iterations)
+│   ├── src/               # Code (use _v1, _v2 for iterations)
 │   ├── scripts/           # Test scripts
 │   ├── output/            # Results
 │   └── SESSION_LOG.md     # Progress notes
@@ -419,11 +429,11 @@ explorations/
 
 ### Lifecycle
 
-1. **Create** — `mkdir -p explorations/[name]/{R,scripts,output}` + README from `templates/exploration-readme.md`
+1. **Create** — `mkdir -p explorations/[name]/{src,scripts,output}` + README from `templates/exploration-readme.md`
 2. **Develop** — work entirely within the exploration folder
 3. **Decide:**
 
-   - **Graduate to production** — copy to `R/`, `scripts/`; requires quality >= 80, tests pass, code clear. Move to `ARCHIVE/completed_[project]/`
+   - **Graduate to production** — copy to `scripts/`; requires quality >= 80, tests pass, code clear. Move to `ARCHIVE/completed_[project]/`
    - **Keep exploring** — document next steps in README
    - **Abandon** — move to `ARCHIVE/abandoned_[project]/` with explanation (use `templates/archive-readme.md`)
 
@@ -444,8 +454,8 @@ explorations/
 ### Steps
 
 1. **Research value check** — Does this improve the project? If NO, don't build it.
-2. **Create folder** — `mkdir -p explorations/[name]/{R,scripts,output}` + README + SESSION_LOG.md
-3. **Code immediately** — no plan needed. Must-haves: code runs, results correct, goal documented. Not needed: Roxygen docs, full tests, perfect style.
+2. **Create folder** — `mkdir -p explorations/[name]/{src,scripts,output}` + README + SESSION_LOG.md
+3. **Code immediately** — no plan needed. Must-haves: code runs, results correct, goal documented. Not needed: full docstrings, full tests, perfect style.
 4. **Log progress** — append 2-3 lines to SESSION_LOG.md as you work
 5. **Decision point** — keep exploring, graduate to production (upgrade to 80/100), or archive with brief explanation
 

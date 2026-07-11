@@ -1,13 +1,13 @@
-# CLAUDE.MD -- Empirical Economics Research with Claude Code
+# CLAUDE.MD -- Empirical Software Engineering Research with Claude Code
 
 <!-- HOW TO USE: Replace [BRACKETED PLACEHOLDERS] with your project info.
      Customize Beamer environments for your talk preamble.
      Keep this file under ~150 lines — Claude loads it every session.
-     See the guide at https://hugosantanna.github.io/clo-author/ for full documentation. -->
+     Adapted from the clo-author template (https://hugosantanna.github.io/clo-author/). -->
 
 **Project:** [YOUR PROJECT NAME]
 **Institution:** [YOUR INSTITUTION]
-**Field:** [YOUR FIELD — Economics by default. Can be adapted to Finance, Accounting, Marketing, etc.]
+**Field:** [YOUR FIELD — Empirical Software Engineering by default: software team management, developer productivity, DevOps, human aspects of SE]
 **Branch:** main
 
 ---
@@ -20,6 +20,15 @@
 - **Quality gates** -- weighted aggregate score; nothing ships below 80/100; see `quality.md`
 - **Worker-critic pairs** -- every creator has a paired critic; critics never edit files
 - **Auto-memory** -- corrections and preferences are saved automatically via Claude Code's built-in memory system
+- **Python first** -- Python is the primary analysis language (pandas, statsmodels, pyfixest, PyDriller); R is secondary
+
+---
+
+## Language Policy
+
+- **System files** (rules, skills, agents, code, commit messages): English
+- **Deliverables** (thesis manuscript, paper sections, talks): drafted in **Spanish** — `polyglossia` with `\setmainlanguage{spanish}` under XeLaTeX
+- LaTeX structure, labels, file names, code identifiers, and bibliography keys stay in English
 
 ---
 
@@ -51,7 +60,7 @@
 ├── data/                        # Project data
 │   ├── raw/                     # Original untouched data (often gitignored)
 │   └── cleaned/                 # Processed datasets ready for analysis
-├── scripts/                     # Analysis code (R, Python, Julia)
+├── scripts/                     # Analysis code (Python primary, R secondary)
 ├── quality_reports/             # Plans, session logs, reviews, scores
 ├── explorations/                # Research sandbox (see rules)
 ├── templates/                   # Session log, quality report templates
@@ -97,13 +106,13 @@ See `quality.md` for weighted aggregation formula.
 |---------|-------------|
 | `/new-project [topic]` | Full pipeline: idea → paper (orchestrated) |
 | `/discover [mode] [topic]` | Discovery: interview, literature, data, ideation |
-| `/strategize [mode] [question]` | Identification strategy, pre-analysis plan, or formal theory section (`theory` mode) |
+| `/strategize [mode] [question]` | Study design, pre-registration plan, or formal methods section (`theory` mode) |
 | `/analyze [dataset]` | End-to-end data analysis |
 | `/write [section]` | Draft paper sections + humanizer pass (`style-guide` mode extracts voice from prior papers) |
 | `/review [file/--flag]` | Quality reviews (routes by target: paper, code, peer) |
 | `/revise [report]` | R&R cycle: classify + route referee comments |
 | `/talk [mode] [format]` | Create, audit, or compile Beamer presentations |
-| `/submit [mode]` | Journal targeting → package → audit → final gate |
+| `/submit [mode]` | Venue targeting → artifact package → audit → final gate |
 | `/tools [subcommand]` | Utilities: commit, compile, validate-bib, journal, etc. |
 | `/checkpoint [--flag]` | Session handoff: memory + SESSION_REPORT + research journal (+ Obsidian if configured) |
 
@@ -135,6 +144,6 @@ Output organization: by-script
 | Component | File | Status | Description |
 |-----------|------|--------|-------------|
 | Paper | `paper/main.tex` | [draft/submitted/R&R] | [Brief description] |
-| Data | `scripts/R/` | [complete/in-progress] | [Analysis description] |
-| Replication | `paper/replication/` | [not started/ready] | [Deposit status] |
+| Data | `scripts/python/` | [complete/in-progress] | [Analysis description] |
+| Replication | `paper/replication/` | [not started/ready] | [Artifact-evaluation status] |
 | Job Market Talk | `paper/talks/job_market_talk.tex` | -- | [Status] |

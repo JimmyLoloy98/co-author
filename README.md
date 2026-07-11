@@ -1,10 +1,8 @@
-# Clo-Author
+# Clo-Author (Empirical Software Engineering Edition)
 
-[![Version](https://img.shields.io/github/v/release/hugosantanna/clo-author?style=flat-square&color=b44dff&label=version)](CHANGELOG.md)
+A Claude Code scaffold for empirical software engineering research. Literature review to venue submission, with 18 agents that review each other's work.
 
-A Claude Code scaffold for empirical economics research. Literature review to journal submission, with 18 agents that review each other's work.
-
-Guide: [hugosantanna.github.io/clo-author](https://hugosantanna.github.io/clo-author/)
+Adapted from [clo-author](https://github.com/hugosantanna/clo-author) — the original empirical economics template by [Hugo Sant'Anna](https://hsantanna.org) (UAB) — refocused for empirical SE: software team management, developer productivity, DevOps, code review, CI/CD, human aspects of SE, and mining software repositories.
 
 ---
 
@@ -32,10 +30,10 @@ Claude reads the config, plans the approach, you approve, it runs. Works in the 
 ## Setup
 
 1. Fill in `CLAUDE.md` — replace `[BRACKETED PLACEHOLDERS]` with your project details
-2. Fill in `.claude/references/domain-profile.md` — your field, journals, data, methods. Or run `/discover interview` to do it interactively.
-3. Configure your language — R is the default. Python and Julia also supported.
+2. Fill in `.claude/references/domain-profile.md` — your subfield, venues, data, methods. Or run `/discover interview` to do it interactively.
+3. Configure your language — Python is the default (pandas, statsmodels, pyfixest, PyDriller, PyGithub). R also supported as secondary.
 
-**Other fields:** Economics by default. Adapts to labor, public, health, development, trade, IO, and other applied fields by customizing the domain profile and journal profiles.
+**Topics:** Empirical software engineering by default. Adapts to software team management, developer productivity, DevOps, code review, CI/CD, human aspects of SE, mining software repositories, and other empirical SE areas by customizing the domain profile and venue profiles.
 
 ---
 
@@ -47,13 +45,13 @@ Claude reads the config, plans the approach, you approve, it runs. Works in the 
 |-------|-------------|
 | `/new-project` | Full pipeline: idea to paper |
 | `/discover` | Literature search, data discovery, research interviews |
-| `/strategize` | Identification strategy, pre-analysis plan, formal theory |
-| `/analyze` | Data analysis (R, Python, Julia) |
+| `/strategize` | Study design, pre-registration plan, formal theory |
+| `/analyze` | Data analysis (Python, R) |
 | `/write` | Draft paper sections with humanizer pass |
 | `/review` | Quality review — routes by target (paper, code, peer) |
 | `/revise` | R&R cycle: classify referee comments and route fixes |
 | `/talk` | Presentations (Quarto RevealJS or Beamer) |
-| `/submit` | Journal targeting, replication package, final gate |
+| `/submit` | Venue targeting, artifact package, final gate |
 | `/tools` | Utilities: commit, compile, validate-bib, journal, deploy |
 | `/checkpoint` | Session handoff: saves progress to memory + Obsidian |
 | `/freeze` | Lock directories from accidental edits |
@@ -82,10 +80,10 @@ Claude reads the config, plans the approach, you approve, it runs. Works in the 
 
 ## Peer Review
 
-`/review --peer [journal]` simulates a full journal submission:
+`/review --peer [venue]` simulates a full venue submission:
 
 1. Editor desk review — novelty check via web search, decides desk reject or send out
-2. Two blind referees with intellectual dispositions (Structuralist, Credibility, Measurement, Policy, Theory, Skeptic) weighted by journal culture
+2. Two blind referees with intellectual dispositions (Rigor, Relevance, Measurement, Generalizability, Theory, Open Science) weighted by venue culture
 3. Independent scored reports — every major comment includes "what would change my mind"
 4. Editorial decision — FATAL / ADDRESSABLE / TASTE classification, MUST / SHOULD / MAY action items
 
@@ -94,7 +92,7 @@ Additional modes:
 - `--r2` — R&R second round with referee memory
 - Max 3 rounds, then the editor's patience runs out
 
-30 journal profiles across economics and adjacent fields.
+13 venue profiles across SE journals (IEEE TSE, ACM TOSEM, EMSE, JSS, IST, IEEE Software) and conferences (ICSE, FSE, ASE, ESEM, MSR, ICSME, CHASE).
 
 ---
 
@@ -148,7 +146,7 @@ your-project/
 │   ├── talks/
 │   └── replication/
 ├── data/                        # Raw and cleaned datasets
-├── scripts/                     # Analysis code (R, Python, Julia)
+├── scripts/                     # Analysis code (Python, R)
 ├── quality_reports/             # Reviews, scores, plans, traces
 ├── templates/html/              # HTML report design system
 └── explorations/                # Research sandbox
@@ -161,10 +159,10 @@ your-project/
 | Tool | Install |
 |------|---------|
 | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | `npm install -g @anthropic-ai/claude-code` |
+| Python 3.11+ | [python.org](https://www.python.org/) |
 | XeLaTeX | [TeX Live](https://tug.org/texlive/) or [MacTeX](https://tug.org/mactex/) |
-| R | [r-project.org](https://www.r-project.org/) |
 
-Optional: Python, Julia, [Quarto](https://quarto.org), [gh CLI](https://cli.github.com/).
+Optional: R, [Quarto](https://quarto.org), [gh CLI](https://cli.github.com/).
 
 ---
 
@@ -188,6 +186,6 @@ Every output needs human review. Claude plans and executes; you decide what ship
 
 ## Origin
 
-Maintained by [Hugo Sant'Anna](https://hsantanna.org) at UAB.
+Fork of [clo-author](https://github.com/hugosantanna/clo-author) by [Hugo Sant'Anna](https://hsantanna.org) (UAB), originally built for empirical economics research. This edition adapts the pipeline, referees, and templates for empirical software engineering.
 
 MIT License.

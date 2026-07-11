@@ -17,7 +17,7 @@ The Orchestrator reads the registry to compute the weighted average:
 
 ### Minimum Per Component
 
-No component can be below 80 for submission. A perfect literature review can't compensate for broken identification.
+No component can be below 80 for submission. A perfect literature review can't compensate for a broken study design.
 
 ### Score Sources
 

@@ -1,6 +1,6 @@
 # Coding Standards: Python
 
-These standards apply to all Python code produced by the Coder agent. Derived from C++ Core Guidelines engineering discipline, adapted for Python in empirical economics. The coder-critic enforces these rules.
+These standards apply to all Python code produced by the Coder agent. Derived from C++ Core Guidelines engineering discipline, adapted for Python in empirical software engineering research. **Python is the project's primary analysis language.** The coder-critic enforces these rules.
 
 ---
 
@@ -20,15 +20,18 @@ These standards apply to all Python code produced by the Coder agent. Derived fr
 | `pandas` | Panel data manipulation |
 | `matplotlib` | All figures |
 | `joblib` | Parallel bootstrap/simulation |
-| `statsmodels` | Auxiliary regression tools |
+| `statsmodels` | Regression, hypothesis tests, GLM |
 | `linearmodels` | Panel models, IV, fixed effects |
+| `pyfixest` | High-dimensional fixed effects, event studies |
+| `pydriller` | Repository mining (commits, diffs, churn) |
+| `PyGithub` / `requests` | GitHub REST/GraphQL API access |
 
 ### Prohibited
 
 | Package | Reason | Replacement |
 |---------|--------|-------------|
-| `sklearn` for inference | Not designed for causal inference | Custom or `statsmodels` |
-| `plotly` / `seaborn` for paper figures | PDF output issues, non-standard for econ | `matplotlib` |
+| `sklearn` for statistical inference | Prediction-oriented — no standard errors or CIs | `statsmodels` / `linearmodels` |
+| `plotly` for paper figures | Interactive HTML output, poor PDF export | `matplotlib` (`seaborn` acceptable for exploration; final paper figures in `matplotlib`) |
 
 ---
 
