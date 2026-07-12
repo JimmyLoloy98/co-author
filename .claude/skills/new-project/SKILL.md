@@ -25,7 +25,7 @@ Phase 1: Discovery
 
 Phase 2: Strategy (depends on Phase 1)
   ├── /strategize → Strategy Memo + Robustness Plan
-  └── /strategize theory → Theory Section (conditional — econometric methods, theory+empirics, structural, methodological reduced-form)
+  └── /strategize theory → Methods Section (conditional — statistical/measurement methods, theory+empirics, metric-validation study, methodological causal design)
 
 Phase 3: Execution (depends on Phase 2)
   ├── /analyze → Scripts + Tables + Figures
@@ -79,7 +79,7 @@ Before any work begins:
    - Strategist proposes identification strategy
    - strategist-critic validates the design
 
-4b. **If paper type is econometric methods, theory+empirics, structural, or methodological reduced-form:**
+4b. **If paper type is statistical/measurement methods, theory+empirics, metric-validation study, or methodological causal design:**
    **Run `/strategize theory`** to produce the formal theory section:
    - Theorist drafts assumptions, theorems, proofs
    - theorist-critic audits proof validity (4 phases, early-stop on critical gaps)

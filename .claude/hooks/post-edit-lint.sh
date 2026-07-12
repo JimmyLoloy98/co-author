@@ -1,5 +1,5 @@
 #!/bin/bash
-# post-edit-lint.sh — PostToolUse hook that auto-lints R/Python/Julia files
+# post-edit-lint.sh — PostToolUse hook that auto-lints Python/R files
 # after Edit or Write operations. Advisory only (exit 0).
 #
 # Environment variables set by Claude Code:
@@ -8,9 +8,9 @@
 FILE="${CLAUDE_TOOL_ARG_FILE_PATH:-}"
 [[ -z "$FILE" ]] && exit 0
 
-# Only run on R/Python/Julia scripts
+# Only run on Python/R scripts
 case "$FILE" in
-  *.R|*.py|*.jl) ;;
+  *.py|*.R) ;;
   *) exit 0 ;;
 esac
 

@@ -8,7 +8,7 @@ Extracted from `librarian-critic.md`. Used by the librarian-critic agent for lit
 
 - Missing subfields or adjacent literatures
 - Missing seminal papers in the field
-- Missing methods literature (econometric foundations for the strategy)
+- Missing methods literature (empirical-SE methodological foundations for the design)
 
 ---
 

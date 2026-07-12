@@ -1,6 +1,6 @@
 ---
 name: submit
-description: Submission pipeline — journal targeting, replication package, audit, and final gate. Replaces /submit, /target-journal, /audit-replication, /data-deposit.
+description: Submission pipeline — venue targeting (journals and conferences), artifact-evaluation replication package, audit, and final gate. Replaces /submit, /target-journal, /audit-replication, /data-deposit.
 argument-hint: "[mode: target | package | audit | final] [journal name (optional)]"
 allowed-tools: Read,Grep,Glob,Write,Bash,Task
 ---
@@ -26,7 +26,7 @@ Output: Ranked list of 3 target journals with rationale.
 Save to `quality_reports/journal_recommendations_[date].md`
 
 ### `/submit package` — Build Replication Package
-Assemble AEA-compliant replication package.
+Assemble an artifact-evaluation-ready replication package (ACM/IEEE badges: Available, Functional, Reusable).
 
 **Agents:** Coder + Verifier
 
@@ -34,7 +34,7 @@ Produces:
 - Master script that runs all analyses end-to-end
 - README with data sources, computational requirements, instructions
 - Data documentation and codebook
-- Organized file structure per AEA standards
+- Organized file structure per artifact-evaluation guidelines
 Save to `paper/replication/`
 
 ### `/submit audit` — Audit Replication Package
@@ -78,7 +78,7 @@ python3 scripts/generate_dashboard.py
 |----------|------|------|
 | Submission checklist | `templates/submission-checklist.md` | `/submit final` — pre-submission verification |
 | Cover letter | `templates/cover-letter.tex` | `/submit final` — draft cover letter |
-| Replication README | `templates/replication-readme.md` | `/submit package` — AEA-compliant README |
+| Replication README | `templates/replication-readme.md` | `/submit package` — artifact-evaluation README |
 | Audit checklist | `templates/audit-10-checks.md` | `/submit audit` — verifier submission mode |
 | Gotchas | `gotchas.md` | Always — known failure points |
 

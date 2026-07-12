@@ -10,7 +10,7 @@ Four types of auto-memory entries. Check existing memory files before creating n
 ## 2. Feedback (`feedback` type)
 **What:** User corrections, style preferences, quality standards.
 **When to save:** User explicitly corrects an output or states a preference about how things should be done.
-**Example:** "Don't add Stata references -- R, Python, Julia only."
+**Example:** "Don't add Stata references -- Python and R only."
 
 ## 3. Project (`project` type)
 **What:** Project state that isn't captured in git -- current phase, shipped milestones, architectural decisions.

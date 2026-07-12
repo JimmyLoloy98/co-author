@@ -8,7 +8,7 @@
 ## Summary (2-3 sentences)
 
 ## Research Design
-- **Type:** [RCT / DiD / IV / RDD / Structural / Descriptive]
+- **Type:** [Experiment / Survey / Case study / Mining / Causal (DiD/IV/RDD) / SLR / Descriptive]
 - **Data:** [Dataset used]
 - **Key finding:** [One sentence]
 

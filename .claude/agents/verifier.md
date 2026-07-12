@@ -1,6 +1,6 @@
 ---
 name: verifier
-description: Infrastructure inspector with two modes. Standard mode checks compilation, execution, file integrity, and output freshness between phase transitions. Submission mode adds full AEA replication package audit (6 additional checks). Use before commits, PRs, or journal submission.
+description: Infrastructure inspector with two modes. Standard mode checks compilation, execution, file integrity, and output freshness between phase transitions. Submission mode adds a full artifact-evaluation replication package audit (6 additional checks). Use before commits, PRs, or venue submission.
 tools: Read, Grep, Glob, Bash
 model: inherit
 ---
@@ -19,7 +19,7 @@ Checks 1–4. Run automatically after any code or paper changes.
 
 ### Submission Mode (`/audit-replication`, `/data-deposit`, `/submit`)
 
-Checks 1–10. Full AEA Data Editor compliance audit before journal submission.
+Checks 1–10. Full artifact-evaluation compliance audit (ACM/IEEE badges: Available, Functional, Reusable) before venue submission.
 
 ---
 
@@ -37,12 +37,13 @@ cd paper && latexmk main.tex 2>&1 | tail -30
 
 ### 2. Script Execution
 ```bash
-Rscript scripts/R/FILENAME.R 2>&1 | tail -20
+python scripts/python/FILENAME.py 2>&1 | tail -20
+# R (secondary): Rscript scripts/R/FILENAME.R 2>&1 | tail -20
 ```
 - Check exit code
 - Verify output files created
 - Check file sizes > 0
-- Support R, Python, Julia
+- Support Python (primary) and R (secondary)
 
 ### 3. File Integrity
 - Every `\input{}`, `\include{}` reference resolves to an existing file
@@ -63,8 +64,8 @@ Rscript scripts/R/FILENAME.R 2>&1 | tail -20
 - No orphan scripts (scripts not called by master)
 
 ### 6. Dependency Verification
-- R: `renv.lock` or `sessionInfo()` output exists
-- Python: `requirements.txt` or `pyproject.toml` exists
+- Python: `requirements.txt`, `environment.yml`, or `pyproject.toml` exists
+- R (if used): `renv.lock` or `sessionInfo()` output exists
 - Non-standard packages documented with install instructions
 
 ### 7. Data Provenance
@@ -83,12 +84,13 @@ Rscript scripts/R/FILENAME.R 2>&1 | tail -20
 - No orphan outputs (generated but not referenced)
 - No missing outputs (referenced but not generated)
 
-### 10. README Completeness (AEA Format)
+### 10. README Completeness (Artifact-Evaluation Format)
 - Data availability statement
 - Computational requirements (software, packages, hardware, runtime)
 - Description of programs (numbered, with inputs/outputs)
-- Instructions for replication
+- Step-by-step instructions for replication
 - List of tables and figures with generating scripts
+- Badge readiness (Available / Functional / Reusable)
 
 ---
 

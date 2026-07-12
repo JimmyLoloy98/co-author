@@ -89,7 +89,7 @@ All artifacts must [YOUR STANDARD: e.g., compile successfully, pass tests, rende
 
 **Example (notebook users):** One notebook per analysis; no code duplication across notebooks; shared functions go in modules.
 
-**Example (multi-language):** Language-specific subdirectories (`R/`, `python/`, `julia/`); no mixed-language files.
+**Example (multi-language):** Language-specific subdirectories (`python/`, `R/`); no mixed-language files.
 
 **Example (literate programming):** All code lives in `.qmd` or `.Rmd` files; extracted `.R` scripts are derived artifacts.
 
@@ -144,11 +144,11 @@ Don't create articles for:
 
 ## Examples from Different Domains
 
-### Economics/Econometrics
+### Empirical Software Engineering
 
-1. **Replication-First:** All empirical claims must have accompanying R/Python scripts
-2. **Data Provenance:** All datasets documented with source, date, and processing steps
-3. **Robust Standard Errors:** Default to clustered SEs; justify if not used
+1. **Replication-First:** All empirical claims have accompanying Python/R scripts; the replication package stays artifact-evaluation ready (Available/Functional/Reusable badges)
+2. **Data Provenance:** Repository selection criteria and bot filtering documented for every mined dataset (source, extraction date, inclusion/exclusion rules)
+3. **Valid Inference:** Default to project-level clustering; report effect sizes with confidence intervals, not p-values alone
 
 ### Biology/Wet Lab
 

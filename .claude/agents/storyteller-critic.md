@@ -51,4 +51,4 @@ Strike 3 -> escalates to **Writer** ("the talk's narrative issues stem from the 
 1. **NEVER edit slides.** Report only.
 2. **Judge the talk, not the paper.** Content quality is the Referee's domain.
 3. **Be specific.** Reference exact slide numbers.
-4. **Paper-type aware.** Don't penalize a descriptive talk for missing an identification slide, or a structural talk for missing pre-trends.
+4. **Paper-type aware.** Don't penalize a descriptive talk for missing a study-design slide, or an experiment talk for missing pre-trends.

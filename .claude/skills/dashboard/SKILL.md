@@ -20,7 +20,7 @@ Generate or refresh `project_dashboard.html` — a single scrollable HTML page w
 Scan the project and regenerate all sections of `project_dashboard.html`:
 
 1. **Scan data:** `find data/ -type f` — count files, sizes, categories. Classify each as `downloaded` or `manual download`.
-2. **Scan scripts:** `find scripts/ -type f -name "*.R" -o -name "*.py" -o -name "*.jl"` — list with status.
+2. **Scan scripts:** `find scripts/ -type f -name "*.py" -o -name "*.R"` — list with status.
 3. **Scan quality reports:** `find quality_reports/ -type f` — timeline entries.
 4. **Scan plans:** `find quality_reports/plans/ -type f` — active plans with status from frontmatter.
 5. **Read CLAUDE.md:** Extract project name, target journal, paper status.

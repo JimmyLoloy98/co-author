@@ -29,8 +29,8 @@
 
 ## What Would Invalidate This
 
-- [If X happens, reconsider — e.g., "if pre-trends fail, DiD is not credible"]
-- [If Y is discovered — e.g., "if a valid instrument surfaces, IV becomes viable"]
+- [If X happens, reconsider — e.g., "if pre-trends fail across adopter cohorts, the CI-adoption DiD is not credible"]
+- [If Y is discovered — e.g., "if a valid instrument surfaces (e.g., a platform-driven feature rollout), IV becomes viable"]
 
 ## Approved By
 

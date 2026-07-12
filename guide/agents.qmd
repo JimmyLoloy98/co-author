@@ -14,8 +14,8 @@ The system uses 20 specialized agents organized into worker-critic pairs. Four r
 | Worker | Critic | What's Reviewed |
 |--------|--------|-----------------|
 | librarian | librarian-critic | Literature coverage, gaps, recency |
-| explorer | explorer-critic | Data feasibility, quality, identification fit |
-| strategist | strategist-critic | Identification validity, assumptions, robustness |
+| explorer | explorer-critic | Data feasibility, quality, study-design fit |
+| strategist | strategist-critic | Study design validity, assumptions, robustness |
 | theorist | theorist-critic | Proof validity, assumption minimality, notation |
 | data-engineer | coder-critic | Data pipeline quality, reproducibility |
 | coder | coder-critic | Code quality, strategy alignment, numerical discipline |
@@ -57,7 +57,7 @@ The operational knowledge --- checklists, rubrics, scoring tables, templates, go
 
 A concrete example: the coder agent file (136 lines) declares its role, tool access, workflow stages, engineering standards, and output expectations. But when `/analyze` dispatches it, the coder reads `analyze/templates/pre-code-report.md` for the pre-code report format, `analyze/templates/r-script-structure.R` for the scaffold, and `analyze/gotchas.md` for known pitfalls. None of that lives in the agent file. If we learn a new gotcha tomorrow, we add one line to `analyze/gotchas.md` --- the agent file never changes.
 
-The strategist-critic works the same way. Its identity file (62 lines) says: "You are a top-5 journal referee. Run 4 sequential phases. Read the causal audit template." The 4-phase audit protocol, the design-specific checklists, and the scoring rubric all live in `review/templates/` and `review/config/`. Updating how we evaluate RDD papers means editing a template, not touching the critic's identity.
+The strategist-critic works the same way. Its identity file (62 lines) says: "You are a top-venue referee (TSE/TOSEM/EMSE). Run 4 sequential phases. Read the study-design audit template." The 4-phase audit protocol, the design-specific checklists, and the scoring rubric all live in `review/templates/` and `review/config/`. Updating how we evaluate RDD papers (say, a mining study exploiting a platform threshold) means editing a template, not touching the critic's identity.
 
 For full agent specifications, see the `.claude/agents/` directory --- each file is self-contained and authoritative.
 
@@ -69,9 +69,9 @@ Rather than profiling each agent individually (those profiles live in `.claude/a
 
 ## Discovery Pair
 
-The **librarian** searches top-5 general-interest journals, field journals, NBER working papers, and citation chains to produce an annotated bibliography, a BibTeX file, a frontier map (what has been done), and a positioning statement (where the new paper fits). The **explorer** searches for datasets --- public, administrative, survey --- and grades each by feasibility: variable coverage, access requirements, panel structure, and known data issues.
+The **librarian** searches top SE journals (TSE, TOSEM, EMSE), top conferences (ICSE, FSE, ASE, ESEM, MSR), preprint and index sources (arXiv cs.SE, ACM DL, IEEE Xplore, DBLP), and citation chains to produce an annotated bibliography, a BibTeX file, a frontier map (what has been done), and a positioning statement (where the new paper fits). The **explorer** searches for data sources --- repository mining (GitHub API, GH Archive, SEART GHS), surveys (Stack Overflow Developer Survey, DORA State of DevOps), CI/build telemetry (TravisTorrent), issue trackers (Jira datasets) --- and grades each by feasibility: variable coverage, access requirements, panel structure, and known data issues.
 
-Both run in parallel from the start of a project. Neither depends on the other. The librarian-critic checks for coverage gaps (missing seminal papers, missing methods literature, over-reliance on working papers). The explorer-critic checks measurement validity (does the proposed variable actually capture the concept?) and identification compatibility (does this data support the likely design?).
+Both run in parallel from the start of a project. Neither depends on the other. The librarian-critic checks for coverage gaps (missing seminal papers, missing methods literature, over-reliance on preprints). The explorer-critic checks measurement validity (does the mined metric actually capture the construct?) and study-design compatibility (does this data support the likely design?).
 
 Together they answer a single question: *what has been done, and what data could let us do something new?*
 
@@ -81,11 +81,11 @@ Together they answer a single question: *what has been done, and what data could
 
 ## Strategy Pair
 
-The **strategist** is paper-type aware. Given the literature and data assessment, it classifies the paper type (reduced-form, structural, theory+empirics, descriptive) and applies the corresponding strategy template. For reduced-form papers, it assesses the identification landscape, proposes designs ranked by credibility, and specifies design-specific estimation guidance (modern DiD estimators for staggered treatment, effective F for IV, MSE-optimal bandwidth for RDD). For structural papers, it specifies the model environment, decision problem, equilibrium concept, identification of each parameter, and counterfactual design. It always anticipates the top 5 referee objections.
+The **strategist** is paper-type aware. Given the literature and data assessment, it classifies the paper type (causal mining, controlled experiment, survey, case study, descriptive/measurement, theory+empirics) and applies the corresponding strategy template. For causal mining studies, it assesses the design landscape, proposes designs ranked by credibility, and specifies design-specific estimation guidance (modern DiD estimators for staggered CI adoption, effective F for IV, MSE-optimal bandwidth for RDD around platform thresholds). For experiments and surveys, it specifies the constructs, instruments, sampling frame, power analysis, and analysis plan. It always anticipates the top 5 referee objections.
 
 The **theorist** activates conditionally --- only for papers that need formal proofs. It drafts assumptions, definitions, propositions, and proofs at journal-publication rigor, with every theorem linked to the empirical strategy. Its critic runs a 4-phase proof review with early stopping on logical gaps.
 
-The **strategist-critic** is the system's most important gatekeeper. It runs a 4-phase sequential audit: identify the design, check whether the core assumptions hold (design-specific checklists), evaluate inference and code-theory alignment, then check robustness. Critical finding in Phase 2 stops the review --- no point checking robustness if parallel trends are violated.
+The **strategist-critic** is the system's most important gatekeeper. It runs a 4-phase sequential audit: identify the design, check whether the core assumptions hold (design-specific checklists, threats to validity), evaluate inference and code-theory alignment, then check robustness. Critical finding in Phase 2 stops the review --- no point checking robustness if parallel trends are violated.
 
 **Activates:** After at least one Discovery output (literature OR data assessment).
 **Produces:** `quality_reports/strategy/` and (when activated) `quality_reports/theory/`
@@ -95,21 +95,21 @@ The **strategist-critic** is the system's most important gatekeeper. It runs a 4
 
 The **data-engineer** takes raw data and produces clean, analysis-ready datasets. It documents every sample restriction with counts, constructs variables per strategy memo definitions, merges datasets with documented merge rates, and produces publication-quality figures (custom themes, colorblind-safe palettes, no titles inside plots).
 
-The **coder** translates the strategy memo into numbered analysis scripts (`00_master.R` through `07_tables.R`) with engineering discipline: numerical guards, pre-allocation, a single seed, `here()` for all paths, and a paper-to-code naming map linking every $\beta$ and $Y_{it}$ to its code variable. It implements the main specification, all robustness checks from the memo, and exports bare `tabular` environments for tables.
+The **coder** translates the strategy memo into numbered analysis scripts (`00_master.py` through `07_tables.py`) with engineering discipline: numerical guards, pre-allocation, a single seed, `pathlib.Path` (or `here()` in R) for all paths, and a paper-to-code naming map linking every $\beta$ and $Y_{pt}$ to its code variable. It implements the main specification, all robustness checks from the memo, and exports bare `tabular` environments for tables.
 
 The **writer** drafts the manuscript after code is approved. It refuses to write Results without actual output files in `paper/tables/` --- this gate exists because the distinction between "the strategy predicts X" and "the data shows X" is the difference between a proposal and a paper. It maintains a claim-source map tracing every numerical claim to a specific script line and output file.
 
-The **coder-critic** reviews both the data-engineer and coder across 16 categories: strategic alignment (does the code match the memo?), code quality (reproducibility, numerics, function design), and infrastructure (checkpointing, error handling, prohibited patterns). The **writer-critic** runs 8 checks: structure, claims-evidence, identification fidelity, AI-pattern detection, LaTeX format, compilation, voice fidelity, and notation consistency.
+The **coder-critic** reviews both the data-engineer and coder across 16 categories: strategic alignment (does the code match the memo?), code quality (reproducibility, numerics, function design), and infrastructure (checkpointing, error handling, prohibited patterns). The **writer-critic** runs 8 checks: structure, claims-evidence, design fidelity, AI-pattern detection, LaTeX format, compilation, voice fidelity, and notation consistency.
 
 **Activates:** Data-engineer and coder after strategist-critic score >= 80. Writer after coder-critic score >= 80.
-**Produces:** `data/cleaned/`, `scripts/R/`, `paper/tables/`, `paper/figures/`, `paper/sections/`
+**Produces:** `data/cleaned/`, `scripts/python/`, `paper/tables/`, `paper/figures/`, `paper/sections/`
 **Quality gate:** Coder-critic and writer-critic both >= 80 before Peer Review.
 
 ## Review Team
 
-The **editor** performs desk review: reads the abstract and introduction, skims the contribution, verifies novelty, and decides whether to send to referees or desk reject. When it sends, it assigns each referee a contrasting intellectual disposition --- STRUCTURAL ("where's the mechanism?"), CREDIBILITY ("show me the pre-trends"), MEASUREMENT ("how is this measured?"), POLICY ("does this generalize?"), THEORY ("what does the model predict?"), or SKEPTIC ("what would make this go away?"). Each referee also receives randomized pet peeves drawn from pools of critical and constructive tendencies.
+The **editor** performs desk review: reads the abstract and introduction, skims the contribution, verifies novelty, and decides whether to send to referees or desk reject. When it sends, it assigns each referee a contrasting intellectual disposition --- RIGOR ("is this confounded?"), RELEVANCE ("what should a team lead do differently?"), MEASUREMENT ("does commit count actually measure productivity?"), GENERALIZABILITY ("does this hold beyond your OSS sample?"), THEORY ("what theory does this study test?"), or OPENSCIENCE ("where is the replication package?"). Each referee also receives randomized pet peeves drawn from pools of critical and constructive tendencies.
 
-The **domain-referee** evaluates substance: contribution and novelty (30%), literature positioning (25%), substantive arguments (20%), external validity (15%), and journal fit (10%). The **methods-referee** evaluates methods with paper-type-specific weights: identification strategy, estimation, inference, robustness, and replication readiness. Neither sees the other's report.
+The **domain-referee** evaluates substance: contribution and novelty (30%), literature positioning (25%), substantive arguments (20%), generalizability (15%), and venue fit (10%). The **methods-referee** evaluates methods with paper-type-specific weights: study design, analysis, inference, robustness, and replication readiness. Neither sees the other's report.
 
 After both reports arrive, the editor classifies each concern as FATAL (cannot be fixed), ADDRESSABLE (fixable with revision), or TASTE (referee preference), resolves disagreements with explicit reasoning, and issues a decision.
 
@@ -119,7 +119,7 @@ After both reports arrive, the editor classifies each concern as FATAL (cannot b
 
 ## Presentation Pair
 
-The **storyteller** creates talks from the paper in four formats (job market 40--50 slides, seminar 25--35, short 10--15, lightning 3--5) and two output types (Beamer PDF, Quarto RevealJS HTML). Paper-type aware: reduced-form talks lead with the policy question and show variation; structural talks build the model step by step with progressive reveal and pay off with the counterfactual; theory+empirics talks present competing explanations and a distinguishing prediction; descriptive talks lead with what is missing in current measures.
+The **storyteller** creates talks from the paper in four formats (job market 40--50 slides, seminar 25--35, short 10--15, lightning 3--5) and two output types (Beamer PDF, Quarto RevealJS HTML). Paper-type aware: causal mining talks lead with the practitioner question and show the source of variation; experiment talks build the task and treatment step by step with progressive reveal and pay off with the effect estimate; theory+empirics talks present competing explanations and a distinguishing prediction; descriptive talks lead with what is missing in current measures.
 
 The **storyteller-critic** checks narrative flow (does the hook work?), visual quality (text overflow, font sizes, one idea per slide), content fidelity (numbers match the paper), and compilation. Presentation scores are advisory --- they do not block commits or PRs.
 
@@ -131,7 +131,7 @@ The **storyteller-critic** checks narrative flow (does the hook work?), visual q
 
 The **orchestrator** is the project manager. It reads `permissions.md` to determine which agents can activate, validates pre-dispatch (do REQUIRES artifacts exist?) and post-completion (do PRODUCES artifacts exist with required sections?), launches worker-critic pairs in parallel when independent, tracks strike counts, computes weighted overall scores, and maintains structured pipeline state in `pipeline_state.json`. It makes no research decisions --- when judgment is needed, it escalates to the user with a clear question.
 
-The **verifier** checks mechanical correctness in two modes. Standard mode (between phases): LaTeX compilation, script execution, file integrity, output freshness. Submission mode (before journal deposit): package inventory, dependency verification, data provenance, end-to-end execution, output cross-reference, and AEA-format README completeness. It scores binary --- 0 or 100, contributing 5% weight to the overall project score.
+The **verifier** checks mechanical correctness in two modes. Standard mode (between phases): LaTeX compilation, script execution, file integrity, output freshness. Submission mode (before artifact deposit): package inventory, dependency verification, data provenance, end-to-end execution, output cross-reference, and artifact-evaluation README completeness (ACM/IEEE badge standards). It scores binary --- 0 or 100, contributing 5% weight to the overall project score.
 
 **Activates:** Orchestrator runs throughout. Verifier runs between phases and at submission.
 **Produces:** `quality_reports/pipeline_state.json`, `quality_reports/verification_report.md`
@@ -172,9 +172,9 @@ All 20 agents at a glance.
 | librarian | Discovery | Annotated bibliography, BibTeX, frontier map | librarian-critic |
 | librarian-critic | Discovery | Checks coverage, gaps, journal quality, recency | librarian |
 | explorer | Discovery | Ranked data sources, feasibility grades | explorer-critic |
-| explorer-critic | Discovery | Checks measurement validity, sample selection, ID fit | explorer |
+| explorer-critic | Discovery | Checks measurement validity, sample selection, design fit | explorer |
 | strategist | Strategy | Strategy memo, pseudo-code, robustness plan | strategist-critic |
-| strategist-critic | Strategy | Checks assumptions, inference, robustness (4 paper types) | strategist |
+| strategist-critic | Strategy | Checks assumptions, inference, robustness (all paper types) | strategist |
 | theorist | Strategy | Assumptions, theorems, proofs, notation glossary | theorist-critic |
 | theorist-critic | Strategy | 4-phase proof review with early-stop on critical gaps | theorist |
 | data-engineer | Execution | Clean datasets, codebooks, publication figures | coder-critic |
@@ -184,11 +184,11 @@ All 20 agents at a glance.
 | writer-critic | Execution | 8 checks: structure, claims, format, voice, notation | writer |
 | editor | Peer Review | Desk review, referee dispatch, editorial decision | None |
 | domain-referee | Peer Review | Blind review (substance: contribution, literature, scope) | None |
-| methods-referee | Peer Review | Blind review (methods: ID, estimation, inference, robustness) | None |
+| methods-referee | Peer Review | Blind review (methods: design, analysis, inference, robustness) | None |
 | storyteller | Presentation | Beamer / Quarto talks in 4 formats | storyteller-critic |
 | storyteller-critic | Presentation | Checks narrative, visuals, content fidelity, scope | storyteller |
 | orchestrator | All | Agent dispatch, quality gates, pipeline state | None |
-| verifier | Submission | Compilation, execution, file integrity, AEA audit | None |
+| verifier | Submission | Compilation, execution, file integrity, artifact audit | None |
 
 ---
 

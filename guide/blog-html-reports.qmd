@@ -41,7 +41,7 @@ The submission readiness dashboard. A gauge for the aggregate score, colored bar
 
 ### Literature
 
-A filterable, searchable annotated bibliography. Filter by category (theoretical, empirical, methodological), by proximity to your paper (core, adjacent, peripheral), by method (DiD, IV, RDD, structural). Sort by year, author, relevance. Search across titles and annotations. Copy a formatted citation with one click. This is what `/discover lit` produces --- a self-contained Zotero that lives in your project folder.
+A filterable, searchable annotated bibliography. Filter by category (theoretical, empirical, methodological), by proximity to your paper (core, adjacent, peripheral), by method (experiment, survey, case study, mining, DiD/IV/RDD). Sort by year, author, relevance. Search across titles and annotations. Copy a formatted citation with one click. This is what `/discover lit` produces --- a self-contained Zotero that lives in your project folder.
 
 ```{=html}
 <iframe src="demos/literature-demo.html" width="100%" height="900" style="border: 1.5px solid var(--bs-border-color, #dee2e6); border-radius: 10px; margin-bottom: 1.5em;"></iframe>

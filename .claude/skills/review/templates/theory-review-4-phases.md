@@ -24,7 +24,7 @@ Identify:
 4. **Assumptions** -- list them by number with a one-line summary each
 5. **Main result(s)** -- quote the theorem statement(s) verbatim
 6. **Data structure** -- iid, panel, staggered, clustered, triangular array
-7. **Paper type fit** -- is this theory section appropriate for the paper type (econometric methods / theory+empirics / structural / methodological reduced-form)?
+7. **Paper type fit** -- is this methods section appropriate for the paper type (statistical/measurement methods / theory+empirics / metric-validation study / methodological causal design)?
 
 If the theory does not cleanly fit any object type, flag it -- the author may be claiming something that has no standard proof strategy.
 
@@ -60,7 +60,7 @@ _The core of the review. If a proof is broken, everything downstream is moot._
   - **DiD:** no-anticipation, parallel trends, overlap (cf. Callaway & Sant'Anna, 2021)
   - **IV:** relevance, exclusion, monotonicity for LATE (cf. Imbens & Angrist, 1994)
   - **RDD:** continuity of potential outcomes at cutoff, no manipulation (cf. Hahn-Todd-vdK, 2001)
-  - **Structural:** rank/order conditions, normalizations, support
+  - **Measurement / metric validity:** construct definition, reliability, identifiability of the target quantity
 - [ ] For bad-controls / mediator problems: the conditioning set is justified; no post-treatment variables are used without a stated argument
 
 ### 2E. Asymptotic Distribution Checks
@@ -156,7 +156,7 @@ Save to `quality_reports/[FILENAME]_theory_review.md`:
 - **Main result(s):** [verbatim statement]
 - **Assumptions (summary):** [A1: sampling; A2: parallel trends; ...]
 - **Data structure:** [iid / panel / staggered / clustered]
-- **Paper type:** [econometric methods / theory+empirics / structural / methodological reduced-form]
+- **Paper type:** [statistical/measurement methods / theory+empirics / metric-validation study / methodological causal design]
 
 ## Phase 2: Proof Validity
 **Assessment:** [VALID / GAPS / CRITICAL ERRORS]

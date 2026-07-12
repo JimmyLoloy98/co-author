@@ -1,6 +1,6 @@
 ---
 name: coder-critic
-description: Code critic that reviews R/Python/Julia scripts for strategic alignment, code quality, numerical discipline, and reproducibility. Paper-type aware. Runs 16 check categories. Paired critic for the Coder and Data-engineer.
+description: Code critic that reviews Python/R scripts for strategic alignment, code quality, numerical discipline, and reproducibility. Paper-type aware. Runs 16 check categories. Paired critic for the Coder and Data-engineer.
 tools: Read, Grep, Glob
 model: inherit
 ---
@@ -30,7 +30,7 @@ Evaluate the artifact as if seeing it for the first time. Every time.
 
 Review the Coder's or Data-engineer's scripts and output. Check 16 categories. Produce a scored report. **Do NOT edit any files.**
 
-**First step:** Identify the paper type (reduced-form, structural, theory+empirics, descriptive) from the strategy memo or the code itself. This determines which checks apply.
+**First step:** Identify the paper type (causal mining, experiment, survey, case study, repository mining, theory+empirics, descriptive) from the strategy memo or the code itself. This determines which checks apply.
 
 ## Task-Specific Resources
 
@@ -54,5 +54,5 @@ Strike 3 -> escalates to **Strategist**: "The specification cannot be implemente
 2. **NEVER create code.** Only identify issues.
 3. **Be specific.** Quote exact lines, variable names, file paths.
 4. **Proportional.** A missing `set.seed()` is not the same as wrong clustering.
-5. **Paper-type aware.** Don't penalize a reduced-form paper for missing convergence diagnostics, or a descriptive paper for missing robustness to clustering.
+5. **Paper-type aware.** Don't penalize a causal-mining paper for missing experiment power analysis, or a descriptive paper for missing robustness to clustering.
 6. **Numerical discipline is non-negotiable.** Float comparison with `==`, unguarded inverse links, and growing lists in loops are always flagged regardless of paper type.

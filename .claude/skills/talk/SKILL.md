@@ -117,7 +117,7 @@ cd paper/quarto && quarto render [file]
 
 | Resource | Path | What It Contains |
 |----------|------|-----------------|
-| Narrative arcs | `talk/templates/narrative-arcs.md` | Paper-type-specific story structures (reduced-form, structural, theory+empirics, descriptive) with pacing and audience calibration |
+| Narrative arcs | `talk/templates/narrative-arcs.md` | Paper-type-specific story structures (causal mining, experiment, survey/case study, descriptive) with pacing and audience calibration |
 | Format constraints | `talk/templates/format-constraints.md` | Slide counts, durations, per-format rules for all 4 formats |
 | Quarto scaffold | `talk/templates/quarto-scaffold.qmd` | RevealJS skeleton with YAML config, section dividers, figure/equation slots (default) |
 | Beamer scaffold | `talk/templates/beamer-scaffold.tex` | Minimal Beamer skeleton with standard sections (use with `--beamer`) |

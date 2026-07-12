@@ -6,6 +6,24 @@ All notable changes to the Clo-Author are documented here.
 
 ---
 
+## [26.07] — July 2026
+
+### Refocus: Empirical Economics → Empirical Software Engineering
+
+The entire pipeline was refocused from empirical economics to **empirical software engineering** (software team management, developer productivity, DevOps, code review, CI/CD, human aspects of SE, mining software repositories). This is a domain adaptation of the clo-author template; the pipeline architecture, worker-critic pairs, and quality gates are unchanged.
+
+- **Venues.** Economics journals (AER, QJE, Econometrica, JPE, REStud + finance/accounting/marketing/management) replaced by 13 SE venue profiles: IEEE TSE, ACM TOSEM, EMSE (top journals); JSS, IST, IEEE Software; ICSE, FSE, ASE, ESEM, MSR, ICSME, CHASE (conferences). `journal-profiles.md` and `domain-profile.md` rewritten.
+- **Referee dispositions.** Structuralist / Credibility / Measurement / Policy / Theory / Skeptic → **Rigor, Relevance, Measurement, Generalizability, Theory, Open Science**.
+- **Study designs.** Causal designs (DiD, IV, RDD, event study) kept for repository-mining studies and re-exampled with SE data. Structural estimation replaced by **controlled experiments, surveys, case studies, repository mining, and SLRs**. New design checklists: `experiment.md`, `survey.md`, `case-study.md`, `msr.md`; `structural.md` removed.
+- **Study-design framing.** "Identification section" → **study design + explicit Threats to Validity** (construct / internal / external / conclusion). Effect sizes (Cliff's delta, Vargha-Delaney Â12) with CIs per the ACM SIGSOFT Empirical Standards.
+- **Language.** Python is now primary (pandas, statsmodels, linearmodels, pyfixest, matplotlib, PyDriller, PyGithub); R secondary; **Julia removed** (`coding-standards-julia.md` deleted, lint hooks updated).
+- **Formatting.** JEL codes → keywords + ACM CCS concepts. AEA replication package → **artifact evaluation** (Available / Functional / Reusable badges). AEA RCT registry / EGAP → **OSF preregistration** (`aea-rct.md` → `osf-experiment.md`, `egap.md` removed).
+- **Seminal references.** Wohlin et al. (2012), Runeson & Höst (2009), Kitchenham & Charters (2007), Ralph et al. (2021) ACM SIGSOFT Empirical Standards, Forsgren/Humble/Kim (Accelerate/DORA).
+- **Deliverables language.** New Language Policy: system files in English, thesis/paper deliverables drafted in **Spanish** (`polyglossia` + XeLaTeX).
+- Guide site `.qmd` sources updated (rendered `docs/` pending a Quarto re-render). CHANGELOG history retained as-is.
+
+---
+
 ## [26.05] — May 2026
 
 ### HTML Report Pipeline

@@ -7,5 +7,5 @@ Known failure points and edge cases for paper drafting.
 - `\citet` vs `\citep` confusion is the most common LaTeX citation issue. `\citet` for "Author (Year)" in prose, `\citep` for "(Author, Year)" parenthetical.
 - Writer sometimes invents citation keys not in `Bibliography_base.bib`. Always verify generated `\cite{}` keys against the actual bib file.
 - The cleanup pass catches AI patterns but can over-correct domain-specific hedging that's actually appropriate (e.g., "may" in describing potential mechanisms is fine).
-- Section ordering varies by paper type. Don't force reduced-form structure on structural papers.
+- Section ordering varies by paper type. Don't force a causal-mining structure on an experiment or case-study paper.
 - Abstract word count (150 max per INV-5) is a hard constraint -- the writer sometimes produces 200+ word abstracts on first pass.

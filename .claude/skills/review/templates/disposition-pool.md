@@ -10,12 +10,12 @@ Each referee gets ONE disposition that shapes their intellectual prior:
 
 | ID | Disposition | Intellectual Prior |
 |----|------------|-------------------|
-| STRUCTURAL | Structuralist | Values formal models, welfare analysis. "Where's the mechanism? Where's the model?" |
-| CREDIBILITY | Credibility Revolution | Values clean identification, transparency. "Show me the pre-trends. What's the experiment?" |
-| MEASUREMENT | Measurement Focused | Obsessed with data quality and measurement error. "How is this measured? What about attrition?" |
-| POLICY | Policy Oriented | Focused on generalizability and policy relevance. "Does this apply outside your sample? So what?" |
-| THEORY | Theory First | Wants economic model before empirics. "What does the theory predict? What parameters are you estimating?" |
-| SKEPTIC | Professional Skeptic | Thinks the result is probably wrong. "What would make this go away? Show me the failures." |
+| RIGOR | Internal-Validity Hawk | Values clean study design and confound control. "What's the threat to internal validity? Where are the confounds?" |
+| RELEVANCE | Practitioner-Impact | Focused on actionability. "What should a team lead or engineering manager do differently? So what?" |
+| MEASUREMENT | Construct-Validity Focused | Obsessed with whether metrics measure what they claim. "Does commit count really measure productivity? How was this operationalized?" |
+| GENERALIZABILITY | Beyond-OSS Skeptic | Focused on external validity. "Does this hold beyond your GitHub sample / single company? Survivorship bias?" |
+| THEORY | Theory First | Wants an underlying theory tested. "What theory of team/developer behavior predicts this? What construct are you testing?" |
+| OPENSCIENCE | Replication & Artifact Hawk | Demands reproducibility. "Where's the replication package? Was this preregistered? Can I rerun it?" |
 
 **Selection rule:** Draw dispositions from the journal's **Referee pool** weights (see `.claude/references/journal-profiles.md`). The two referees should have DIFFERENT dispositions to create productive tension.
 
@@ -28,32 +28,32 @@ Each referee gets TWO pet peeves -- one critical, one constructive -- drawn from
 ### Critical Pet Peeves (one per referee)
 
 - "Wants at least 5 robustness specifications"
-- "Checks every table for correct clustering"
-- "Demands a formal theoretical model even for reduced-form papers"
-- "Suspicious of results that are too clean -- wants to see failures"
-- "Fixated on sample selection -- wants every filter justified"
+- "Checks every table for correct clustering (project level, not observation level)"
+- "Demands an explicit threats-to-validity section even when the design is clean"
+- "Suspicious of results that are too clean -- wants to see failures and negative cases"
+- "Fixated on repository selection -- wants every inclusion filter justified (stars ≠ engineered project)"
 - "Counts hedging words and deducts for each one"
 - "Insists on discussing what the null result would mean"
-- "Demands comparison with at least one alternative estimator"
-- "Wants confidence intervals on every figure"
-- "Believes every paper needs a welfare calculation"
-- "Wants to see raw data patterns before any regression"
-- "Insists on discussing external validity for 2+ paragraphs"
-- "Demands event study plot even when not doing DiD"
-- "Questions every variable definition -- wants exact survey wording"
+- "Demands comparison with at least one baseline technique or alternative estimator"
+- "Wants effect sizes (Cliff's delta / Â12) and confidence intervals on every comparison"
+- "Believes every paper needs an explicit practitioner-implications paragraph"
+- "Wants to see raw data distributions before any modeling"
+- "Insists on discussing external validity beyond the OSS sample for 2+ paragraphs"
+- "Demands an event study plot for any DiD-style claim on repository data"
+- "Questions every metric definition -- wants exact operationalization and survey wording"
 - "Wants the author to address every paper in the related literature"
-- "Insists on seeing first-stage F-statistics reported for every specification"
-- "Demands Oster bounds or equivalent sensitivity analysis"
-- "Wants leave-one-out analysis to check no single unit drives results"
-- "Obsessed with power calculations -- underpowered studies get hammered"
-- "Demands authors explain why they didn't use a structural model"
+- "Insists on bot filtering and developer identity merging being documented"
+- "Demands sensitivity analysis to alternative metric definitions"
+- "Wants leave-one-out analysis to check no single project drives results"
+- "Obsessed with power calculations -- underpowered experiments get hammered"
+- "Demands authors justify their choice of study strategy (experiment vs. mining vs. survey)"
 - "Wants placebo tests on every possible fake treatment timing"
-- "Insists on separate tables for men and women regardless of topic"
-- "Checks whether standard errors are larger than the coefficient -- flags any t-stat between 1.96 and 2.5 as suspicious"
-- "Wants Bonferroni correction the moment they see more than one outcome"
+- "Insists on inter-rater reliability (Cohen's kappa) for any manual coding"
+- "Checks whether standard errors are larger than the coefficient -- flags any borderline t-stat as suspicious"
+- "Wants multiple-comparison correction the moment they see more than one outcome"
 - "Demands authors justify every control variable -- no kitchen sink"
-- "Wants to see balance tables even for non-experimental designs"
-- "Asks why the author didn't use machine learning for variable selection"
+- "Wants construct validity evidence for every mined metric"
+- "Asks why the author didn't share the mining scripts and dataset"
 
 ### Constructive Pet Peeves (one per referee)
 
@@ -67,7 +67,7 @@ Each referee gets TWO pet peeves -- one critical, one constructive -- drawn from
 - "Values replication and extension of important prior work"
 - "Sympathetic to data limitations if handled transparently"
 - "Impressed by pre-analysis plans or pre-registration"
-- "Champions policy relevance even with imperfect identification"
+- "Champions practitioner relevance even with imperfect study design"
 - "Rewards papers that change how you think about a problem"
 - "Appreciates clean event study plots with confidence intervals"
 - "Values when authors present the null result scenario honestly"
@@ -89,7 +89,7 @@ Each referee gets TWO pet peeves -- one critical, one constructive -- drawn from
 Reject WITHOUT sending to referees if ANY apply:
 - **Wrong fit:** The paper doesn't belong at this journal (topic, scope, audience)
 - **No clear contribution:** After reading the intro, you can't state what's new in one sentence
-- **Fatal design flaw visible from the intro:** The identification strategy is obviously flawed
+- **Fatal design flaw visible from the intro:** The study design is obviously flawed (uncontrolled confounds, causal claims from pure correlation)
 - **Below the bar:** The paper is competent but incremental -- not enough for this journal
 - **Already done:** The contribution has already been published (cite the paper)
 

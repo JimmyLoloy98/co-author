@@ -10,8 +10,8 @@
 # Strategy Memo: [Project Name]
 
 **Date:** [YYYY-MM-DD]
-**Paper type:** [reduced-form / structural / theory+empirics / descriptive]
-**Primary design:** [DiD / IV / RDD / SC / Event Study / Selection-on-Observables / Structural / Descriptive]
+**Paper type:** [causal mining / experiment / survey / case study / repository mining / theory+empirics / descriptive]
+**Primary design:** [DiD / IV / RDD / SC / Event Study / Experiment / Survey / Case study / Mining regression / Descriptive]
 
 ---
 

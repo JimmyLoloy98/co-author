@@ -10,7 +10,7 @@ Extracted from `writer-critic.md`. Used by the writer-critic agent for manuscrip
 
 - Read `.claude/rules/content-invariants.md` -- enforce INV-1 through INV-13 and INV-22. Cite invariant numbers (e.g., "violates INV-3") in report alongside deductions.
 - Read `.claude/rules/working-paper-format.md` -- enforce all Required items listed in the deduction table.
-- Identify the paper type (reduced-form, structural, theory+empirics, descriptive) from the strategy memo or the manuscript itself. This determines which checks apply.
+- Identify the paper type (causal mining, experiment, survey, case study, repository mining, theory+empirics, descriptive) from the strategy memo or the manuscript itself. This determines which checks apply.
 
 ---
 
@@ -25,9 +25,9 @@ Extracted from `writer-critic.md`. Used by the writer-critic agent for manuscrip
 
 **Paper-type-specific:**
 
-**Reduced-form:** Introduction follows: motivation -> question -> stakes -> identification preview -> result -> literature positioning?
+**Causal (mining):** Introduction follows: motivation -> research question -> stakes -> study-design preview -> result -> literature positioning?
 
-**Structural:** Introduction includes model preview -> estimation/counterfactual preview -> key counterfactual result -> literature?
+**Experiment:** Introduction includes practice/tool motivation -> hypotheses -> design preview -> key effect-size result -> literature?
 
 **Theory + empirics:** Introduction includes theory preview -> empirical preview -> literature positioning?
 
@@ -62,9 +62,9 @@ Extracted from `writer-critic.md`. Used by the writer-critic agent for manuscrip
 
 **Paper-type-specific:**
 
-**Reduced-form:** Design-specific elements present (pre-trends for DiD, first stage for IV, bandwidth for RDD, event definition for ES)?
+**Causal (mining):** Design-specific elements present (pre-trends for DiD, first stage for IV, bandwidth for RDD, event definition for ES)?
 
-**Structural:** Identification argument maps data moments to parameters? Estimation method justified?
+**Experiment:** Randomization and task design described? Power analysis and construct validity of tasks justified?
 
 **Theory + empirics:** Testable predictions numbered and linked to evidence?
 
@@ -113,7 +113,7 @@ Enforce all Required items from `.claude/rules/working-paper-format.md`:
 | `\textbf{}` wrapping `\title{}` | -3 |
 | `\and` between authors instead of `\quad` | -3 |
 | Repeated affiliation text outside `\thanks{}` | -3 |
-| Missing JEL codes or keywords (INV-6) | -5 |
+| Missing keywords or ACM CCS concepts (INV-6) | -5 |
 | `\hline` instead of booktabs rules (INV-3) | -3 |
 | Missing table notes (INV-1) | -5 per table, max -15 |
 | Missing figure notes (INV-2) | -5 per figure, max -15 |
@@ -124,7 +124,7 @@ Enforce all Required items from `.claude/rules/working-paper-format.md`:
 | Missing abstract `\noindent` and `\singlespacing` | -2 |
 | Abstract exceeds 150 words (INV-5) | -3 |
 | No titles inside figures -- titles in `\caption{}` only (INV-12) | -3 per, max -9 |
-| R/Python/Julia output includes `\begin{table}` wrapper (INV-13) | -3 per, max -9 |
+| Python/R output includes `\begin{table}` wrapper (INV-13) | -3 per, max -9 |
 
 ---
 
@@ -183,7 +183,7 @@ When invoked via `/review --all` or `/review --peer`, run all 8 categories.
 # Manuscript Review -- [Project Name]
 **Date:** [YYYY-MM-DD]
 **Reviewer:** writer-critic
-**Paper type:** [Reduced-form / Structural / Theory+Empirics / Descriptive]
+**Paper type:** [Causal (mining) / Experiment / Survey / Case study / Repository mining / Theory+Empirics / Descriptive]
 **Score:** [XX/100]
 **Mode:** [Full / Standalone (prose quality only)]
 

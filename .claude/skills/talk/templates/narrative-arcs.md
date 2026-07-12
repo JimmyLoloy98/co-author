@@ -4,66 +4,64 @@ How to structure the story of a talk depends on what kind of paper you're presen
 
 ---
 
-## Reduced-Form
+## Causal Mining Study
 
-**Arc:** Puzzle --> Natural experiment --> Credible estimates --> So what
+**Arc:** Puzzle --> Quasi-experiment in the ecosystem --> Credible estimates --> So what for teams
 
 | # | Section | Slides | What to do |
 |---|---------|--------|------------|
-| 1 | Hook | 1-2 | Policy question or empirical puzzle. Make it concrete. |
+| 1 | Hook | 1-2 | Engineering-practice question or empirical puzzle. Make it concrete. |
 | 2 | What we know / don't know | 1 | Brief lit positioning -- NOT a literature review. |
-| 3 | Data + variation | 1-2 | What data, what exogenous variation. |
-| 4 | Identification | 1 | The design in one slide. Audience must get it in 30 seconds. |
-| 5 | Key result | 1 | Main result with magnitude and units. Visually distinct -- larger font, highlighted, different layout. |
+| 3 | Data + variation | 1-2 | What repositories/telemetry, what exogenous variation (platform change, staggered adoption). |
+| 4 | Study design | 1 | The design in one slide. Audience must get it in 30 seconds. |
+| 5 | Key result | 1 | Main result with effect size and units. Visually distinct -- larger font, highlighted, different layout. |
 | 6 | Visual evidence | 1-2 | Event study plot, RD plot, or equivalent. Let the figure speak. |
-| 7 | Robustness | 1 | Brief -- "result survives X, Y, Z." Details in backup. |
-| 8 | So what | 1 | Policy implication or what we learned. |
+| 7 | Robustness + threats | 1 | Brief -- "result survives X, Y, Z; main threats addressed." Details in backup. |
+| 8 | So what | 1 | Implication for teams/practitioners or what we learned. |
 
-**Emphasize:** The identification strategy. This is what the audience evaluates.
+**Emphasize:** The study design and threats to validity. This is what the audience evaluates.
 **Deemphasize:** Literature review (one slide max), robustness details (backup slides).
-**Audience calibration:** Job market -- show you understand threats to identification. Seminar -- emphasize magnitudes and policy relevance. Conference -- skip lit, go straight to design and result.
+**Audience calibration:** Job market -- show you understand threats to internal validity. Seminar -- emphasize effect magnitudes and practical relevance. Conference -- skip lit, go straight to design and result.
 
 ---
 
-## Structural
+## Controlled Experiment
 
-**Arc:** Economic question --> Model --> Identification --> Counterfactuals
+**Arc:** Question --> Design --> Evidence --> Practice
 
 | # | Section | Slides | What to do |
 |---|---------|--------|------------|
-| 1 | Hook | 1-2 | Question that reduced-form can't answer -- why we need a model. |
-| 2 | Motivating facts | 2-3 | Reduced-form evidence or descriptive patterns. The audience needs to buy into the model before seeing it. |
-| 3 | Model | 4-6 | Build step by step. One concept per slide. Environment --> agents --> decision --> equilibrium. Use progressive reveal to add complexity gradually. Never dump the full model on one slide. |
-| 4 | Identification | 1 | Which data variation identifies which parameters. Concrete. |
-| 5 | Estimates | 1-2 | Parameter table with economic interpretation ("the estimated elasticity of X implies..."). Not just numbers. |
-| 6 | Model fit | 1 | Predicted vs. actual. If the model doesn't fit, the counterfactuals aren't credible -- address this. |
-| 7 | Key counterfactual | 1 | The payoff. "Under policy X, welfare increases by Y." Visually distinct. |
-| 8 | Welfare | 1 | Who wins, who loses, by how much. |
-| 9 | Sensitivity | 1 | Do counterfactuals survive? Brief -- details in backup. |
+| 1 | Hook | 1-2 | The practice or tool whose effect you test -- why it matters. |
+| 2 | Hypotheses | 1-2 | Numbered, grounded in a theory of developer/team behavior where possible. |
+| 3 | Design | 2-3 | Participants, tasks, treatments, within/between-subjects, randomization. One concept per slide. |
+| 4 | Construct validity | 1 | Why the tasks and metrics measure what you claim. Address demand effects. |
+| 5 | Results | 1-2 | Per-hypothesis evidence with effect sizes (Cliff's delta / Â12) and CIs, not just p-values. Visually distinct. |
+| 6 | Threats to validity | 1 | Construct, internal, external, conclusion -- honest and brief. |
+| 7 | Implications | 1 | The payoff. "For teams doing X, this means Y." Visually distinct. |
 
-**Emphasize:** The counterfactual results -- this is the payoff that justifies the model. Model fit matters.
-**Deemphasize:** Model derivation details (show intuition, not every FOC). Estimation mechanics.
-**Audience calibration:** Job market -- demonstrate you built and solved the model yourself. Seminar -- spend time on model intuition. Conference -- motivating facts + counterfactual, minimal model detail.
+**Emphasize:** The design rigor and the effect sizes -- this is what justifies the claim.
+**Deemphasize:** Task-material minutiae (backup slides). Statistical mechanics.
+**Audience calibration:** Job market -- demonstrate you designed and ran the study rigorously. Seminar -- spend time on construct validity and design choices. Conference -- question + design + headline effect, minimal procedure detail.
 
 ---
 
-## Theory + Empirics
+## Survey / Case Study
 
-**Arc:** Theory prediction --> Empirical test --> Confirmation/rejection
+**Arc:** Phenomenon --> Method --> Findings --> Implications
 
 | # | Section | Slides | What to do |
 |---|---------|--------|------------|
-| 1 | Hook | 1-2 | Puzzle or competing explanations. |
-| 2 | Model | 2-3 | Key mechanism in plain language first, then formal version. Build with progressive reveal. |
-| 3 | Predictions | 1-2 | Numbered. Visual if possible -- diagram or table showing "Model A predicts X, Model B predicts Y." The audience should see why your model is distinguishable. |
-| 4 | Distinguishing prediction | 1 | The one that your model generates and competitors don't. Key slide. |
-| 5 | Test design | 1 per prediction | How each prediction is tested. |
-| 6 | Results | 1-2 per prediction | Prediction-by-prediction evidence. Pair each prediction with its result on the same slide or adjacent slides. |
-| 7 | Scorecard | 1 | Where the model works and where it doesn't. Honest. |
+| 1 | Hook | 1-2 | The phenomenon or practice, and why it is not yet understood. |
+| 2 | Method | 2-3 | Sampling frame + instrument (survey) or case selection + protocol (case study). Build with progressive reveal. |
+| 3 | Validity | 1-2 | Instrument validation and response/non-response (survey); triangulation and member checking (case study). |
+| 4 | Key finding | 1 | The most important finding, with magnitude or a representative quote. Key slide. |
+| 5 | Findings | 1-2 | Additional themes/constructs. Pair each with its supporting evidence. |
+| 6 | Implications | 1 | What changes for researchers and practitioners. |
+| 7 | Threats to validity | 1 | Where the findings do and don't generalize. Honest. |
 
-**Emphasize:** The distinguishing prediction and the test that confirms or rejects it.
-**Deemphasize:** General model setup (show enough for predictions to make sense). Robustness of individual tests.
-**Audience calibration:** Job market -- demonstrate theoretical contribution AND empirical execution. Seminar -- linger on predictions and what makes them unique. Conference -- one prediction, one test, one result.
+**Emphasize:** The method quality and the headline findings.
+**Deemphasize:** Full instrument/protocol (backup slides). Exhaustive coding detail.
+**Audience calibration:** Job market -- demonstrate methodological rigor AND insight. Seminar -- linger on findings and their implications. Conference -- one method, key findings, one implication.
 
 ---
 

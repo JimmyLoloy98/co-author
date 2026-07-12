@@ -1,7 +1,7 @@
 # Design Checklist: Descriptive / Measurement
 
 ## What You're Measuring
-- [ ] **Concept:** What are you measuring? (inequality, concentration, discrimination, mobility, etc.)
+- [ ] **Concept:** What are you measuring? (productivity, code quality, technical debt, collaboration, developer experience, etc.)
 - [ ] **Why existing measures are inadequate:** What's wrong with what exists?
 - [ ] **Your measure's value-add:** What does it capture that others don't?
 - [ ] **Measurement vs. proxy:** Be honest about the gap between concept and measure
@@ -48,9 +48,8 @@
 - [ ] Combination
 
 ### Decomposition Methods
-- [ ] Variance decomposition (between vs. within)
-- [ ] Oaxaca-Blinder (explained vs. unexplained)
-- [ ] Shift-share / Kitagawa-Oaxaca (composition vs. rates)
+- [ ] Variance decomposition (between-project vs. within-project)
+- [ ] Composition vs. rate effects (does a trend reflect changing project mix or changing behavior?)
 - [ ] Custom decomposition (document methodology)
 
 ### Conditional Correlations

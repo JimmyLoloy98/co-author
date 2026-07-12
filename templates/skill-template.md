@@ -10,7 +10,7 @@ Create a skill when you find yourself:
 - Repeatedly explaining the same 3+ step workflow to Claude
 - Needing domain-specific quality checks (citation style, notation consistency, lab protocols)
 - Enforcing field-specific output formats (thesis structure, journal templates, lab notebooks)
-- Coordinating multi-tool workflows (Figma → R → LaTeX, data → analysis → manuscript)
+- Coordinating multi-tool workflows (Figma → Python → LaTeX, data → analysis → manuscript)
 
 **Don't create a skill for:**
 - One-time tasks
@@ -105,9 +105,9 @@ description: Generates structured lab notebook entries from experimental notes. 
 description: Validates thesis chapter structure against institutional requirements. Use when user asks to "check chapter format", "validate thesis structure", or when editing thesis .tex or .docx files. Verifies required sections, heading levels, and citation density.
 ```
 
-**Econometric Specification Review (Economics):**
+**Statistical Analysis Review (Empirical SE):**
 ```yaml
-description: Reviews econometric specifications for common errors. Use when user shares regression code in R or Python, or asks to "check model spec", "review estimation". Validates: standard error clustering, fixed effects structure, missing covariates, and replication commands.
+description: Reviews statistical analyses of repository-mining data for common errors. Use when user shares analysis code in Python or R, or asks to "check model spec", "review estimation". Validates: standard error clustering at the project level, fixed-effects structure for panel mining data, effect sizes reported alongside p-values, and reproduction commands.
 ```
 
 ### Bad Examples (Too Generic)
@@ -188,20 +188,20 @@ Step 4: **Report findings**
 ```markdown
 ---
 name: format-regression-tables
-description: Converts R regression outputs to publication-ready LaTeX tables. Use when user runs regressions and says "make a table", "format results", or "export to LaTeX". Handles lm, glm, felm, and fixest objects. Applies field-specific conventions (standard errors in parentheses, stars for significance).
+description: Converts Python regression outputs to publication-ready LaTeX tables. Use when user runs regressions and says "make a table", "format results", or "export to LaTeX". Handles statsmodels and pyfixest results objects. Applies field-specific conventions (standard errors in parentheses, stars for significance).
 argument-hint: "[model object name]"
 allowed-tools: ["Read", "Write", "Bash"]
 ---
 
 # Format Regression Tables
 
-Converts R regression objects into publication-ready LaTeX tables with proper formatting.
+Converts Python regression results (statsmodels, pyfixest) into publication-ready LaTeX tables with proper formatting.
 
 ## Instructions
 
 Step 1: **Identify model objects**
-   - User provides R object names (e.g., `model1`, `model2`)
-   - Read corresponding .rds files from output/
+   - User provides result names (e.g., `model1`, `model2`)
+   - Read corresponding pickled results (`.pkl`) from output/
 
 Step 2: **Extract coefficients and statistics**
    - Coefficient estimates
@@ -222,28 +222,28 @@ Step 4: **Save and verify**
 
 ### Example 1: Panel Regression with Fixed Effects
 **User says:** "Format my regression results for the paper"
-**Context:** User has run `felm(y ~ x | firm + year | 0 | firm, data=df)`
+**Context:** User has run `pyfixest.feols("review_latency ~ ci_adoption | project + month", data=df, vcov={"CRV1": "project"})`
 **Actions:**
-1. Read saved model object
-2. Extract: coefficients, clustered SEs, R², N
+1. Read saved results object
+2. Extract: coefficients, project-clustered SEs, R², N
 3. Generate LaTeX:
    ```latex
    \begin{table}[htbp]
-   \caption{Effect of X on Y}
+   \caption{Effect of CI Adoption on Review Latency}
    \begin{tabular}{lc}
    \toprule
    & (1) \\
    \midrule
-   X & 0.523*** \\
+   CI adoption & -0.523*** \\
      & (0.089) \\
    \midrule
-   Firm FE & Yes \\
-   Year FE & Yes \\
+   Project FE & Yes \\
+   Month FE & Yes \\
    \midrule
    Observations & 1,234 \\
    R-squared & 0.678 \\
    \bottomrule
-   \multicolumn{2}{l}{\footnotesize Clustered SEs in parentheses.} \\
+   \multicolumn{2}{l}{\footnotesize Project-clustered SEs in parentheses.} \\
    \multicolumn{2}{l}{\footnotesize * p<0.10, ** p<0.05, *** p<0.01}
    \end{tabular}
    \end{table}
@@ -253,12 +253,12 @@ Step 4: **Save and verify**
 ## Troubleshooting
 
 **Error:** Model object not found
-**Cause:** .rds file not in expected location
-**Solution:** Check output/ directory, verify saveRDS() was called
+**Cause:** .pkl file not in expected location
+**Solution:** Check output/ directory, verify the results were pickled (e.g., `pickle.dump()` or `to_pickle()`)
 
 **Error:** Standard errors missing
 **Cause:** Model didn't specify clustering/robust SEs
-**Solution:** Re-run with vcov specification, document assumption
+**Solution:** Re-run with a vcov specification (e.g., `vcov={"CRV1": "project"}` or `cov_type="cluster"`), document assumption
 ```
 
 ---
@@ -352,7 +352,7 @@ When adapting this template to your domain:
 - [ ] Replace example trigger phrases with your field's terminology
 - [ ] Add domain-specific file types (`.R`, `.py`, `.ipynb`, `.tex`, `.stan`)
 - [ ] Include field conventions (notation, formatting, citation styles)
-- [ ] Reference standard tools (`ggplot2`, `pandas`, `TikZ`)
+- [ ] Reference standard tools (`pandas`, `matplotlib`, `PyDriller`, `TikZ`)
 - [ ] Add common error messages from your toolchain
 - [ ] Include institutional requirements (thesis formats, journal templates)
 
@@ -367,7 +367,7 @@ When adapting this template to your domain:
 | `Edit` | Modifying existing files in place |
 | `Grep` | Searching file contents (citations, function names) |
 | `Glob` | Finding files by pattern (*.R, *.tex, *.csv) |
-| `Bash` | Running commands (R scripts, LaTeX compilation, git) |
+| `Bash` | Running commands (Python/R scripts, LaTeX compilation, git) |
 | `Task` | Launching subagents (for complex multi-step workflows) |
 
 **Security note:** Only grant `Bash` access if your skill needs to execute code or compile documents. For read-only validation skills, omit it.
@@ -380,4 +380,4 @@ When adapting this template to your domain:
 - **Purpose:** Starter for domain-specific skills
 - **Usage:** Copy to `.claude/skills/[name]/SKILL.md`, customize for your field
 
-For existing skills examples, see `.claude/skills/` directory (19 skills for LaTeX, R, Quarto, and research workflows).
+For existing skills examples, see `.claude/skills/` directory (skills for LaTeX, Python/R, Quarto, and research workflows).

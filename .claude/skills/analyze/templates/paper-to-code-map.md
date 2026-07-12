@@ -65,11 +65,18 @@ Copy this into `01_setup.R` as a comment block and fill in project-specific entr
 | $h$ | `bandwidth` | Bandwidth (MSE-optimal or CER-optimal) |
 | $\tau_{RD}$ | `tau_rd` | RD treatment effect at cutoff |
 
-### Structural
+### Experiment
 | Paper Symbol | Code Name | Description |
 |-------------|-----------|-------------|
-| $\theta$ | `theta` | Structural parameter vector |
-| $u(\cdot)$ | `utility_fn` | Utility function |
-| $\pi(\cdot)$ | `profit_fn` | Profit function |
-| $m(\theta)$ | `model_moments` | Model-predicted moments |
-| $\hat{m}$ | `data_moments` | Data moments |
+| $T$ | `condition` | Treatment condition assigned to a participant |
+| $\hat\delta$ | `cliffs_delta` | Cliff's delta effect size |
+| $\hat{A}_{12}$ | `a12` | Vargha-Delaney Â12 effect size |
+| $p$ | `p_value` | Test p-value (with multiple-comparison correction) |
+| $1-\beta$ | `power` | Statistical power from the a priori analysis |
+
+### Repository mining
+| Paper Symbol | Code Name | Description |
+|-------------|-----------|-------------|
+| $Y_{pt}$ | `outcome` | Outcome metric for project $p$ in period $t$ |
+| $\kappa$ | `kappa` | Inter-rater reliability (Cohen's kappa) for manual coding |
+| $n_{proj}$ | `n_projects` | Number of projects after selection and bot filtering |

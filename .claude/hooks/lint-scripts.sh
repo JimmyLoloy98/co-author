@@ -1,5 +1,5 @@
 #!/bin/bash
-# lint-scripts.sh — Mechanical grep-based linter for R, Python, Julia scripts.
+# lint-scripts.sh — Mechanical grep-based linter for Python and R scripts.
 # Catches prohibited patterns from coding standards before the coder-critic runs.
 # Exit code: always 0 (advisory). Output goes to stdout for agent consumption.
 #
@@ -19,14 +19,14 @@ if [[ -f "$TARGET" ]]; then
 elif [[ -d "$TARGET" ]]; then
   while IFS= read -r -d '' f; do
     FILES+=("$f")
-  done < <(find "$TARGET" -type f \( -name "*.R" -o -name "*.py" -o -name "*.jl" \) -print0 2>/dev/null)
+  done < <(find "$TARGET" -type f \( -name "*.py" -o -name "*.R" \) -print0 2>/dev/null)
 else
   echo "LINT: Target not found: $TARGET"
   exit 0
 fi
 
 if [[ ${#FILES[@]} -eq 0 ]]; then
-  echo "LINT: No R/Python/Julia scripts found in $TARGET"
+  echo "LINT: No Python/R scripts found in $TARGET"
   exit 0
 fi
 
@@ -200,35 +200,6 @@ lint_file() {
         add_finding_noline "HIGH" "Stochastic code detected but no seed set — use np.random.default_rng(SEED)"
       fi
     fi
-
-  fi
-
-  # ===== JULIA-SPECIFIC CHECKS =====
-  if [[ "$ext" == "jl" ]]; then
-
-    # cd()
-    while IFS=: read -r num line; do
-      [[ -n "$num" ]] && add_finding "HIGH" "$num" "cd() — use joinpath(@__DIR__, ...) instead"
-    done < <(grep -nE '^[[:space:]]*cd\(' "$file" 2>/dev/null | grep -v '^\s*#' || true)
-
-    # eval / @eval at runtime
-    while IFS=: read -r num line; do
-      [[ -n "$num" ]] && add_finding "MEDIUM" "$num" "eval/@eval at runtime — use multiple dispatch"
-    done < <(grep -n '@eval\|eval(' "$file" 2>/dev/null | grep -v '^\s*#' || true)
-
-    # Seed check
-    if grep -q 'rand(\|randn(\|shuffle' "$file" 2>/dev/null; then
-      if ! grep -q 'MersenneTwister\|Random\.seed!\|SEED' "$file" 2>/dev/null; then
-        add_finding_noline "HIGH" "Stochastic code detected but no RNG seed — use MersenneTwister(SEED)"
-      fi
-    fi
-
-    # using after line 30
-    while IFS=: read -r num _; do
-      if [[ -n "$num" && "$num" -gt 30 ]]; then
-        add_finding "LOW" "$num" "using/import after line 30 — put at top"
-      fi
-    done < <(grep -nE '^[[:space:]]*(using |import )' "$file" 2>/dev/null || true)
 
   fi
 

@@ -1,26 +1,39 @@
 # Figure Standards
 
-Publication-quality figures for economics papers. All figures must be directly includable in the LaTeX manuscript without manual editing.
+Publication-quality figures for empirical software engineering papers. All figures must be directly includable in the LaTeX manuscript without manual editing.
 
 ---
 
 ## Core Rules
 
-- **Never add titles or subtitles inside ggplot** -- use `labs(title = NULL, subtitle = NULL)`
+- **Never add titles or subtitles inside the figure** -- no `plt.title()` / `ax.set_title()` on single-panel figures, no ggplot `title`/`subtitle`
 - **Figure information goes in two places:**
-  1. **File name** -- descriptive, e.g., `fig1_hispanic_enrollment_ascm.pdf`
-  2. **LaTeX `\caption{}`** -- the authoritative title, numbered and editable without re-running R
-- **Panel labels are the exception** -- "Panel A: Employment" inside multi-panel figures (via `patchwork`, `cowplot`, etc.) is fine since they identify sub-panels, not the whole figure
-- **Axis labels must be publication-quality** -- "Employment Rate" not "emp_rate". Clean labels stay in the figure; titles and context go in the caption
+  1. **File name** -- descriptive, e.g., `fig_event_study_ci_adoption.pdf`
+  2. **LaTeX `\caption{}`** -- the authoritative title, numbered and editable without re-running the script
+- **Panel labels are the exception** -- "Panel A: Review latency" inside multi-panel figures (matplotlib subplots, `patchwork`/`cowplot` in R) is fine since they identify sub-panels, not the whole figure
+- **Axis labels must be publication-quality** -- "Review Latency (hours)" not "review_latency_hrs". Clean labels stay in the figure; titles and context go in the caption
 - **Use serif fonts** -- figures should match the paper's body text
-- **Output PDF for figures** -- vector graphics for LaTeX. Use `ggsave("fig.pdf")`. PNG only for raster content (maps, photos)
+- **Output PDF for figures** -- vector graphics for LaTeX. PNG only for raster content (heatmaps of huge matrices, screenshots)
 
 ---
 
-## Font and Theme
+## Font and Style
 
-Set serif fonts to match the paper's body text:
+**Primary (Python, matplotlib):**
+```python
+import matplotlib.pyplot as plt
 
+plt.rcParams.update({
+    "font.family": "serif",
+    "font.size": 11,
+    "axes.grid": True,
+    "grid.alpha": 0.3,
+    "axes.spines.top": False,
+    "axes.spines.right": False,
+})
+```
+
+**Secondary (R, ggplot2):**
 ```r
 theme_paper <- theme_minimal(base_family = "serif", base_size = 11) +
   theme(
@@ -33,121 +46,138 @@ theme_paper <- theme_minimal(base_family = "serif", base_size = 11) +
 theme_set(theme_paper)
 ```
 
-For Python (matplotlib):
-```python
-import matplotlib.pyplot as plt
-plt.rcParams.update({
-    "font.family": "serif",
-    "font.size": 11,
-    "axes.grid": True,
-    "grid.alpha": 0.3,
-})
-```
-
 ---
 
 ## Axis Labels
 
-- **Show all years on the x-axis** when the panel spans ~20 years or fewer:
-  ```r
-  scale_x_continuous(breaks = min_year:max_year)
+- **Show all periods on the x-axis** when the panel spans ~20 periods or fewer:
+  ```python
+  ax.set_xticks(range(min_period, max_period + 1))
   ```
   Only thin out labels when they overlap (roughly >20 ticks).
 
 - **Human-readable labels:**
-  - "Log Wages (2010 USD)" not "ln_wage_deflated"
-  - "Share of Female Workers" not "pct_female"
+  - "Log Review Latency (hours)" not "ln_review_latency"
+  - "Share of PRs Merged" not "pct_merged"
   - Include units where applicable
 
 ---
 
 ## Color
 
-- **Colorblind-friendly palettes** -- use `scale_color_brewer(palette = "Set2")`, `viridis`, or similar
+- **Colorblind-friendly palettes** -- matplotlib's `tab10`/`viridis`, Okabe-Ito values, or ColorBrewer `Set2`
 - **Never rely on red/green contrast alone**
 - **Color-independent design** -- figures must be readable in grayscale:
-  - Combine color with shape (`shape` aesthetic)
-  - Combine color with linetype (`linetype` aesthetic)
+  - Combine color with marker shape
+  - Combine color with linestyle
   - Series remain distinguishable without color
 
 Recommended palettes:
-```r
-# Option 1: ColorBrewer
-scale_color_brewer(palette = "Set2")
+```python
+# Option 1: Okabe-Ito (colorblind-safe)
+colors = ["#0072B2", "#D55E00", "#009E73", "#CC79A7"]
 
 # Option 2: Viridis (perceptually uniform)
-scale_color_viridis_d()
+plt.cm.viridis(np.linspace(0, 0.9, n_series))
+```
 
-# Option 3: Manual (maximum control)
-scale_color_manual(values = c("#1b9e77", "#d95f02", "#7570b3"))
+```r
+# R secondary
+scale_color_brewer(palette = "Set2")
+scale_color_viridis_d()
 ```
 
 ---
 
 ## Figure Width
 
-- **Single-panel:** `width=0.8\textwidth` in LaTeX, `width = 6, height = 4` in ggsave
+- **Single-panel:** `width=0.8\textwidth` in LaTeX, `figsize=(6, 4)` in matplotlib
 - **Side-by-side panels:** `width=0.48\textwidth` each in LaTeX
 - **Full-width landscape:** use `\begin{landscape}` environment
 
-In R:
-```r
-ggsave(
-  here("paper", "figures", "fig_event_study.pdf"),
-  plot = p,
-  width = 6,
-  height = 4,
-  device = cairo_pdf  # Better font embedding
-)
+In Python:
+```python
+fig, ax = plt.subplots(figsize=(6, 4))
+# ... plot ...
+fig.savefig(ROOT / "paper" / "figures" / "fig_event_study.pdf",
+            bbox_inches="tight")
 ```
 
 ---
 
 ## Common Figure Types
 
-### Event Study Plot
+### Event Study Plot (e.g., CI adoption)
+```python
+fig, ax = plt.subplots(figsize=(6, 4))
+ax.errorbar(es["relative_time"], es["estimate"],
+            yerr=1.96 * es["se"], fmt="o", capsize=3, color="#0072B2")
+ax.axhline(0, linestyle="--", color="gray")
+ax.axvline(-0.5, linestyle=":", color="gray")
+ax.set_xlabel("Quarters Relative to CI Adoption")
+ax.set_ylabel("Estimated Effect on Build Success Rate")
+fig.savefig(FIGURE_DIR / "fig_event_study_ci_adoption.pdf", bbox_inches="tight")
+```
+
+### Coefficient Plot
+```python
+fig, ax = plt.subplots(figsize=(6, 4))
+ax.errorbar(coefs["estimate"], range(len(coefs)),
+            xerr=1.96 * coefs["se"], fmt="o", capsize=3, color="#0072B2")
+ax.axvline(0, linestyle="--", color="gray")
+ax.set_yticks(range(len(coefs)))
+ax.set_yticklabels(coefs["label"])  # human-readable: "Uses CI", "Team size"
+ax.set_xlabel("Estimated Effect on Defect Density")
+fig.savefig(FIGURE_DIR / "fig_coefplot_main.pdf", bbox_inches="tight")
+```
+
+### RDD Plot (Python `rdrobust`)
+```python
+from rdrobust import rdplot
+
+rdplot(y=df["review_latency"], x=df["running_var"], c=cutoff,
+       x_label="Running Variable (e.g., PR size threshold)",
+       y_label="Review Latency (hours)", title="")
+```
+
+### R secondary equivalents
 ```r
+# Event study
 ggplot(es_data, aes(x = relative_time, y = estimate)) +
   geom_point(size = 2) +
   geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), width = 0.2) +
   geom_hline(yintercept = 0, linetype = "dashed", color = "gray50") +
   geom_vline(xintercept = -0.5, linetype = "dotted", color = "gray50") +
-  labs(x = "Periods Relative to Treatment", y = "Estimated Effect") +
+  labs(x = "Quarters Relative to CI Adoption", y = "Estimated Effect") +
   theme_paper
-```
 
-### Coefficient Plot
-```r
-library(modelsummary)
-modelplot(models, coef_omit = "Intercept") +
+# Coefficient plot
+modelsummary::modelplot(models, coef_omit = "Intercept") +
   geom_vline(xintercept = 0, linetype = "dashed") +
   theme_paper
-```
 
-### RDD Plot
-```r
-rdplot(y = df$outcome, x = df$running_var, c = cutoff,
-       x.label = "Running Variable", y.label = "Outcome")
+# RDD
+rdrobust::rdplot(y = df$outcome, x = df$running_var, c = cutoff,
+                 x.label = "Running Variable", y.label = "Outcome")
 ```
 
 ---
 
 ## Export
 
-```r
-# PDF for LaTeX inclusion (vector graphics)
-ggsave(
-  here("paper", "figures", "fig_main.pdf"),
-  plot = p,
-  width = 6, height = 4
-)
+```python
+# PDF for LaTeX inclusion (vector graphics) -- primary
+fig.savefig(ROOT / "paper" / "figures" / "fig_main.pdf", bbox_inches="tight")
 
 # PNG only for raster content
-ggsave(
-  here("paper", "figures", "map_treatment.png"),
-  plot = p_map,
-  width = 8, height = 6, dpi = 300
-)
+fig.savefig(ROOT / "paper" / "figures" / "heatmap_commit_activity.png",
+            dpi=300, bbox_inches="tight")
+```
+
+```r
+# R secondary
+ggsave(here("paper", "figures", "fig_main.pdf"),
+       plot = p, width = 6, height = 4, device = cairo_pdf)
 ```
 
 ---
@@ -157,8 +187,8 @@ ggsave(
 ```
 figures/
   descriptive/
-    fig_histogram_outcome.pdf
-    fig_time_series_treatment.pdf
+    fig_histogram_review_latency.pdf
+    fig_time_series_ci_adoption.pdf
   estimation/
     fig_event_study_main.pdf
     fig_coefplot_heterogeneity.pdf
@@ -178,10 +208,12 @@ Pattern: `fig_{description}.pdf`
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.8\textwidth]{figures/estimation/fig_event_study_main.pdf}
-\caption{Event study estimates of treatment effect. The figure plots point estimates
-and 95\% confidence intervals for each period relative to treatment. The dashed
-vertical line marks treatment onset. Pre-treatment coefficients are not statistically
-different from zero, consistent with parallel trends. Source: [data source].}
+\caption{Event study estimates of the effect of CI adoption on build success rate.
+The figure plots point estimates and 95\% confidence intervals for each quarter
+relative to CI adoption, with standard errors clustered at the project level. The
+dashed vertical line marks adoption. Pre-adoption coefficients are not statistically
+different from zero, consistent with parallel trends. Source: GitHub repository
+panel (SEART GHS sample).}
 \label{fig:event_study}
 \end{figure}
 ```
@@ -197,10 +229,10 @@ Key elements of figure captions (INV-2):
 
 | Pattern | Reason |
 |---------|--------|
-| `ggtitle()` or `labs(title = "...")` | Titles go in LaTeX `\caption{}` (INV-12) |
-| `plt.title()` in matplotlib | Same reason |
+| `plt.title()` / `ax.set_title()` on the whole figure | Titles go in LaTeX `\caption{}` (INV-12) |
+| `ggtitle()` or `labs(title = "...")` | Same reason |
 | Default ggplot theme (gray background) | Use `theme_minimal` or custom theme |
 | Red/green only color schemes | Not colorblind-friendly |
 | JPG format | Lossy compression; use PDF for vector, PNG for raster |
 | Axis labels with underscores | Human-readable labels required |
-| Legend inside plot area (overlapping data) | Use `legend.position = "bottom"` |
+| Legend inside plot area (overlapping data) | Place legend below the plot |

@@ -52,7 +52,7 @@ The verifier runs in two modes. Standard mode (checks 1-4) runs between phase tr
 - No orphan outputs (generated but not referenced)
 - No missing outputs (referenced but not generated)
 
-### 10. README Completeness (AEA Format)
+### 10. README Completeness (Artifact-Evaluation Format)
 - Data availability statement
 - Computational requirements (software, packages, hardware, runtime)
 - Description of programs (numbered, with inputs/outputs)

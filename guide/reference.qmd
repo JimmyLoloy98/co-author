@@ -9,7 +9,7 @@ subtitle: "Every command, what it dispatches, and what it produces"
 |---------|--------------|-------------|
 | `/new-project [topic]` | --- | Full orchestrated pipeline: idea to paper |
 | `/discover` | `interview`, `lit`, `data`, `ideate` | Discovery phase: interview, literature, data, ideation |
-| `/strategize` | `strategy`, `pap`, `pap interactive`, `theory` | Empirical strategy, pre-analysis plan, or formal theory section |
+| `/strategize` | `strategy`, `pap`, `pap interactive`, `theory` | Study design, pre-registration plan, or formal methods section |
 | `/analyze [dataset]` | `--dual [langs]` | End-to-end data analysis (single or parallel language) |
 | `/write [section]` | `intro`, `strategy`, `results`, `conclusion`, `data`, `model`, `abstract`, `full`, `humanize`, `style-guide` | Draft sections, strip AI patterns, or extract personal voice |
 | `/review [file]` | `--peer [journal]`, `--peer --r2`, `--stress [journal]`, `--methods`, `--theory`, `--proofread`, `--code`, `--replicate [lang]`, `--all` | Quality reviews (routes by target + flags) |
@@ -34,7 +34,7 @@ subtitle: "Every command, what it dispatches, and what it produces"
 1. Enter plan mode. Create the folder scaffold (`data/`, `scripts/`, `paper/`, `quality_reports/`). Draft a high-level plan and save it to `quality_reports/plans/`. Wait for user approval.
 2. Run `/discover interview` to produce the research specification and domain profile.
 3. Run `/discover lit` and `/discover data` in parallel --- librarian and explorer agents search for literature and datasets.
-4. Run `/strategize` to design the identification strategy. If the paper type calls for formal theory, also run `/strategize theory`.
+4. Run `/strategize` to design the study. If the paper type calls for formal methodological content, also run `/strategize theory`.
 5. Run `/analyze` and `/write` to implement the strategy in code and draft the manuscript.
 6. Run `/review --all` and `/review --peer` for quality scoring and simulated peer review.
 7. Optionally run `/submit` for journal targeting and replication packaging.
@@ -56,7 +56,7 @@ subtitle: "Every command, what it dispatches, and what it produces"
 - `quality_reports/research_spec_[topic].md`
 - `.claude/references/domain-profile.md`
 - `quality_reports/strategy_memo_[topic].md`
-- `scripts/R/` (analysis scripts)
+- `scripts/python/` (analysis scripts)
 - `paper/sections/` (LaTeX drafts)
 - `quality_reports/reviews/` (referee reports)
 
@@ -98,8 +98,8 @@ subtitle: "Every command, what it dispatches, and what it produces"
 
 - **Interview:** Research specification, domain profile (if still template), decision record documenting rejected alternatives.
 - **Literature:** Annotated bibliography with proximity scores, BibTeX entries, frontier map, interactive HTML report. Unverified citations marked `% UNVERIFIED`.
-- **Data:** Ranked dataset list with feasibility grades. Each dataset assessed on measurement validity, sample selection, external validity, identification compatibility, and known issues. Includes a rejection table for discarded datasets.
-- **Ideation:** 3--5 research questions ranked by feasibility and novelty, each with a candidate identification strategy.
+- **Data:** Ranked dataset list with feasibility grades. Each dataset assessed on measurement validity, sample selection, external validity, study-design compatibility, and known issues. Includes a rejection table for discarded datasets.
+- **Ideation:** 3--5 research questions ranked by feasibility and novelty, each with a candidate study design.
 
 **What to do next:** After `interview`, review the research spec and confirm it matches your vision. After `lit` or `data`, check coverage gaps flagged by the critic. Proceed to `/strategize` once discovery outputs exist.
 
@@ -122,10 +122,10 @@ subtitle: "Every command, what it dispatches, and what it produces"
 
 | Mode | Description |
 |------|-------------|
-| `strategy` (default) | Design identification strategy for any of the 4 paper types |
-| `pap [spec]` | Draft pre-analysis plan in AEA/OSF/EGAP format |
+| `strategy` (default) | Design the study for any supported paper type |
+| `pap [spec]` | Draft pre-registration plan in OSF / registered-report format |
 | `pap interactive` | Guided 6-question PAP interview, then draft |
-| `theory [target]` | Formal theory section: assumptions, theorems, proofs |
+| `theory [target]` | Formal methods section: assumptions, theorems, proofs |
 
 **Agents dispatched:**
 
@@ -137,17 +137,17 @@ subtitle: "Every command, what it dispatches, and what it produces"
 
 **Output artifacts:**
 
-- **Strategy:** Strategy memo (design choice, estimand, assumptions, pseudo-code, robustness plan, falsification tests, top 5 referee objections). Decision record with rejected alternatives and invalidation conditions. HTML report.
-- **PAP:** Full pre-analysis plan with 10 standard sections. Platform-adapted for AEA/OSF/EGAP. ASSUMED placeholders flagged with a pre-registration checklist. Adapted for observational studies when applicable.
+- **Strategy:** Strategy memo (design choice, estimand, assumptions, pseudo-code, robustness plan, threats to validity, top 5 referee objections). Decision record with rejected alternatives and invalidation conditions. HTML report.
+- **PAP:** Full pre-registration plan with 10 standard sections. Platform-adapted for OSF preregistration or a registered-report submission (EMSE/ESEM). ASSUMED placeholders flagged with a pre-registration checklist. Adapted for observational mining studies when applicable.
 - **Theory:** Theory memo, LaTeX files for assumptions/results/proofs, notation glossary. Decision record linking each theorem to its empirical claim. Theorist-critic score contributes 20% to weighted aggregate when present.
 
-**What to do next:** Review the strategy memo carefully --- it becomes the contract the Coder implements. Confirm the identification strategy, assumptions, and robustness plan. For theory mode, verify proof correctness and assumption minimality before proceeding.
+**What to do next:** Review the strategy memo carefully --- it becomes the contract the Coder implements. Confirm the study design, assumptions, and robustness plan. For theory mode, verify proof correctness and assumption minimality before proceeding.
 
 ---
 
 ## `/analyze`
 
-**Syntax:** `/analyze [dataset path or goal]` or `/analyze --dual r,python`
+**Syntax:** `/analyze [dataset path or goal]` or `/analyze --dual python,r`
 
 **What happens:**
 
@@ -162,23 +162,23 @@ subtitle: "Every command, what it dispatches, and what it produces"
 
 | Mode | Description |
 |------|-------------|
-| default | Single-language analysis (R by default, or as declared in `CLAUDE.md`) |
+| default | Single-language analysis (Python by default, or as declared in `CLAUDE.md`) |
 | `--dual [lang1,lang2]` | Parallel analysis in two languages with cross-language comparison |
 
 **Agents dispatched:**
 
 | Mode | Agents | Output Path |
 |------|--------|-------------|
-| default | Data-engineer + Coder + coder-critic | `scripts/R/`, `paper/tables/`, `paper/figures/`, `quality_reports/results_summary.md` |
+| default | Data-engineer + Coder + coder-critic | `scripts/python/`, `paper/tables/`, `paper/figures/`, `quality_reports/results_summary.md` |
 | `--dual` | Data-engineer + 2 Coders (parallel) + 2 coder-critics + comparison | Same as above for both languages + `quality_reports/cross_language_comparison.md` |
 
 **Output artifacts:**
 
-- Numbered scripts in `scripts/R/` (or language-appropriate directory) following the standard layout: `00_master`, `01_setup`, `02_data_preparation`, `03_descriptive`, `04_estimation`, `05_robustness`, `06_figures`, `07_tables`.
+- Numbered scripts in `scripts/python/` (or language-appropriate directory) following the standard layout: `00_master`, `01_setup`, `02_data_preparation`, `03_descriptive`, `04_estimation`, `05_robustness`, `06_figures`, `07_tables`.
 - Publication-ready tables (`.tex`) in `paper/tables/`. Bare `tabular` environments only --- no `\begin{table}` wrappers.
 - Publication-ready figures (`.pdf`) in `paper/figures/`. No titles inside figures.
-- `results_summary.md` with all point estimates, standard errors, sample sizes, and anomaly flags. This is the mandatory handoff artifact to the Writer.
-- `.rds` files for every computed object (model fits, cleaned data, summary statistics).
+- `results_summary.md` with all point estimates, standard errors, effect sizes with CIs, sample sizes, and anomaly flags. This is the mandatory handoff artifact to the Writer.
+- Serialized objects for every computed result (`.pkl` / `.parquet` in Python, `.rds` in R): model fits, cleaned data, summary statistics.
 - Code review report in `quality_reports/`.
 
 **What to do next:** Read `results_summary.md` to understand the findings. Check that estimates align with your expectations. Review the code review report for any unresolved issues. Proceed to `/write` to draft the paper.
@@ -192,7 +192,7 @@ subtitle: "Every command, what it dispatches, and what it produces"
 **What happens:**
 
 1. Read all available context: existing draft, research spec, strategy memo, domain profile, bibliography, generated tables and figures, `results_summary.md`.
-2. Detect paper type (reduced-form, structural, theory+empirics, descriptive) from the strategy memo.
+2. Detect paper type (causal mining, controlled experiment, survey, case study, descriptive/measurement, theory+empirics) from the strategy memo.
 3. Load personal style guide from `.claude/references/personal-style-guide.md` if it exists.
 4. Dispatch Writer with type-specific section templates and paragraph-level argument moves.
 5. Run cleanup pass to strip AI writing patterns.
@@ -203,11 +203,11 @@ subtitle: "Every command, what it dispatches, and what it produces"
 | Mode | Description |
 |------|-------------|
 | `intro` | Introduction with type-specific moves (preview, result, contribution) |
-| `strategy` | Empirical strategy (reduced-form), model + estimation (structural), or model + tests (theory+empirics) |
-| `results` | Results narration adapted to output type (tables, event studies, counterfactuals) |
+| `strategy` | Study design (causal mining), methodology (experiment, survey, case study), or model + tests (theory+empirics) |
+| `results` | Results narration adapted to output type (tables, event studies, subgroup analyses) |
 | `conclusion` | Conclusion with type-appropriate ending |
-| `data` | Data section (expanded for descriptive papers) |
-| `model` | Model section (structural or theory+empirics only) |
+| `data` | Data section (expanded for descriptive/measurement papers) |
+| `model` | Model section (theory+empirics or metric-validation only) |
 | `abstract` | Abstract, 100--150 words (requires other sections first) |
 | `full` | All sections in sequence with 3 drafting gates |
 | `humanize [file]` | Strip 24 AI writing patterns without rewriting content |
@@ -250,12 +250,12 @@ The most polymorphic skill in the system. Routing depends on file type and flags
 | Flag | Description |
 |------|-------------|
 | *(auto `.tex` paper)* | Comprehensive review: writer-critic + strategist-critic + verifier in parallel |
-| *(auto `.R`/`.py`/`.jl`)* | Code review: coder-critic standalone (categories 4--12) |
+| *(auto `.py`/`.R`)* | Code review: coder-critic standalone (categories 4--12) |
 | *(auto `.tex` in `talks/`)* | Talk review: storyteller-critic |
 | `--peer [journal]` | Full simulated peer review: editor desk review, referee dispatch, editorial decision |
 | `--peer --r2 [journal]` | R&R round 2: same referees remember prior reports |
 | `--stress [journal]` | Hostile stress test: adversarial dispositions, double critical pet peeves |
-| `--methods [file]` | Causal audit only: strategist-critic 4-phase review |
+| `--methods [file]` | Study-design audit only: strategist-critic 4-phase review (design, assumptions, inference, threats to validity) |
 | `--theory [file]` | Proof audit only: theorist-critic 4-phase review (logical validity, assumption minimality, citations, linkage) |
 | `--proofread [file]` | Manuscript polish only: writer-critic 6-category review |
 | `--code [file]` | Code review only: coder-critic categories 4--12 (no strategy comparison) |
@@ -272,7 +272,7 @@ The most polymorphic skill in the system. Routing depends on file type and flags
 | *(auto code)* | coder-critic | `quality_reports/[file]_code_review.md` |
 | `--peer` | Editor + domain-referee + methods-referee (3 sequential phases) | `quality_reports/reviews/YYYY-MM-DD_desk_review.md`, `_referee_domain.md`, `_referee_methods.md`, `_editorial_decision.md` |
 | `--peer --r2` | Same referees (reload dispositions from round 1) | `quality_reports/reviews/` with `_r2` suffix |
-| `--stress` | Editor + 2 adversarial referees (SKEPTIC disposition, 2 critical pet peeves each) | `quality_reports/reviews/` |
+| `--stress` | Editor + 2 adversarial referees (hostile dispositions, 2 critical pet peeves each) | `quality_reports/reviews/` |
 | `--methods` | strategist-critic | `quality_reports/[file]_strategy_review.md` |
 | `--theory` | theorist-critic | `quality_reports/theory_[topic]_review.md` |
 | `--proofread` | writer-critic | `quality_reports/[file]_proofread_report.md` |
@@ -280,7 +280,7 @@ The most polymorphic skill in the system. Routing depends on file type and flags
 | `--replicate` | Coder (replication) + coder-critic | Replicated script + comparison report |
 | `--all` | All critics in parallel (theorist-critic included when theory section exists) | `quality_reports/` + weighted aggregate score |
 
-**Peer review details:** The editor reads the paper and decides DESK REJECT or SEND TO REFEREES. If sent, the editor assigns each referee a disposition (STRUCTURAL, CREDIBILITY, MEASUREMENT, POLICY, THEORY, or SKEPTIC) plus one critical and one constructive pet peeve from the journal's referee pool. Both referees review independently and blind. Every major comment must include "what would change my mind." The editor then classifies each concern as FATAL, ADDRESSABLE, or TASTE and produces an editorial decision: Accept / Minor Revisions / Major Revisions / Reject. When a journal name is provided, the entire flow calibrates to that journal's profile.
+**Peer review details:** The editor reads the paper and decides DESK REJECT or SEND TO REFEREES. If sent, the editor assigns each referee a disposition (RIGOR, RELEVANCE, MEASUREMENT, GENERALIZABILITY, THEORY, or OPENSCIENCE) plus one critical and one constructive pet peeve from the venue's referee pool. Both referees review independently and blind. Every major comment must include "what would change my mind." The editor then classifies each concern as FATAL, ADDRESSABLE, or TASTE and produces an editorial decision: Accept / Minor Revisions / Major Revisions / Reject. When a venue name is provided, the entire flow calibrates to that venue's profile.
 
 **R&R rounds:** Round 2 skips desk review. Same referees check whether each prior concern was resolved, partially resolved, or not addressed. Round 3 (max) allows Accept, Minor, or Reject only.
 
@@ -292,7 +292,7 @@ The most polymorphic skill in the system. Routing depends on file type and flags
 | Peer Review | Yes | Editorial decision |
 | Stress Test | Advisory | Non-blocking |
 | Code Review | Yes | 80 commit |
-| Causal Audit | Yes | 80 commit |
+| Design Audit | Yes | 80 commit |
 | Proofread | Yes (paper), advisory (talks) | 80 commit |
 
 **What to do next:** Read the reports. For peer review, address MUST items first, then SHOULD items. For code review, fix critical and major issues, then re-run. For `--all`, check which components are below 80 and focus there.
@@ -385,8 +385,8 @@ Quarto RevealJS is the default output format. Beamer is available via `--beamer`
 **What happens:**
 
 1. Detect mode from arguments: `target`, `package`, `audit`, or `final`.
-2. For `target`: analyze contribution and recommend journals.
-3. For `package`: build AEA-compliant replication package with master script and documentation.
+2. For `target`: analyze contribution and recommend venues.
+3. For `package`: build an artifact-evaluation-ready replication package (ACM/IEEE artifact badge standards) with master script and documentation.
 4. For `audit`: run 10-point replication verification.
 5. For `final`: run comprehensive review + replication audit + score gate enforcement.
 
@@ -394,7 +394,7 @@ Quarto RevealJS is the default output format. Beamer is available via `--beamer`
 
 | Mode | Description |
 |------|-------------|
-| `target` | Rank 3 journals by contribution fit, methodology fit, audience, desk rejection risk |
+| `target` | Rank 3 venues by contribution fit, methodology fit, audience, desk rejection risk |
 | `package` | Build replication package: master script, README, data docs, codebook |
 | `audit` | 10-check verification of replication package |
 | `final [journal]` | Full gate: score >= 95, all components >= 80. Produces cover letter or blocks with issues |
@@ -403,19 +403,19 @@ Quarto RevealJS is the default output format. Beamer is available via `--beamer`
 
 | Mode | Agents | Output Path |
 |------|--------|-------------|
-| `target` | Orchestrator (journal selection) | `quality_reports/journal_recommendations_[date].md` |
+| `target` | Orchestrator (venue selection) | `quality_reports/journal_recommendations_[date].md` |
 | `package` | Coder + Verifier | `paper/replication/` |
 | `audit` | Verifier (10 checks) | Pass/fail audit report |
 | `final` | All agents + gate enforcement | `quality_reports/quality_gate_[date].md` + HTML report |
 
 **Output artifacts:**
 
-- **Target:** Ranked journal list with rationale.
+- **Target:** Ranked venue list with rationale.
 - **Package:** Master script, README, data documentation, codebook in `paper/replication/`.
 - **Audit:** Pass/fail on 10 checks (master script runs, tables reproduce, figures reproduce, README complete, data docs present, numbered script order, dependencies listed, runtime documented, output paths match, no hardcoded paths).
 - **Final:** Quality gate report. If PASS: cover letter draft + submission checklist. If FAIL: blocking issues listed.
 
-**What to do next:** For `target`, pick a journal and confirm before proceeding. For `package`, run `audit` to verify completeness. For `final`, if it passes, review the cover letter draft and submit. If it fails, fix blocking issues and re-run.
+**What to do next:** For `target`, pick a venue and confirm before proceeding. For `package`, run `audit` to verify completeness. For `final`, if it passes, review the cover letter draft and submit. If it fails, fix blocking issues and re-run.
 
 ---
 
@@ -432,7 +432,7 @@ Each subcommand is lightweight --- no multi-agent orchestration.
 | `commit [message]` | Stage changes, create commit. Notes quality score if available. Never stages `.env` or credentials. |
 | `compile [file]` | LaTeX compilation via latexmk. Routes to `paper/` or `paper/talks/` based on file location. |
 | `validate-bib` | Cross-reference all `\cite{}` keys against `Bibliography_base.bib`. Reports missing, unused, and duplicate entries. |
-| `lint [file\|dir]` | Grep-based mechanical linting for R/Python/Julia against prohibited patterns. Catches `setwd()`, absolute paths, missing seed, `T`/`F` literals, `sapply()`, and more. Severity-graded (HIGH/MEDIUM/LOW). Always advisory. |
+| `lint [file\|dir]` | Grep-based mechanical linting for Python/R against prohibited patterns. Catches `os.chdir()` / `setwd()`, absolute paths, missing seed, `T`/`F` literals, `sapply()`, and more. Severity-graded (HIGH/MEDIUM/LOW). Always advisory. |
 | `journal` | Regenerate the research journal timeline from quality reports and git history. |
 | `context` | Show current context usage and session health. Check whether auto-compact is approaching. |
 | `dashboard [--open]` | Regenerate the project dashboard HTML. Opens in browser by default. |

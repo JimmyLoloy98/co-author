@@ -56,39 +56,39 @@ Cross-reference all \cite{} keys in paper and talk files against Bibliography_ba
 Report: missing entries, unused entries, duplicate keys.
 
 ### `/tools lint [file|dir]` — Mechanical Code Linting
-Run grep-based checks on R/Python/Julia scripts against the coding standards' prohibited patterns. Catches mechanical violations before the coder-critic's judgment review.
+Run grep-based checks on Python/R scripts against the coding standards' prohibited patterns. Catches mechanical violations before the coder-critic's judgment review.
 
 ```bash
 "$CLAUDE_PROJECT_DIR"/.claude/hooks/lint-scripts.sh [target]
 ```
 
-- **Single file:** `/tools lint scripts/02_estimate.R`
+- **Single file:** `/tools lint scripts/python/02_estimate.py`
 - **Directory:** `/tools lint scripts/` (recursive)
 - **Default:** `/tools lint` (lints `scripts/`)
 
 **What it checks (drawn from `.claude/references/coding-standards-*.md`):**
 
-| Check | R | Python | Julia | Severity |
-|-------|---|--------|-------|----------|
-| Absolute paths | x | x | x | HIGH |
-| `setwd()` / `os.chdir()` / `cd()` | x | x | x | HIGH |
-| Missing seed (stochastic code) | x | x | x | HIGH |
-| `install.packages()` / `pip install` | x | x | | HIGH |
-| `rm(list = ls())` | x | | | MEDIUM |
-| `T`/`F` literals | x | | | MEDIUM |
-| `sapply()` | x | | | MEDIUM |
-| `attach()`/`detach()` | x | | | MEDIUM |
-| `<<-` global assignment | x | | | MEDIUM |
-| `stargazer` / `plyr` | x | | | MEDIUM |
-| `set.seed()` position (after line 30) | x | | | MEDIUM |
-| Wildcard imports | | x | | MEDIUM |
-| `np.random.seed()` global state | | x | | MEDIUM |
-| Bare `except:` | | x | | MEDIUM |
-| `eval`/`@eval` runtime | | | x | MEDIUM |
-| Late `library()`/`import`/`using` | x | x | x | LOW |
-| `print()` for status | x | | | LOW |
-| `require()` | x | | | LOW |
-| `1:n` patterns | x | | | LOW |
+| Check | Python | R | Severity |
+|-------|--------|---|----------|
+| Absolute paths | x | x | HIGH |
+| `os.chdir()` / `setwd()` | x | x | HIGH |
+| Missing seed (stochastic code) | x | x | HIGH |
+| `pip install` / `install.packages()` | x | x | HIGH |
+| `np.random.seed()` global state | x | | MEDIUM |
+| Wildcard imports | x | | MEDIUM |
+| Bare `except:` | x | | MEDIUM |
+| Mutable default arguments | x | | MEDIUM |
+| `rm(list = ls())` | | x | MEDIUM |
+| `T`/`F` literals | | x | MEDIUM |
+| `sapply()` | | x | MEDIUM |
+| `attach()`/`detach()` | | x | MEDIUM |
+| `<<-` global assignment | | x | MEDIUM |
+| `stargazer` / `plyr` | | x | MEDIUM |
+| `set.seed()` position (after line 30) | | x | MEDIUM |
+| Late `import`/`library()` | x | x | LOW |
+| `print()` for status | | x | LOW |
+| `require()` | | x | LOW |
+| `1:n` patterns | | x | LOW |
 
 **Output:** Findings by file with severity, line number, and fix suggestion. Always advisory (exit 0).
 

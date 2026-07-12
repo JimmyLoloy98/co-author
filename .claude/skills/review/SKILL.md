@@ -17,7 +17,7 @@ Unified review command that routes to the appropriate critic agents based on the
 
 ### Auto-detect by file type
 - `.tex` paper file → **Comprehensive review** (writer-critic + strategist-critic + Verifier)
-- `.R`, `.py`, `.do`, `.jl` file → **Code review** (coder-critic standalone, categories 4-12)
+- `.py`, `.R` file → **Code review** (coder-critic standalone, categories 4-12)
 - `.tex` talk file (in talks/) → **Talk review** (storyteller-critic)
 
 ### Explicit flags (override auto-detect)
@@ -58,7 +58,7 @@ The editor:
 
 #### Phase 2: Referee Reports
 The editor's referee assignment specifies for each referee:
-- **Disposition** (one of: STRUCTURAL, CREDIBILITY, MEASUREMENT, POLICY, THEORY, SKEPTIC)
+- **Disposition** (one of: RIGOR, RELEVANCE, MEASUREMENT, GENERALIZABILITY, THEORY, OPENSCIENCE)
 - **Critical pet peeve** (one from the critical pool)
 - **Constructive pet peeve** (one from the constructive pool)
 
@@ -151,7 +151,7 @@ you otherwise. Be specific about what would change your mind.
 
 This is for pre-submission stress testing. If the paper survives two hostile referees, it's ready.
 
-### Code Review (`--code` or auto-detect .R/.py/.do/.jl)
+### Code Review (`--code` or auto-detect .py/.R)
 
 **Step 1: Mechanical lint** — run the grep-based linter first:
 ```bash
@@ -282,7 +282,7 @@ The Verifier produces a binary PASS/FAIL result:
 - All tables render correctly
 - Bibliography compiles without errors
 
-**For code (`.R`, `.py`, `.do`, `.jl`):**
+**For code (`.py`, `.R`):**
 - Script runs without errors from start to finish
 - All packages loaded at top of script
 - No hardcoded absolute paths

@@ -10,7 +10,7 @@
 # Theory Memo: [Project Name]
 
 **Date:** [YYYY-MM-DD]
-**Paper type:** [econometric methods / theory+empirics / structural / methodological reduced-form]
+**Paper type:** [statistical/measurement methods / theory+empirics / metric-validation study / methodological causal design]
 
 ---
 

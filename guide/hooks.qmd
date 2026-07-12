@@ -208,7 +208,7 @@ The coder-critic catches prohibited patterns, but it runs later in the pipeline.
 ### How it works
 
 1. Reads the edited file path from the `CLAUDE_TOOL_ARG_FILE_PATH` environment variable (set by Claude Code)
-2. Filters by extension --- only runs on `.R`, `.py`, and `.jl` files
+2. Filters by extension --- only runs on `.py` and `.R` files
 3. Skips files inside `.claude/` (hooks, agents, and other configuration scripts should not be linted as analysis code)
 4. Delegates to `lint-scripts.sh` for the actual analysis
 
@@ -270,16 +270,8 @@ The linter is a grep-based static analyzer organized by language. Every check ma
 | MEDIUM | `from X import *` | Explicit imports |
 | MEDIUM | `np.random.seed()` | `np.random.default_rng(seed)` |
 | MEDIUM | Bare `except:` | Catch specific exceptions |
+| MEDIUM | Mutable default arguments | `None` default + create inside |
 | LOW | Import after line 30 | Put imports at top |
-
-#### Julia-specific checks
-
-| Severity | Pattern | Replacement |
-|----------|---------|-------------|
-| HIGH | `cd()` | `joinpath(@__DIR__, ...)` |
-| HIGH | Stochastic code without seed | `MersenneTwister(SEED)` |
-| MEDIUM | `eval`/`@eval` at runtime | Multiple dispatch |
-| LOW | `using`/`import` after line 30 | Put at top |
 
 ### Output format
 
@@ -568,7 +560,7 @@ A hook that runs the linter before every `git commit` command:
 
 ```bash
 #!/bin/bash
-# pre-commit-lint.sh --- Lint all staged R/Python/Julia files before commit
+# pre-commit-lint.sh --- Lint all staged Python/R files before commit
 
 INPUT=$(cat)
 TOOL=$(echo "$INPUT" | jq -r '.tool_name')

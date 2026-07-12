@@ -9,7 +9,7 @@ Extracted from `coder-critic.md`. Used by the coder-critic agent for code review
 **Before running categories:**
 
 - Read `.claude/rules/content-invariants.md` -- enforce INV-13 through INV-19. Cite invariant numbers (e.g., "violates INV-16") in report alongside deductions.
-- Identify the paper type (reduced-form, structural, theory+empirics, descriptive) from the strategy memo or the code itself. This determines which checks apply.
+- Identify the paper type (causal mining, experiment, survey, case study, repository mining, theory+empirics, descriptive) from the strategy memo or the code itself. This determines which checks apply.
 
 ---
 
@@ -27,19 +27,19 @@ Extracted from `coder-critic.md`. Used by the coder-critic agent for code review
 
 ### 3. Sanity Checks
 
-**Reduced-form:**
-- **Sign:** Does the direction of the effect make economic sense?
+**Causal (mining):**
+- **Sign:** Does the direction of the effect make engineering sense?
 - **Magnitude:** Is the effect size plausible? (Compare to literature)
 - **Dynamics:** Do event study plots look reasonable?
-- **Balance:** Are treatment and control groups comparable?
+- **Balance:** Are treatment and control projects comparable?
 - **First stage:** Is the F-stat strong enough? (for IV)
-- **Sample size:** Did you lose too many observations in cleaning?
+- **Sample size:** Did you lose too many observations after bot filtering and cleaning?
 
-**Structural:**
-- **Parameter values:** Are estimated parameters in plausible ranges from the literature?
-- **Model fit:** Does the model reproduce data moments not used in estimation?
-- **Convergence:** Did the optimizer converge? Multiple starting values tried?
-- **Counterfactual magnitudes:** Are simulated policy effects plausible?
+**Experiment:**
+- **Effect sizes:** Are Cliff's delta / Â12 and CIs computed and plausible?
+- **Randomization:** Is assignment to conditions implemented correctly?
+- **Power:** Was a power analysis run; is N adequate?
+- **Task validity:** Do the tasks and metrics measure the intended construct?
 
 **Theory + empirics:**
 - **Test results coherent?** Do findings tell a consistent story across predictions?
@@ -109,12 +109,12 @@ Extracted from `coder-critic.md`. Used by the coder-critic agent for code review
 - Bare `tabular` output (no `\begin{table}` wrapper)
 - Three-line format: `\toprule`, `\midrule`, `\bottomrule`
 - Human-readable variable labels
-- Significance stars match project standard (or disabled for AEA journals)
+- Significance stars match project standard; effect sizes with CIs reported for empirical-standards venues (EMSE/ESEM/MSR)
 - Standard errors labeled in notes
 
-### 13. RDS/Checkpoint Pattern
-- Every computed object has `saveRDS()`
-- Descriptive filenames, `file.path()` or `here()` for paths
+### 13. Intermediate-Output / Checkpoint Pattern
+- Every computed object persisted (`.parquet`/`.pkl` in Python; `saveRDS()` in R)
+- Descriptive filenames, `pathlib.Path` (Python) or `here()` (R) for paths
 - **Missing RDS = HIGH severity** (downstream rendering fails)
 
 ### 14. Comment Quality
@@ -157,13 +157,12 @@ Extracted from `coder-critic.md`. Used by the coder-critic agent for code review
 
 ## Paper-Type-Specific Checks
 
-### Structural Code
-- Optimization uses multiple starting values?
-- Convergence reported (gradient norm, iterations, exit code)?
-- Log-likelihood / moment function returns correct dimensions?
-- Counterfactual simulation re-solves the model (not just changing one variable)?
-- Welfare computation documented and correct?
-- Parameter standard errors computed correctly for the estimation method?
+### Repository-Mining Code
+- Repository selection criteria implemented as documented (not ad hoc)?
+- Bot filtering and developer identity merging applied before per-developer metrics?
+- Metric operationalization matches the paper's definition exactly?
+- API pulls pinned to a snapshot/date; rate-limit handling correct?
+- Effect sizes (Cliff's delta / Â12) and CIs computed, not just p-values?
 
 ### Simulation / Monte Carlo Code
 - DGP function is standalone (takes seed, returns data)?
@@ -186,7 +185,7 @@ When invoked via `/review [file.R]` or `/review --code`, run categories **5-16 o
 # Code Audit -- [Project Name]
 **Date:** [YYYY-MM-DD]
 **Reviewer:** coder-critic
-**Paper type:** [Reduced-form / Structural / Theory+Empirics / Descriptive]
+**Paper type:** [Causal (mining) / Experiment / Survey / Case study / Repository mining / Theory+Empirics / Descriptive]
 **Score:** [XX/100]
 **Mode:** [Full / Standalone (code quality only)]
 

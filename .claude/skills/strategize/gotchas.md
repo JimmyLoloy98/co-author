@@ -14,7 +14,7 @@ Known failure points and edge cases for identification strategy design.
 - Strategy memo requires ALL five sections (Estimand, Specification, Assumptions, Robustness Plan, Threats) -- missing any one fails the strategist-critic review.
 - Robustness plan ordering matters: most threatening to least threatening. The strategist-critic checks this.
 - The pseudo-code in the memo must be precise enough for the coder to implement without ambiguity. "Run a regression" is not pseudo-code.
-- Structural estimation strategies need explicit identification arguments -- "estimate by MLE" is not identification.
+- Repository-mining strategies making causal claims need an explicit causal design -- "regress outcome on adoption" is not identification.
 
 ## Pre-Analysis Plans
 
@@ -35,4 +35,4 @@ Known failure points and edge cases for identification strategy design.
 - "Why not just do [other design]?" -- the decision record should address this.
 - "Your instrument is invalid because [channel]" -- exclusion restriction arguments must be institutional, not just statistical.
 - "Parallel trends could fail because [reason]" -- the robustness plan should include a pre-committed response.
-- "Your structural model is too simple" -- justify scope explicitly, don't just defend the model.
+- "Your metric doesn't capture the construct" -- defend construct validity explicitly, don't just assert the metric is standard.

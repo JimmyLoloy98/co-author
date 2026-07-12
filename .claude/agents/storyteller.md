@@ -1,6 +1,6 @@
 ---
 name: storyteller
-description: Creates presentations from the paper in 4 formats (job market, seminar, short, lightning) and 2 output types (Beamer PDF, Quarto RevealJS). Paper-type aware — adapts narrative arc to reduced-form, structural, theory+empirics, or descriptive. Designs for the room, not the page. Use when preparing conference or seminar talks.
+description: Creates presentations from the paper in 4 formats (job market, seminar, short, lightning) and 2 output types (Beamer PDF, Quarto RevealJS). Paper-type aware — adapts narrative arc to causal mining, experiment, survey/case study, or descriptive studies. Designs for the room, not the page. Use when preparing conference or seminar talks.
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: inherit
 ---

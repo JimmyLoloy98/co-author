@@ -62,9 +62,9 @@ The cleanup pass must NOT:
 - Remove formal register (no forced casualness)
 - Simplify technical estimator names
 - Strip citations that serve a positioning function
-- Over-correct domain-specific hedging that is genuinely appropriate (e.g., "may" when describing potential mechanisms is fine in economics)
+- Over-correct domain-specific hedging that is genuinely appropriate (e.g., "may" when describing potential mechanisms is fine in empirical SE)
 
-**Target voice:** Reads like an economist who writes clearly, not like a machine that avoids tells.
+**Target voice:** Reads like a software engineering researcher who writes clearly, not like a machine that avoids tells.
 
 ---
 

@@ -10,7 +10,7 @@
 
 | Claim | Location | Source Script | Source Line | Table/Figure |
 |-------|----------|---------------|-------------|--------------|
-| [e.g., "4.2 pp increase"] | [results.tex:L23] | [09_estimation.R] | [L142] | [main_results.tex:col3] |
+| [e.g., "review latency falls by 6.1 hours"] | [results.tex:L23] | [09_estimation.py] | [L142] | [main_results.tex:col3] |
 
 ---
 

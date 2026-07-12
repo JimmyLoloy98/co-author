@@ -9,8 +9,8 @@ Every paragraph has one job. Before writing a paragraph, identify its type. Then
 | Type | Structure | What It Does |
 |------|-----------|-------------|
 | **Motivation** | Fact or puzzle --> why it matters --> what we don't know | Opens a section or subsection. Establishes the gap. |
-| **Identification preview** | We use [design] + [data] to estimate [parameter]. Key assumption: [X]. We test this by [Y]. | Tells the reader the strategy before the formalism. |
-| **Result statement** | Finding with magnitude + units --> comparison to prior estimates --> economic significance | Lead with the number, not the table reference. |
+| **Design preview** | We use [design] + [data] to answer [RQ]; the key threat is [X]. We address it by [Y]. | Tells the reader the study design before the formalism. |
+| **Result statement** | Finding with magnitude + units --> comparison to prior estimates --> practical significance | Lead with the number, not the table reference. |
 | **Literature positioning** | What [Author, Year] found --> how we differ --> what our contribution adds | Citations are surgical -- position the paper, don't pad the bibliography. |
 | **Mechanism** | The effect operates through [channel]. We show this by [test]. Alternative [X] ruled out by [Y]. | Explains *why*, not just *that*. |
 | **Robustness narration** | Core result survives [checks]. Main threat: [X]; Table N addresses this by [approach]. | Brief. Don't re-argue the result -- confirm it holds. |
@@ -20,8 +20,8 @@ Every paragraph has one job. Before writing a paragraph, identify its type. Then
 
 ## Sentence-Level Principles
 
-- **Lead with the finding, not the setup.** "Treatment increases wages by 4.2 pp" -- not "In order to investigate whether treatment might affect wages, we..."
-- **Active voice, concrete subjects.** "The policy increased enrollment" -- not "An increase in enrollment was observed"
+- **Lead with the finding, not the setup.** "CI adoption reduces median review latency by 6.1 hours" -- not "In order to investigate whether CI adoption might affect review latency, we..."
+- **Active voice, concrete subjects.** "The policy change increased build success rates" -- not "An increase in build success rates was observed"
 - **Vary sentence length.** Short sentences for key findings. Longer sentences for nuance and qualifications.
 - **One claim per sentence.** If a sentence has two claims, split it.
 - **No announcements.** Delete any sentence whose only job is to say what comes next ("In the next section, we will discuss...").
@@ -31,5 +31,6 @@ Every paragraph has one job. Before writing a paragraph, identify its type. Then
 
 ## Effect Size Conventions
 
-- Always report with units: "a 10% increase in X leads to a 2.3 percentage point decrease in Y"
-- Never: "the coefficient is significant"
+- Always report with units: "CI adoption reduces median review latency by 6.1 hours", "defect density falls by 0.4 defects per KLOC"
+- For group comparisons, report standardized effect sizes with CIs: "Cliff's delta = 0.38, 95% CI [0.21, 0.53]" or Vargha-Delaney $\hat{A}_{12}$
+- Never: "the coefficient is significant" or "the difference is statistically significant" without magnitude

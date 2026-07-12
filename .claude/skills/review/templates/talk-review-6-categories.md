@@ -9,7 +9,7 @@ Extracted from `storyteller-critic.md`. Used by the storyteller-critic agent for
 **Before running categories:**
 
 - Read `.claude/rules/content-invariants.md` -- enforce INV-20 and INV-21. Cite invariant numbers (e.g., "violates INV-20") in report alongside deductions.
-- Identify the paper type (reduced-form, structural, theory+empirics, descriptive). This determines which narrative arc checks apply.
+- Identify the paper type (causal mining, experiment, survey/case study, descriptive). This determines which narrative arc checks apply.
 
 ---
 
@@ -24,10 +24,10 @@ Extracted from `storyteller-critic.md`. Used by the storyteller-critic agent for
 
 | Paper Type | The talk must... |
 |-----------|-----------------|
-| Reduced-form | Lead with the policy question, show the variation, present the main result with magnitude |
-| Structural | Motivate why a model is needed, present the counterfactual as the payoff, include model fit |
-| Theory+empirics | Present competing explanations, show the distinguishing prediction, be honest about where the model fails |
-| Descriptive | Lead with what's missing in current measures, present the data innovation, show the most surprising fact |
+| Causal (mining) | Lead with the engineering question, show the variation/quasi-experiment, present the main result with effect size |
+| Experiment | Motivate the practice tested, describe the design (tasks, treatments), present effect sizes as the payoff |
+| Survey / Case study | Establish the phenomenon, describe the method and its validity, present the key findings |
+| Descriptive | Lead with what's missing in current measures, present the data/metric innovation, show the most surprising fact |
 
 ---
 
@@ -45,14 +45,14 @@ Extracted from `storyteller-critic.md`. Used by the storyteller-critic agent for
 ## 3. Content Fidelity
 
 - Do numbers on slides match the paper exactly?
-- Is the identification strategy correctly represented?
+- Is the study design correctly represented?
 - Are robustness results accurately summarized?
 - No results that aren't in the paper?
 
-**Structural papers additionally:**
-- Are parameter estimates on slides interpreted economically, not just reported?
-- Is model fit shown (predicted vs. actual)?
-- Are counterfactual magnitudes stated clearly?
+**Experiment talks additionally:**
+- Are effect sizes (Cliff's delta / Â12) on slides interpreted for practical significance, not just reported?
+- Is the task/treatment design shown clearly?
+- Are threats to validity acknowledged?
 
 **Theory+empirics additionally:**
 - Are predictions stated before evidence?
@@ -71,8 +71,8 @@ Extracted from `storyteller-critic.md`. Used by the storyteller-critic agent for
 
 | Paper Type | Keep | Cut |
 |-----------|------|-----|
-| Reduced-form | Main result + one robustness | Extra robustness, heterogeneity details |
-| Structural | Counterfactual + key mechanism | Estimation details, sensitivity (move to backup) |
+| Causal (mining) | Main result + one robustness | Extra robustness, heterogeneity details |
+| Experiment | Effect size + task design | Procedure minutiae, per-participant detail (move to backup) |
 | Theory+empirics | Distinguishing prediction + test | Other predictions, model derivation (move to backup) |
 | Descriptive | Most surprising fact + validation | Construction details, decompositions |
 
@@ -89,7 +89,7 @@ Extracted from `storyteller-critic.md`. Used by the storyteller-critic agent for
 ## 6. Paper-Type Coherence
 
 - Does the narrative arc match the paper type?
-- Structural talk without counterfactuals? Flag it -- that's the whole point of having a model.
+- Experiment talk without a clear task/treatment description? Flag it -- the audience can't judge the result without knowing what participants did.
 - Theory talk without the distinguishing prediction? Flag it -- the audience needs to know what's unique.
 - Descriptive talk that makes causal claims? Flag it -- the paper doesn't have a design for that.
 
@@ -101,7 +101,7 @@ Extracted from `storyteller-critic.md`. Used by the storyteller-critic agent for
 # Talk Review -- [Format]
 **Date:** [YYYY-MM-DD]
 **Reviewer:** storyteller-critic
-**Paper type:** [Reduced-form / Structural / Theory+Empirics / Descriptive]
+**Paper type:** [Causal (mining) / Experiment / Survey / Case study / Descriptive]
 **Score:** [XX/100] (advisory)
 
 ## Narrative Arc: [Correct for type / Wrong arc]

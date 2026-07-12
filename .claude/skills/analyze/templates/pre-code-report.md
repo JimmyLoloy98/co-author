@@ -15,22 +15,22 @@
 ### Inputs Read
 **Strategy memo:** [path or "not found"]
 **Domain profile:** [loaded / not found]
-**Coding standards:** [R / Python / Julia — loaded from .claude/references/coding-standards-{lang}.md]
-**Language:** [R / Python / Julia — from CLAUDE.md, default R]
-**Paper type:** [reduced-form / structural / theory+empirics / descriptive]
+**Coding standards:** [Python / R — loaded from .claude/references/coding-standards-{lang}.md]
+**Language:** [Python / R — from CLAUDE.md, default Python]
+**Study type:** [causal (DiD/IV/RDD) / experiment / survey / case study / repository mining / descriptive]
 
 ### Strategic Alignment
-**Research question:** [one sentence from strategy memo]
-**Identification strategy:** [one sentence — e.g., "staggered DiD using Callaway-Sant'Anna"]
-**Estimand:** [ATT / ATE / LATE / CATE / structural parameter — from memo]
+**Research question:** [one sentence from strategy memo — e.g., "effect of CI adoption on build success rate"]
+**Study design:** [one sentence — e.g., "staggered DiD using Callaway-Sant'Anna around CI adoption dates"]
+**Estimand:** [ATT / ATE / LATE / CATE / descriptive quantity — from memo]
 
 ### Variable Mapping
 | Paper Symbol | Code Name | Description | Source |
 |-------------|-----------|-------------|--------|
-| $Y_{it}$ | [name] | [outcome] | [dataset/column] |
-| $D_{it}$ | [name] | [treatment] | [how constructed] |
-| $X_{it}$ | [name] | [controls] | [columns] |
-| $\alpha_i$ | [name] | [unit FE] | [absorbed] |
+| $Y_{pt}$ | [name] | [outcome, e.g., build success rate] | [dataset/column] |
+| $D_{pt}$ | [name] | [treatment, e.g., uses CI] | [how constructed] |
+| $X_{pt}$ | [name] | [controls, e.g., team size, project age] | [columns] |
+| $\alpha_p$ | [name] | [project FE] | [absorbed] |
 | $\gamma_t$ | [name] | [time FE] | [absorbed] |
 
 **Naming map confirms:** [yes / no — do planned code names match paper notation?]
@@ -43,9 +43,9 @@
 **Sample restrictions from memo:** [list each restriction]
 
 ### Estimation Plan
-**Estimator:** [from strategy memo — e.g., "Callaway-Sant'Anna att_gt()"]
-**R packages required:** [list with versions if critical]
-**Clustering level:** [from memo]
+**Estimator:** [from strategy memo — e.g., "Callaway-Sant'Anna group-time ATT (Python `differences`/`csdid`, R `did::att_gt()`)"]
+**Packages required:** [Python list (pandas, pyfixest, statsmodels, ...); note versions if critical]
+**Clustering level:** [from memo — typically project]
 **Fixed effects:** [from memo]
 
 ### Robustness Checks Required
@@ -72,5 +72,5 @@ Proceeding to implementation.
 1. **This report is mandatory.** The coder-critic checks for its existence.
 2. **If strategy memo is missing**, proceed with user's description but flag: "No memo found. Strategic alignment checks (coder-critic categories 1-3) cannot be verified."
 3. **If data is missing or inaccessible**, stop and report the blocker. Do not generate placeholder analysis.
-4. **The variable mapping becomes the naming map** in `01_setup.R`. No deviations allowed downstream.
+4. **The variable mapping becomes the naming map** in `01_setup.py` (or `01_setup.R`). No deviations allowed downstream.
 5. **Feasibility issues are reported here**, not discovered mid-implementation.

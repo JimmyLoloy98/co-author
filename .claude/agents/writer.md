@@ -50,12 +50,14 @@ The Writer operates in two modes:
 
 Identify the paper type from the strategy memo before drafting. The type determines which section templates and argument moves apply.
 
-| Type | Signature | Strategy section becomes |
+| Type | Signature | Study-design section becomes |
 |------|-----------|------------------------|
-| **Reduced-form** | DiD, IV, RDD, event study | Empirical Strategy |
-| **Structural** | Model estimation, counterfactual simulations | Model + Estimation |
-| **Theory + empirics** | Propositions tested with data | Model + Empirical Tests |
-| **Descriptive / measurement** | New data, new measure, stylized facts | Measurement / Data Construction |
+| **Causal (mining)** | DiD, IV, RDD, event study on repository/telemetry data | Study Design + Threats to Validity |
+| **Experiment** | Human-subjects controlled experiment, tasks, treatments | Experimental Design + Threats to Validity |
+| **Survey / Case study** | Instrument + sampling, or case protocol | Method + Threats to Validity |
+| **Repository mining (observational)** | Large-N correlational analysis of software artifacts | Study Design + Threats to Validity |
+| **Theory + empirics** | Behavioral/socio-technical theory tested with data | Theory + Empirical Tests |
+| **Descriptive / measurement** | New data, new metric, stylized facts | Measurement / Data Construction |
 
 ---
 

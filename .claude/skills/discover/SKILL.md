@@ -29,8 +29,8 @@ Conduct a structured conversational interview to formalize a research idea.
 Interview structure:
 1. **Big Picture** (1-2 questions): "What phenomenon are you trying to understand?" "Why does this matter?"
 2. **Theoretical Motivation** (1-2 questions): "What's your intuition for why X happens?" "What would standard theory predict?"
-3. **Data and Setting** (1-2 questions): "What data do you have access to?" "Is there a specific institutional setting?"
-4. **Identification** (1-2 questions): "Is there a natural experiment or policy change you can exploit?" "What's the biggest threat to causal interpretation?"
+3. **Data and Setting** (1-2 questions): "What data do you have access to (repositories, telemetry, developers to survey)?" "Is there a specific project, ecosystem, or organization?"
+4. **Study Design** (1-2 questions): "Is this a controlled experiment, a survey, a case study, or repository mining? For causal questions, is there a quasi-experiment (a platform or policy change) you can exploit?" "What's the biggest threat to validity?"
 5. **Expected Results** (1-2 questions): "What would you expect to find?" "What would surprise you?"
 6. **Contribution** (1 question): "How does this differ from what's been done? What gap are you filling?"
 
@@ -77,9 +77,9 @@ Workflow:
 2. Check `master_supporting_docs/` for uploaded papers
 3. Read `bibliography_base.bib` for papers already in the project
 4. Dispatch Librarian to search:
-   - Top-5 journals (AER, Econometrica, QJE, JPE, REStud)
-   - Field journals from domain-profile.md
-   - NBER/SSRN/IZA working papers
+   - Top venues (IEEE TSE, ACM TOSEM, EMSE; ICSE, FSE, ASE, ESEM, MSR)
+   - Field journals and conferences from domain-profile.md
+   - arXiv cs.SE, ACM Digital Library, IEEE Xplore, DBLP, Semantic Scholar
    - **Citation chains** — forward and backward citation tracking from key papers. Follow: (a) backward citations (what do the key papers cite?), and (b) forward citations (who cites the key papers?). This is often the most productive search vector.
 5. Assign **proximity scores** to each paper:
    - **1** — Directly competes (same question, similar method)
@@ -106,7 +106,7 @@ Output format for each paper:
 - **Journal:** [venue]
 - **Proximity:** [1-5 score]
 - **Main contribution:** [1-2 sentences]
-- **Identification strategy:** [DiD / IV / RDD / SC / descriptive]
+- **Study design:** [Experiment / Survey / Case study / Mining / Causal (DiD/IV/RDD) / SLR / Descriptive]
 - **Key finding:** [result with effect size]
 - **Relevance:** [why it matters for our research]
 ```
@@ -120,13 +120,13 @@ Find and assess datasets for the research question.
 Workflow:
 1. Read research spec and strategy memo if they exist
 2. Read `.claude/references/domain-profile.md` for common data sources in the field
-3. Understand what variables are needed: treatment, outcome, controls, time period, geography
+3. Understand what variables are needed: treatment/exposure, outcome metrics, controls, time window, unit of analysis (project, developer, PR, commit)
 4. Dispatch Explorer to search across source categories:
-   - Public microdata (CPS, ACS, NHIS, MEPS, etc.)
-   - Administrative data (Medicare claims, tax records, court records)
-   - Survey data (RAND HRS, PSID, Add Health, NLSY)
-   - International (World Bank, OECD, Eurostat)
-   - Novel/alternative (satellite imagery, web scraping, proprietary)
+   - Repository data (GitHub REST/GraphQL API, GH Archive, SEART GHS curated samples, World of Code)
+   - Developer surveys (Stack Overflow Developer Survey, JetBrains, DORA State of DevOps)
+   - Build/CI telemetry (TravisTorrent, GitHub Actions logs)
+   - Issue/process data (Jira issue-tracker datasets, Bugzilla, code-review platforms)
+   - Novel/alternative (company telemetry under NDA, IDE plugins, web scraping)
 5. For each dataset found, report:
    - Name, provider, access level (public/restricted)
    - Key variables available
@@ -134,14 +134,14 @@ Workflow:
    - **Feasibility grade:**
      - **A** — Ready to use (public download, documented, standard format)
      - **B** — Accessible with effort (application required, moderate cost, needs cleaning)
-     - **C** — Restricted but obtainable (FSRDC, data use agreement, IRB approval)
+     - **C** — Restricted but obtainable (data use agreement, IRB/ethics approval, company partnership)
      - **D** — Very difficult (proprietary, requires partnership, rare access)
    - Strengths and limitations
 6. Dispatch explorer-critic to critique each proposed dataset using the **5-point assessment:**
-   1. **Measurement validity** — Does the variable actually measure what we need?
-   2. **Sample selection** — Who is in the data? Who is missing?
-   3. **External validity** — Can we generalize from this sample?
-   4. **Identification compatibility** — Does this data support the proposed design?
+   1. **Measurement validity** — Does the metric actually measure the construct we need (e.g., does commit count measure productivity)?
+   2. **Sample selection** — Which projects/developers are in the data? Bots filtered? Identities merged? Survivorship?
+   3. **External validity** — Can we generalize beyond this OSS/company sample?
+   4. **Study-design compatibility** — Does this data support the proposed design (causal, experiment, survey, mining)?
    5. **Known issues** — Documented problems with this dataset in the literature
 7. Save exploration to `quality_reports/data_exploration_[topic].md`
 

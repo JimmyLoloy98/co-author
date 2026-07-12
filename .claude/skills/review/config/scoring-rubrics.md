@@ -24,7 +24,7 @@ Consolidated deduction tables from all critic agents. Each critic starts at 100 
 |-------|-----------|
 | Voice tone mismatch (when style guide exists) | -10 |
 | AI vocabulary (3+ instances) | -2 per, max -10 |
-| Missing JEL codes or keywords (INV-6) | -5 |
+| Missing keywords or ACM CCS concepts (INV-6) | -5 |
 | Claim-source map entries missing | -5 per, max -20 |
 | Broken links in claim-source map | -10 per |
 | Sentence length median off by >5 words | -5 |
@@ -58,7 +58,7 @@ Consolidated deduction tables from all critic agents. Each critic starts at 100 
 | Hardcoded absolute paths | -20 |
 | Missing robustness checks from memo | -15 |
 | Wrong clustering level | -15 |
-| Optimizer didn't converge (structural) | -15 |
+| No effect sizes / no power analysis (experiment) | -15 |
 | No paper-to-code naming map | -10 |
 
 ### Major (code quality)
@@ -155,7 +155,7 @@ The strategist-critic does not use a point-deduction rubric. Instead, it classif
 | Wrong narrative arc for paper type | -15 |
 | No hook in first 2 slides | -15 |
 | Talk wrong length for format | -15 |
-| Structural talk missing counterfactual slide | -10 |
+| Experiment talk missing task/treatment description slide | -10 |
 | Theory talk missing distinguishing prediction | -10 |
 | Text overflow | -10 per slide (max -30) |
 | Missing backup slides | -5 |

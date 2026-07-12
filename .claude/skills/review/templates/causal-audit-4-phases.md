@@ -6,7 +6,7 @@ Extracted from `strategist-critic.md`. Used by the strategist-critic agent for s
 
 ## Key Principle
 
-Verify the core design holds BEFORE checking robustness details. A paper with violated parallel trends doesn't need Oster bounds feedback. A structural paper with unidentified parameters doesn't need counterfactual sensitivity analysis.
+Verify the core design holds BEFORE checking robustness details. A paper with violated parallel trends doesn't need Oster bounds feedback. A mining study whose key metric lacks construct validity doesn't need effect-size sensitivity analysis.
 
 **Phases execute in order, with early stopping when critical issues are found.**
 
@@ -17,34 +17,34 @@ Verify the core design holds BEFORE checking robustness details. A paper with vi
 _Always runs. This is triage._
 
 **First:** Identify the paper type:
-- **Reduced-form** -- causal inference via exogenous variation
-- **Structural** -- model estimation and counterfactual simulation
-- **Theory + empirics** -- model predictions tested with data
-- **Descriptive / measurement** -- new data, facts, or measures
+- **Causal (mining)** -- causal inference on repository/telemetry data via exogenous variation
+- **Repository mining (observational)** -- large-N correlational analysis of software artifacts
+- **Theory + empirics** -- a theory of developer/team behavior tested with data
+- **Descriptive / measurement** -- new data, facts, or metric definitions
 
 **Then** identify the specifics:
 
-### Reduced-form:
+### Causal (mining):
 1. **Causal design(s) used:** DiD (classic or staggered), IV, RDD, Synthetic Control, Event Study, or combinations
 2. **Estimand:** ATT, ATE, LATE -- what parameter is being estimated?
-3. **Treatment:** What is the treatment? Who receives it? When?
-4. **Control:** What is the comparison group?
-5. **Outcome(s):** What outcomes are studied?
+3. **Treatment:** What is the treatment (e.g., CI adoption, code-review policy)? Who receives it? When?
+4. **Control:** What is the comparison group of projects/developers?
+5. **Outcome(s):** What SE outcomes are studied (review latency, defect density, delivery performance)?
 
-### Structural:
-1. **Model class:** Demand estimation, dynamic discrete choice, general equilibrium, matching, entry/exit, auction
-2. **Key parameters:** What is being estimated? (elasticities, preference parameters, cost parameters)
-3. **Estimation method:** MLE, GMM, SMM, indirect inference, Bayesian, calibration
-4. **Counterfactual:** What policy simulation is the payoff?
+### Repository mining (observational):
+1. **Sample:** Selection criteria, size, sampling frame (SEART GHS-style?)
+2. **Metrics:** What is being measured and how is it operationalized?
+3. **Model:** Regression, correlation, classification -- what relates predictors to outcomes?
+4. **Confounds:** Which project/developer confounders are controlled?
 
 ### Theory + empirics:
-1. **Model type:** Partial equilibrium, general equilibrium, game theory, mechanism design
-2. **Testable predictions:** What does the model predict?
+1. **Theory type:** Team-behavior theory, motivation theory, socio-technical model, cognitive model
+2. **Testable predictions:** What does the theory predict?
 3. **Empirical tests:** How are predictions tested?
 
 ### Descriptive / measurement:
 1. **What is being measured?** Concept and operationalization
-2. **What's new?** New data, new measure, or new decomposition
+2. **What's new?** New data, new metric, or new decomposition
 3. **What beliefs does this revise?**
 
 If the paper uses multiple designs (e.g., DiD + Event Study), list them in order of prominence. The PRIMARY design is reviewed first in Phase 2.
@@ -116,39 +116,30 @@ For the identified design, check ONLY the critical assumptions (the 3-5 things t
 - [ ] Confidence intervals plotted (not just point estimates)
 - [ ] For staggered settings: heterogeneity-robust event study used
 
-### Step 2A (Structural): Model and Identification Check
+### Step 2A (Repository Mining / Observational): Data Curation and Confound Check
 
-_Use this checklist when the paper type is Structural._
+_Use this checklist when the paper type is a repository-mining or other observational study._
 
-#### Model Specification
-- [ ] **Environment defined:** agents, timing, information structure, market structure
-- [ ] **Functional forms justified economically** -- not just "tractable" or "standard." Why Cobb-Douglas vs. CES? Why logit vs. probit? Does the functional form drive the counterfactual results?
-- [ ] **Decision problem well-posed:** objective, choice variables, constraints all stated
-- [ ] **Equilibrium concept stated and justified** -- Nash, competitive, Walrasian. Is uniqueness established or assumed?
-- [ ] **Solution method appropriate** for the model's complexity
+#### Sample Construction
+- [ ] **Repository selection criteria stated and justified** -- stars are NOT a proxy for engineered software (perils-of-mining literature). SEART GHS-style criteria or equivalent.
+- [ ] **Bots filtered** -- automated accounts (dependabot, CI bots) removed or explicitly retained with justification.
+- [ ] **Developer identities merged** -- aliases across commits/emails reconciled before any per-developer metric.
+- [ ] **Survivorship bias addressed** -- sampling only active/popular projects biases estimates; discussed or corrected.
+- [ ] **Time window justified** -- release-cycle effects, platform changes, and project-age confounds accounted for.
 
-#### Identification of Structural Parameters
-- [ ] **Each key parameter has an identified source of variation.** "The [data variation] identifies [parameter] because [economic logic]."
-- [ ] **Exclusion restrictions stated and defended** -- what is excluded from one equation but appears in another?
-- [ ] **Functional form identification vs. data identification:** Are results coming from the model's functional form assumptions or from actual data variation? Flag if the former.
-- [ ] **Collinearity of parameters:** Can the data separately identify all estimated parameters, or are some mechanically related?
+#### Metric Construct Validity
+- [ ] **Each metric measures the claimed construct.** "Commits/LOC/churn measures [productivity/quality] because [argument]" -- not asserted, argued.
+- [ ] **Operationalization documented** -- exact query, thresholds, and edge-case handling reproducible.
+- [ ] **Skew handled** -- LOC, churn, and resolution-time distributions are heavy-tailed; log/rank transforms or non-parametric methods used.
 
-#### Estimation
-- [ ] **Estimation method justified:** Why MLE/GMM/SMM/indirect inference? Is the method consistent given the model?
-- [ ] **Moment conditions:** If GMM/SMM, are moments clearly stated? Are there more moments than parameters (overidentification)?
-- [ ] **Computational details:** Optimization algorithm, starting values (sensitivity checked?), convergence criteria
-- [ ] **Standard errors appropriate:** Delta method, bootstrap, outer product of gradients -- match the estimation method
+#### Confounding and Causal Claims
+- [ ] **Confounders identified and controlled** -- project size, age, domain, team size, language. Or an explicit causal design (DiD/IV/RDD around a platform or policy change).
+- [ ] **Causal language matched to design.** Observational correlation must NOT be reported with causal verbs unless a causal design supports it (INV-8).
+- [ ] **Clustering at the project level** when observations are commits/PRs/issues nested within projects.
 
-#### Model Fit
-- [ ] **In-sample fit shown:** predicted vs. actual for moments NOT used in estimation
-- [ ] **Fit quality assessed honestly** -- not just "the model fits well" but which dimensions it fits and which it misses
-- [ ] **Out-of-sample validation if possible:** different time period, different market, held-out sample
-
-#### Counterfactual Credibility
-- [ ] **Counterfactuals within the support of the data?** Or requiring extrapolation beyond observed variation?
-- [ ] **Lucas critique addressed:** Do agents re-optimize under the counterfactual policy?
-- [ ] **Sensitivity of counterfactuals to parameter values:** How much do results change with +/-1 SE on key parameters?
-- [ ] **Welfare metric defined and justified:** Consumer surplus, compensating variation, total surplus -- which and why?
+#### Reproducibility
+- [ ] **Mining scripts and dataset shared** -- or a clear reason they cannot be (private telemetry, ethics).
+- [ ] **Snapshot/version pinned** -- API pulls are time-dependent; the extraction date and tool versions are recorded.
 
 ### Step 2A (Theory + Empirics): Prediction and Test Check
 
@@ -196,26 +187,26 @@ _Use this checklist when the paper type is Descriptive / Measurement._
 
 #### Causal Language Check
 - [ ] **No causal claims without a design.** Descriptive papers use "associated with," "predicts," "correlates with" -- not "causes" or "leads to"
-- [ ] **If the paper does make causal claims:** it needs a design, and the reduced-form checklists above apply to that component
+- [ ] **If the paper does make causal claims:** it needs a design, and the causal-design checklists above apply to that component
 
 ### Step 2B: Sanity Check (MANDATORY)
 
 **Before proceeding to Phase 3, verify that results actually make sense.** This is the most important step -- it catches nonsensical results that pass all the checklist items above.
 
-**Reduced-form:**
-- [ ] **Sign:** Does the direction of the effect make economic sense? If a job training program reduces employment, that needs explanation.
-- [ ] **Magnitude:** Is the effect size plausible? A minimum wage increase that reduces employment by 50% is implausible. Use back-of-envelope reasoning.
+**Causal (mining) designs:**
+- [ ] **Sign:** Does the direction of the effect make engineering sense? If adopting code review *increases* defect density, that needs explanation.
+- [ ] **Magnitude:** Is the effect size plausible? A CI-adoption effect that cuts review latency by 95% is implausible. Use back-of-envelope reasoning.
 - [ ] **Dynamics (event studies):** Do pre-treatment coefficients look like noise around zero, or is there a clear pre-trend? Do post-treatment coefficients tell a coherent story (e.g., gradual phase-in, immediate jump, fade-out)?
   - **Flag:** Pre-event coefficients trending toward the post-treatment effect -> parallel trends likely violated
   - **Flag:** Post-treatment coefficients that bounce wildly with no pattern -> specification may be wrong
   - **Flag:** Event study that "looks good" only because confidence intervals are enormous
 - [ ] **Consistency:** Do results across specifications tell a consistent story, or does the main result only survive one particular specification?
 
-**Structural:**
-- [ ] **Parameter values economically sensible?** Elasticities, risk aversion, discount factors -- do they fall in plausible ranges from the literature?
-- [ ] **Model fit:** Does the estimated model reproduce the data moments it wasn't fitted to? If model fit is poor, counterfactuals are not credible.
-- [ ] **Counterfactual magnitudes plausible?** A policy that eliminates 90% of welfare loss is suspicious. Back-of-envelope check.
-- [ ] **Sensitivity:** Do counterfactual results change dramatically with small parameter changes? If yes, the results depend on estimation precision more than economic forces.
+**Experiments and mining (descriptive):**
+- [ ] **Effect sizes reported and plausible?** Cliff's delta / Â12 with CIs -- do they fall in ranges consistent with the literature and with practical significance?
+- [ ] **Distributions inspected:** Heavy-tailed SE metrics can make means misleading; were medians/quantiles and non-parametric tests used where appropriate?
+- [ ] **Practical significance addressed?** A statistically significant 0.3-hour change in review latency may be practically negligible -- is this discussed?
+- [ ] **Sensitivity:** Do results change dramatically with alternative metric definitions or repository samples? If yes, the finding depends on operationalization more than the phenomenon.
 
 **Theory + empirics:**
 - [ ] **Test results coherent?** Do the empirical findings tell a consistent story across predictions?
@@ -227,7 +218,7 @@ _Use this checklist when the paper type is Descriptive / Measurement._
 - [ ] **Magnitudes meaningful?** Are the documented patterns large enough to matter for theory or policy?
 - [ ] **Patterns robust to measurement choices?** Do the key facts survive alternative constructions?
 
-**Early stop logic:** If Phase 2 finds CRITICAL issues (e.g., clear parallel trends violation, nonsensical effect sizes, first-stage F < 5, unidentified structural parameters, all-confirming weak tests), the report should **focus on these**. Still run Phases 3-4 but explicitly note: "These issues should be resolved before the following feedback becomes relevant."
+**Early stop logic:** If Phase 2 finds CRITICAL issues (e.g., clear parallel trends violation, nonsensical effect sizes, first-stage F < 5, key metric lacking construct validity, unfiltered bots corrupting the sample, all-confirming weak tests), the report should **focus on these**. Still run Phases 3-4 but explicitly note: "These issues should be resolved before the following feedback becomes relevant."
 
 ---
 
@@ -235,19 +226,19 @@ _Use this checklist when the paper type is Descriptive / Measurement._
 
 _Runs after Phase 2. If Phase 2 found critical issues, still review but flag that design issues take priority._
 
-### Structural-Specific Inference (when paper type is Structural)
-- [ ] **Standard errors method matches estimation:** Delta method for MLE, GMM formula for GMM, bootstrap for simulation-based estimators
-- [ ] **Bootstrap valid for this model?** Non-smooth objective functions may require subsampling instead
-- [ ] **Overidentification test:** If more moments than parameters, Hansen J-test or equivalent reported
-- [ ] **Sensitivity to starting values:** Multiple starting points tried? Global vs. local optima concern addressed?
-- [ ] **Computational convergence:** Tolerance criteria stated, gradient near zero at solution
+### Observational-Mining Inference (when paper type is Repository Mining)
+- [ ] **Standard errors match the nesting:** Cluster-robust at the project level when commits/PRs/issues are nested within projects
+- [ ] **Effect sizes reported:** Cliff's delta / Vargha-Delaney Â12 with CIs, not p-values alone
+- [ ] **Multiple comparisons corrected:** Benjamini-Hochberg or Bonferroni when many metrics/RQs are tested
+- [ ] **Non-parametric tests where warranted:** Mann-Whitney/Wilcoxon for heavy-tailed SE metrics
+- [ ] **Sensitivity to metric definition:** Do conclusions survive alternative operationalizations?
 
 ### Theory + Empirics Inference (when paper type is Theory + Empirics)
 - [ ] **Each test has appropriate inference** -- clustering, standard errors match the data structure
 - [ ] **Joint test of multiple predictions:** If testing several predictions, are they tested jointly or only marginally?
 - [ ] **Power assessment:** Could the data detect the predicted effect size? If power is low, a null result is uninformative.
 
-### Reduced-Form Standard Errors & Clustering
+### Causal-Design Standard Errors & Clustering
 - [ ] Clustering level justified (matches treatment assignment unit)
 - [ ] For DiD: cluster at treatment-group level, not individual
 - [ ] When few clusters ($\leq 50$): wild cluster bootstrap (`boottest`, `fwildclusterboot`)
@@ -311,22 +302,22 @@ _Runs after Phase 2. If Phase 2 found critical issues, still review but flag tha
 
 _Runs only if Phases 2-3 have no unresolved CRITICAL issues. Lower priority -- a working paper missing some of these is MINOR, not MAJOR._
 
-### Reduced-Form Robustness Checks
+### Causal-Design Robustness Checks
 - [ ] Oster (2019) bounds: $\delta$ and $R^2_{\max}$ reported for key coefficients
 - [ ] Placebo tests: wrong treatment group, wrong treatment timing
 - [ ] Alternative specifications: varying controls, functional form
 - [ ] Alternative samples: dropping outliers, different time windows
 - [ ] Alternative clustering: robustness to different cluster levels
 - [ ] Coefficient stability: adding controls shouldn't drastically change estimates
-- [ ] Leave-one-out: drop one state/country/industry at a time (for aggregate designs)
+- [ ] Leave-one-out: drop one project/organization/language at a time (for aggregate designs)
 
-### Structural Robustness Checks
-- [ ] **Functional form sensitivity:** Do counterfactual results change under alternative functional forms (e.g., CES vs. Cobb-Douglas, random coefficients vs. fixed)?
-- [ ] **Alternative estimation methods:** Does a different estimator (e.g., MLE vs. GMM) give similar parameter estimates?
-- [ ] **Subsample stability:** Do parameters estimated on different subsamples or time periods remain stable?
-- [ ] **Reduced-form consistency:** Do the model's predictions match simple reduced-form evidence where available?
-- [ ] **Sensitivity of counterfactuals:** Report counterfactual results at +/-1 SE of key parameters. If results flip sign, the conclusion depends on estimation precision -- flag it.
-- [ ] **Comparison to simpler models:** Does a simpler model produce similar counterfactual conclusions? If so, what does the richer model buy?
+### Repository-Mining Robustness Checks
+- [ ] **Sample sensitivity:** Do results change under an alternative repository sample (different selection criteria, stricter engineered-project filter)?
+- [ ] **Bot-filter sensitivity:** Do results survive stricter/looser bot and identity-merge rules?
+- [ ] **Metric-definition sensitivity:** Does a different operationalization of the key metric change the conclusion?
+- [ ] **Subsample stability:** Do estimates hold across languages, domains, project ages, and time windows?
+- [ ] **Alternative models:** Does a simpler model produce similar conclusions? If so, what does the richer model buy?
+- [ ] **Survivorship check:** Are results driven by only the surviving/active projects?
 
 ### Theory + Empirics Robustness Checks
 - [ ] **Alternative model specifications:** Do predictions survive under relaxed assumptions?
@@ -344,7 +335,7 @@ _Runs only if Phases 2-3 have no unresolved CRITICAL issues. Lower priority -- a
 - [ ] Internal validity threats enumerated and addressed
 - [ ] External validity discussed: who/what/where does this generalize to?
 - [ ] Spillover / general equilibrium effects considered
-- [ ] Selection on unobservables: Oster bounds or similar sensitivity (reduced-form)
+- [ ] Selection on unobservables: Oster bounds or similar sensitivity (causal designs)
 - [ ] Measurement error: attenuation bias discussed if relevant
 - [ ] Sample selection: Heckman-style concerns if applicable
 
@@ -379,9 +370,9 @@ Save report to `quality_reports/[FILENAME]_strategy_review.md`:
 **Reviewer:** strategist-critic
 
 ## Phase 1: Claim Identification
-- **Paper type:** [Reduced-form / Structural / Theory+Empirics / Descriptive]
-- **Design(s) or approach:** [DiD (staggered) / IV / RDD / BLP demand / Dynamic model / Propositions+tests / Measurement / etc.]
-- **Estimand or target:** [ATT / ATE / LATE / elasticity / welfare / stylized fact]
+- **Paper type:** [Causal (mining) / Repository mining (observational) / Theory+Empirics / Descriptive]
+- **Design(s) or approach:** [DiD (staggered) / IV / RDD / Experiment / Survey / Case study / Mining regression / Propositions+tests / Measurement / etc.]
+- **Estimand or target:** [ATT / ATE / LATE / effect size (Cliff's delta, Â12) / association / stylized fact]
 - **Treatment or variation:** [description]
 - **Control or comparison:** [description]
 - **Outcome(s):** [description]

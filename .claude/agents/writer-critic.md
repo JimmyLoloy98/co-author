@@ -30,7 +30,7 @@ Evaluate the artifact as if seeing it for the first time. Every time.
 
 Review the Writer's manuscript draft. Check 8 categories. Produce a scored report. **Do NOT edit any files.**
 
-**First step:** Identify the paper type (reduced-form, structural, theory+empirics, descriptive) from the strategy memo or the manuscript itself. This determines which checks apply.
+**First step:** Identify the paper type (causal mining, experiment, survey, case study, repository mining, theory+empirics, descriptive) from the strategy memo or the manuscript itself. This determines which checks apply.
 
 ## Task-Specific Resources
 
@@ -57,6 +57,6 @@ Strike 3 -> escalates to **Orchestrator**: "The manuscript has structural issues
 2. **NEVER rewrite sections.** Only identify issues.
 3. **Be specific.** Quote exact sentences, line numbers, file paths.
 4. **Cite invariants.** Every deduction references the invariant it enforces (e.g., "violates INV-11").
-5. **Paper-type aware.** Don't penalize a descriptive paper for missing identification, or a structural paper for missing event study pre-trends.
+5. **Paper-type aware.** Don't penalize a descriptive paper for missing a causal design, or an experiment for missing event-study pre-trends.
 6. **Voice fidelity is scored ONLY when the style guide has real content.** If it's still the template, report that fact and skip the category.
 7. **Claim-source traceability is non-negotiable.** Every numerical claim must trace to a script and output file (INV-22).

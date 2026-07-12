@@ -10,7 +10,7 @@ subtitle: "Common workflows and what to expect"
 ```{mermaid}
 %%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#f0eee6', 'primaryTextColor': '#141413', 'primaryBorderColor': '#d1cfc5', 'lineColor': '#d97757', 'secondaryColor': '#faf9f5', 'tertiaryColor': '#e6e3da', 'edgeLabelBackground': '#faf9f5', 'clusterBkg': '#f0eee6', 'clusterBorder': '#d1cfc5'}}}%%
 flowchart LR
-    D(Discovery<br/>Literature + Data):::phase1 --> S(Strategy<br/>Identification Design):::phase2
+    D(Discovery<br/>Literature + Data):::phase1 --> S(Strategy<br/>Study Design):::phase2
     S --> E(Execution<br/>Code + Paper):::phase3
     E --> R(Review<br/>Simulated Peer Review):::phase4
     R -->|score >= 95| SUB(Submission<br/>Package + Gate):::phase5
@@ -28,26 +28,26 @@ You can enter at any stage. Each phase produces structured output saved to `qual
 
 ## Your First Review
 
-**Simulated peer review catches fatal problems before real referees do.** One command dispatches two independent reviewers calibrated to your target journal.
+**Simulated peer review catches fatal problems before real referees do.** One command dispatches two independent reviewers calibrated to your target venue.
 
-**What you type:** `/review --peer JHR paper/main.tex`
+**What you type:** `/review --peer EMSE paper/main.tex`
 
-**What happens behind the scenes:** The editor does a desk review --- checks scope, assigns each referee a disposition (Credibility, Policy, Skeptic, etc.) and pet peeves that shape their review personality. Two blind referees then review independently: a domain-referee (subject expertise) and a methods-referee (empirical methods). Neither sees the other's report.
+**What happens behind the scenes:** The editor does a desk review --- checks scope, assigns each referee a disposition (Rigor, Relevance, OpenScience, etc.) and pet peeves that shape their review personality. Two blind referees then review independently: a domain-referee (subject expertise) and a methods-referee (empirical methods). Neither sees the other's report.
 
 **What you see:** An editorial decision that classifies every concern as FATAL, ADDRESSABLE, or TASTE:
 
 ```markdown
-# Editorial Decision --- Journal of Human Resources
+# Editorial Decision --- Empirical Software Engineering
 **Decision:** Major Revisions
 
-## Referee 1 (domain-referee) --- Disposition: Policy
-- ADDRESSABLE: Missing discussion of policy implementation costs (Section 6)
-- ADDRESSABLE: Literature review omits Garcia & Santos (2024) on same population
-- TASTE: Prefer confidence intervals over p-values
+## Referee 1 (domain-referee) --- Disposition: Relevance
+- ADDRESSABLE: Missing discussion of practitioner implications (Section 6)
+- ADDRESSABLE: Literature review omits Garcia & Santos (2024) on same developer population
+- TASTE: Prefer effect sizes (Cliff's delta) with CIs over bare p-values
 
-## Referee 2 (methods-referee) --- Disposition: Credibility
+## Referee 2 (methods-referee) --- Disposition: Rigor
 - FATAL: Pre-trends test shows significant coefficient at t-2 (Figure 3)
-- ADDRESSABLE: Clustering at state level with 12 states --- use wild bootstrap
+- ADDRESSABLE: Clustering at project level with 12 projects --- use wild bootstrap
 - ADDRESSABLE: No sensitivity analysis (Rambachan & Roth 2023)
 
 ## Action Items
@@ -65,18 +65,18 @@ You can enter at any stage. Each phase produces structured output saved to `qual
 
 **What you type:** `/write intro`
 
-**What happens behind the scenes:** Claude reads your paper type (reduced-form, structural, descriptive, or theory+empirics), your strategy memo, and any existing sections. The writer drafts using paragraph-level argument moves --- each paragraph has one job:
+**What happens behind the scenes:** Claude reads your paper type (causal mining, controlled experiment, survey, case study, descriptive/measurement, or theory+empirics), your strategy memo, and any existing sections. The writer drafts using paragraph-level argument moves --- each paragraph has one job:
 
 ```
-Paragraph 1 [MOTIVATION]: Big question --- why this matters for policy
+Paragraph 1 [MOTIVATION]: Big question --- why this matters for software practice
 Paragraph 2 [GAP]: What the literature hasn't answered
 Paragraph 3 [THIS PAPER]: "We estimate..." --- result preview with magnitude
-Paragraph 4 [IDENTIFICATION]: Source of variation, one-sentence design
+Paragraph 4 [DESIGN]: Source of variation, one-sentence study design
 Paragraph 5 [PREVIEW]: Key finding with effect size
 Paragraph 6 [ROADMAP]: Section-by-section guide
 ```
 
-A cleanup pass then strips 24 known AI writing patterns (hedging, filler phrases, over-signposting). The argument structure adapts to your paper type --- reduced-form leads with identification and result, structural leads with the model and counterfactual, descriptive leads with the data innovation and key fact.
+A cleanup pass then strips 24 known AI writing patterns (hedging, filler phrases, over-signposting). The argument structure adapts to your paper type --- causal mining leads with the design and result, experiments lead with the task and treatment effect, surveys lead with the population and constructs, descriptive papers lead with the data innovation and key fact.
 
 **What you see:** A LaTeX section file saved to `paper/sections/intro.tex`, plus a claim-source map linking every numerical claim to a specific script and output file.
 
@@ -91,7 +91,7 @@ A cleanup pass then strips 24 known AI writing patterns (hedging, filler phrases
 **What happens behind the scenes:** The pipeline runs through all five phases, pausing for your approval at each transition:
 
 1. **Discovery** --- librarian and explorer run in parallel, searching for literature and datasets. Their critics review coverage and feasibility. You see an annotated bibliography and ranked dataset list.
-2. **Strategy** --- the strategist classifies your paper type and designs the identification strategy. The strategist-critic runs a 4-phase adversarial review. You see a strategy memo with assumptions, pseudo-code, and a robustness plan.
+2. **Strategy** --- the strategist classifies your paper type and designs the study. The strategist-critic runs a 4-phase adversarial review. You see a strategy memo with assumptions, pseudo-code, threats to validity, and a robustness plan.
 3. **Execution** --- the coder translates the strategy memo into numbered scripts; the writer drafts the manuscript from actual results. Both are reviewed by their paired critics. You see scripts, tables, figures, and LaTeX sections.
 4. **Review** --- the editor dispatches two blind referees. You see an editorial decision with classified concerns and action items.
 5. **Submission** --- the verifier runs a 10-check audit on the replication package. The final gate enforces score >= 95 with all components >= 80.
@@ -111,7 +111,7 @@ A cleanup pass then strips 24 known AI writing patterns (hedging, filler phrases
 | Classification | Routed to | Example |
 |---------------|-----------|---------|
 | NEW ANALYSIS | Coder (flagged for your approval first) | "Control for X" or "Show results by subgroup" |
-| CLARIFICATION | Writer | "Explain your exclusion restriction more clearly" |
+| CLARIFICATION | Writer | "Explain your construct validity argument more clearly" |
 | REWRITE | Writer | "Restructure Section 4" |
 | DISAGREE | You (mandatory review) | "Your identification assumption is violated" |
 | MINOR | Writer | Typos, formatting, citation additions |
@@ -128,7 +128,7 @@ A cleanup pass then strips 24 known AI writing patterns (hedging, filler phrases
 
 **What you type:** `/talk create seminar`
 
-**What happens behind the scenes:** The storyteller reads your paper and builds a slide deck in the specified format (seminar: 25--35 slides, 30--45 min). It applies format-specific narrative arcs --- reduced-form talks lead with the policy question, structural talks build the model step by step, descriptive talks open with the data innovation. The storyteller-critic reviews for overflow, content fidelity, and narrative flow.
+**What happens behind the scenes:** The storyteller reads your paper and builds a slide deck in the specified format (seminar: 25--35 slides, 30--45 min). It applies format-specific narrative arcs --- causal mining talks lead with the practitioner question, experiment talks walk through the task and treatment, descriptive talks open with the data innovation. The storyteller-critic reviews for overflow, content fidelity, and narrative flow.
 
 **What you see:** A Quarto RevealJS `.qmd` file in `paper/quarto/` with speaker notes on every slide, plus a critic review report. Talk scores are advisory --- they do not block commits.
 

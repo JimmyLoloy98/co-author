@@ -9,7 +9,7 @@
 ```markdown
 # Robustness Plan: [Project Name]
 
-**Design:** [DiD / IV / RDD / SC / Event Study / Structural / Descriptive]
+**Design:** [DiD / IV / RDD / SC / Event Study / Experiment / Survey / Case study / Mining regression / Descriptive]
 **Date:** [YYYY-MM-DD]
 
 ## Ordered Checks (Most Threatening First)
@@ -76,8 +76,11 @@ Bandwidth sensitivity (0.5x to 1.5x), donut hole, polynomial order, placebo cuto
 ### Event Study
 Pre-trends formal test, Rambachan-Roth, alternative leads/lags, alternative reference period, placebo event timing.
 
-### Structural
-Alternative functional forms, alternative estimation method, subsample stability, counterfactual sensitivity to parameters, comparison to reduced-form.
+### Experiment
+Non-parametric robustness (rank-based tests), outlier/influential-participant handling, alternative effect-size measures, sensitivity to task ordering, attention/manipulation-check filtering.
+
+### Repository mining
+Alternative repository samples (stricter engineered-project filter), bot-filter and identity-merge sensitivity, alternative metric operationalizations, subsample stability across languages/domains, survivorship check.
 
 ### Descriptive
 Alternative construction choices, alternative data sources, temporal stability, sensitivity to outliers, subgroup consistency.

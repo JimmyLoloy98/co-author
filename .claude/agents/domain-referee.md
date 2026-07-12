@@ -57,7 +57,7 @@ Review the complete paper manuscript from the **domain expertise** perspective. 
 - Do the results have economic meaning (not just statistical significance)?
 - Are the mechanisms plausible?
 - Does the paper discuss policy implications appropriately?
-- Are welfare implications considered (if applicable)?
+- Are implications for practitioners considered (if applicable)?
 - Does the interpretation match what the design actually identifies?
 
 ### 4. External Validity & Scope (15%)

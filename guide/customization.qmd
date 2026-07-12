@@ -34,9 +34,9 @@ Detailed rules, agent definitions, coding standards, table formatting --- those 
 The template ships with bracketed placeholders. Replace each one:
 
 ```markdown
-**Project:** [YOUR PROJECT NAME]         # e.g., "Minimum Wage and Employment"
-**Institution:** [YOUR INSTITUTION]       # e.g., "Vanderbilt University"
-**Field:** [YOUR FIELD]                   # e.g., "Labor Economics"
+**Project:** [YOUR PROJECT NAME]         # e.g., "Code Review and Defect Rates"
+**Institution:** [YOUR INSTITUTION]       # e.g., "Your University"
+**Field:** [YOUR FIELD]                   # e.g., "Developer Productivity"
 ```
 
 The Beamer environments table and current project state table follow the same pattern --- replace the bracketed entries with your own values. Delete rows you do not use.
@@ -45,7 +45,7 @@ The Beamer environments table and current project state table follow the same pa
 
 # Domain Profile {#sec-domain-profile}
 
-The domain profile (`.claude/references/domain-profile.md`) calibrates every agent to your research field. Economics is the default. The same template works for finance, accounting, marketing, or management --- you fill in different journals, data sources, and conventions.
+The domain profile (`.claude/references/domain-profile.md`) calibrates every agent to your research field. Empirical software engineering is the default. The same template works for adjacent fields like HCI, CSCW, or information systems --- you fill in different venues, data sources, and conventions.
 
 Two ways to populate it:
 
@@ -57,104 +57,100 @@ Two ways to populate it:
 **Field.** Primary subfield and adjacent subfields whose methods and journals overlap.
 
 ```markdown
-**Primary:** Labor Economics
-**Adjacent subfields:** Public Finance, Education, Development
+**Primary:** Developer Productivity
+**Adjacent subfields:** DevOps, Human Aspects of SE, Software Team Management
 ```
 
-**Target Journals.** Ranked by tier. The Orchestrator uses this for journal selection; the Librarian prioritizes these in searches.
+**Target Venues.** Ranked by tier. The Orchestrator uses this for venue selection; the Librarian prioritizes these in searches.
 
 ```markdown
-| Tier | Journals |
-|------|----------|
-| Top-5 | AER, Econometrica, JPE, QJE, REStud |
-| Top field | JHR, JLE, AEJ:Applied |
-| Strong field | RESTAT, JPubE, JDE |
+| Tier | Venues |
+|------|--------|
+| Top journals | IEEE TSE, ACM TOSEM, EMSE |
+| Top conferences | ICSE, FSE, ASE, ESEM, MSR |
+| Strong journals | JSS, IST |
 ```
 
-**Common Data Sources.** What the Explorer looks for first, and what the explorer-critic knows the quirks of.
+**Common Data Sources.** What the Explorer looks for first, and what the explorer-critic knows the quirks of (GitHub, GH Archive, SEART GHS, Stack Overflow surveys, CI logs, issue trackers, DORA reports).
 
-**Common Identification Strategies.** What the Strategist considers first. Each row names a strategy, a typical application, and the key assumption to defend.
+**Common Study Designs.** What the Strategist considers first. Each row names a design, a typical application, and the key threat to validity to defend.
 
-**Field Conventions.** Norms the Coder and Writer follow --- clustering level, functional form for costs, whether to report LPM alongside logit, whether welfare analysis is expected.
+**Field Conventions.** Norms the Coder and Writer follow --- project-level clustering, effect sizes (Cliff's delta, Â12) with CIs, non-parametric tests for skewed metrics, whether an explicit threats-to-validity section is expected (it is).
 
 **Notation Conventions.** Symbol-meaning pairs the Writer enforces. Include anti-patterns to prevent --- for example, "Don't use $y$ without subscripts."
 
 **Seminal References.** Papers the Librarian ensures are cited when relevant. Keep this to 5--15 entries --- the landmark papers in your area.
 
-**Theoretical Foundational References.** Anchor references for the Theorist agent when building or reviewing a formal theory section. Only needed for papers with a theory section (econometric methods, structural, theory+empirics). Leave empty to fall back on the generic econometric theory defaults baked into the theorist agent.
+**Methodological Foundational References.** Anchor references for the Theorist agent when building or reviewing a formal methods section. Only needed for papers with formal statistical content (statistical/measurement methods, metric-validation studies, methodological causal designs). Leave empty to fall back on the generic statistical-methods defaults baked into the theorist agent.
 
 ```markdown
 | Topic | Anchor references |
 |-------|------------------|
-| DiD with staggered adoption | Callaway & Sant'Anna (2021); Sant'Anna & Zhao (2020) |
-| Semiparametric efficiency | Newey (1990, 1994); Bickel et al. (1993) |
+| DiD with staggered adoption (MSR causal studies) | Callaway & Sant'Anna (2021) |
+| Effect sizes for tool comparisons | Vargha & Delaney (2000); Arcuri & Briand (2014) |
 ```
 
 **Paper Author Team.** Surnames and topics they are foundational on. The theorist-critic uses this to calibrate respect --- if you are among the reference literature on a topic, the critic avoids lecturing you on your own contributions.
 
-**Field-Specific Referee Concerns.** Common objections the domain-referee and methods-referee should watch for. Examples: "Selection into treatment," "External validity --- Medicaid population is not general population."
+**Field-Specific Referee Concerns.** Common objections the domain-referee and methods-referee should watch for. Examples: "Does commit count actually measure productivity?", "External validity --- does this hold beyond open source?", "Were bots filtered and developer identities merged?"
 
 **Quality Tolerance Thresholds.** Numerical precision standards for cross-language replication and simulation checks.
 
 ---
 
-# Journal Profiles {#sec-journal-profiles}
+# Venue Profiles {#sec-journal-profiles}
 
-The journal profiles file (`.claude/references/journal-profiles.md`) calibrates the Editor, domain-referee, and methods-referee when you run `/review --peer [journal]`.
+The venue profiles file (`.claude/references/journal-profiles.md`) calibrates the Editor, domain-referee, and methods-referee when you run `/review --peer [venue]`.
 
 ## Anatomy of a profile entry
 
-Each profile is a structured block of plain-language fields. Here is the AER entry:
+Each profile is a structured block of plain-language fields. Here is the IEEE TSE entry:
 
 ```markdown
-### American Economic Review (AER)
-**Focus:** All fields of economics --- the broadest audience
-**Bar:** Must interest economists outside your subfield. Big question,
-        clean execution, clear contribution.
+### IEEE Transactions on Software Engineering (TSE)
+**Focus:** All areas of software engineering --- the field's broadest journal
+**Bar:** Must interest SE researchers outside your subarea. Significant
+        question, rigorous execution, clear contribution over the state of the art.
 **Domain referee adjusts:** Contribution must be broad. Literature
-        positioning against the *general* frontier, not just subfield.
-**Methods referee adjusts:** Identification must be convincing to
-        non-specialists. Clean, transparent design preferred over
-        technically complex one.
-**Typical concerns:** "Why should economists outside this field care?"
-        "Is the contribution big enough for AER?"
-**Referee pool:** CREDIBILITY (high), POLICY (medium), STRUCTURAL (medium),
-        MEASUREMENT (low), THEORY (low), SKEPTIC (low)
-**Table format:** No significance stars. Standard errors in parentheses.
+        positioning against the *general* SE frontier, not just subarea.
+**Methods referee adjusts:** Study design must convince non-specialists.
+        Explicit threats-to-validity section mandatory. Replication package expected.
+**Typical concerns:** "Why should SE researchers outside this subarea care?"
+        "Are the threats to validity honestly discussed?"
+**Referee pool:** RIGOR (high), GENERALIZABILITY (medium), MEASUREMENT (medium),
+        THEORY (low), RELEVANCE (low), OPENSCIENCE (medium)
 ```
 
-The **Referee pool** weights determine which dispositions the simulated editor draws when selecting referees. The two referees always get different dispositions. Six dispositions exist: STRUCTURAL, CREDIBILITY, MEASUREMENT, POLICY, THEORY, SKEPTIC. See [Agents](agents.qmd) for how the editor uses these.
+The **Referee pool** weights determine which dispositions the simulated editor draws when selecting referees. The two referees always get different dispositions. Six dispositions exist: RIGOR, RELEVANCE, MEASUREMENT, GENERALIZABILITY, THEORY, OPENSCIENCE. See [Agents](agents.qmd) for how the editor uses these.
 
-## Pre-populated journals
+## Pre-populated venues
 
-30 journals ship with profiles across five fields:
+13 venues ship with profiles across journals and conferences:
 
-| Field | Journals |
-|-------|----------|
-| Economics | AER, Econometrica, JPE, QJE, REStud, AEJ:Applied, AEJ:Policy, JHR, JHE, RAND, JPubE, JLE, JDE, RESTAT, AER:Insights |
-| Finance | JF, JFE, RFS, JFQA |
-| Accounting | JAR, JAE, TAR, CAR |
-| Marketing | JMR, Marketing Science, JCR |
-| Management | Management Science, SMJ, ASQ |
+| Tier | Venues |
+|------|--------|
+| Top journals | IEEE TSE, ACM TOSEM, EMSE |
+| Strong journals | JSS, IST, IEEE Software |
+| Top conferences | ICSE, FSE, ASE, ESEM, MSR, ICSME, CHASE |
 
-For journals not in the list, referees adapt using the journal name plus your domain profile. This still works --- it is just less precise.
+For venues not in the list, referees adapt using the venue name plus your domain profile. This still works --- it is just less precise.
 
-## Adding a custom journal
+## Adding a custom venue
 
 Copy the template at the bottom of `journal-profiles.md` and fill in the fields:
 
 ```markdown
-### [Journal Name] ([Abbreviation])
-**Focus:** [fields and topics covered]
+### [Venue Name] ([Abbreviation])
+**Focus:** [areas and topics covered]
 **Bar:** [what it takes to publish here]
 **Domain referee adjusts:** [what domain reviewers prioritize]
 **Methods referee adjusts:** [rigor expectations, required checks]
 **Typical concerns:** [common referee questions]
 **Referee pool:** [disposition] (high/medium/low) for each of the six
-**Table format:** [optional --- only if the journal deviates from default]
+**Table format:** [optional --- only if the venue deviates from default]
 ```
 
-The **Table format** field is optional. The default is standard economics conventions (significance stars, standard errors in parentheses, booktabs). Include it only for journals with explicit style deviations --- like AEA journals, which prohibit significance stars.
+The **Table format** field is optional. The default reports effect sizes with confidence intervals alongside p-values (ACM SIGSOFT Empirical Standards). Include it only for venues with explicit style deviations.
 
 ---
 
@@ -195,23 +191,22 @@ Re-run `/write style-guide` after publishing a new paper that represents a shift
 
 # Coding Standards {#sec-coding-standards}
 
-Three language-specific files live in `.claude/references/`:
+Two language-specific files live in `.claude/references/`:
 
 | File | Language |
 |------|----------|
-| `coding-standards-r.md` | R (>= 4.3.0) |
-| `coding-standards-python.md` | Python |
-| `coding-standards-julia.md` | Julia |
+| `coding-standards-python.md` | Python (>= 3.11) --- primary |
+| `coding-standards-r.md` | R (>= 4.3.0) --- secondary |
 
 Each file specifies:
 
-- **Runtime version** and dependency management (`renv`, `venv`, `Project.toml`)
-- **Core package stack** --- e.g., R uses `data.table`, `fixest`, `modelsummary`, `ggplot2`, `here`, `future.apply`
-- **Prohibited packages** --- e.g., `stargazer` (use `modelsummary`), `plyr` (use `data.table`), `reshape2` (use `data.table::melt`)
+- **Runtime version** and dependency management (`venv`/`conda`, `requirements.txt`; `renv` for R)
+- **Core package stack** --- e.g., Python uses `pandas`, `statsmodels`, `linearmodels`, `pyfixest`, `matplotlib`, `pydriller`, `PyGithub`
+- **Prohibited packages** --- e.g., `sklearn` for statistical inference (use `statsmodels`), `plotly` for paper figures (use `matplotlib`)
 - **Naming conventions** --- files, functions, variables, constants
-- **Prohibited patterns** --- `setwd()`, `rm(list = ls())`, `T`/`F` instead of `TRUE`/`FALSE`, `sapply()` instead of `vapply()`, `attach()`/`detach()`, `<<-`
+- **Prohibited patterns** --- `os.chdir()`, hardcoded paths, `np.random.seed()` global state, bare `except:`, mutable default arguments, growing lists in loops
 
-The Coder agent reads the relevant standards file before writing any code. The coder-critic checks compliance and deducts points for violations. CLAUDE.md declares the project language; if none is declared, the default is R.
+The Coder agent reads the relevant standards file before writing any code. The coder-critic checks compliance and deducts points for violations. CLAUDE.md declares the project language; if none is declared, the default is Python.
 
 ---
 
